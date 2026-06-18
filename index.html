@@ -1,0 +1,171 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+<meta charset="UTF-8" />
+<meta name="viewport" content="width=device-width, initial-scale=1.0" />
+<title>OSCE Online — Pediatria</title>
+<link rel="stylesheet" href="styles.css" />
+</head>
+<body>
+<header class="topbar">
+  <div class="brand">🩺 OSCE Online <span>Pediatria</span></div>
+  <div id="status" class="status off">desconectado</div>
+</header>
+
+<main id="app">
+
+  <!-- ETAPA 1: LOBBY -->
+  <section id="lobby" class="screen active">
+    <h1>Treine OSCE em dupla</h1>
+    <p class="lead">Uma pessoa é o <b>paciente/avaliador</b> e a outra é o <b>estudante</b>.
+       Conectam-se por um código de sala — sem cadastro, sem servidor.</p>
+
+    <div class="cards">
+      <div class="card">
+        <h2>👤 Sou paciente / avaliador</h2>
+        <p>Crie a sala, escolha o caso e gere um código para o estudante.</p>
+        <button id="btnHost" class="primary">Criar sala</button>
+      </div>
+      <div class="card">
+        <h2>🎓 Sou estudante</h2>
+        <p>Digite o código que o avaliador te passou para entrar na mesma sala.</p>
+        <input id="joinCode" type="text" placeholder="CÓDIGO DA SALA" maxlength="8" autocomplete="off" />
+        <button id="btnJoin" class="primary">Entrar</button>
+      </div>
+    </div>
+    <p id="lobbyMsg" class="msg"></p>
+  </section>
+
+  <!-- ETAPA 2: HOST escolhe o modo e aguarda -->
+  <section id="hostSetup" class="screen">
+    <h1>Como você quer treinar?</h1>
+    <p class="lead">Escolha um modo. Você não vê o conteúdo das estações — só seleciona por área.</p>
+
+    <div class="prox-block">
+      <div class="label">Vocês estão juntos ou à distância?</div>
+      <div class="prox-grid">
+        <div class="prox-card sel" data-prox="remoto">
+          <div class="mode-ico">💬</div>
+          <div class="prox-title">À distância</div>
+          <div class="prox-sub">Usar o chat para conversar.</div>
+        </div>
+        <div class="prox-card" data-prox="presencial">
+          <div class="mode-ico">🤝</div>
+          <div class="prox-title">No mesmo local</div>
+          <div class="prox-sub">Sem chat — conversam pessoalmente; checklist ao lado do caso.</div>
+        </div>
+      </div>
+    </div>
+
+    <div class="mode-grid">
+      <div class="mode-card" data-mode="conteudos">
+        <div class="mode-ico">🎯</div>
+        <h2>Selecionar conteúdos</h2>
+        <p>Treine só estações das áreas que escolher.</p>
+      </div>
+      <div class="mode-card" data-mode="aleatoria">
+        <div class="mode-ico">🎲</div>
+        <h2>Aleatória</h2>
+        <p>Uma estação sorteada por vez, sem fim.</p>
+      </div>
+      <div class="mode-card" data-mode="infinito">
+        <div class="mode-ico">♾️</div>
+        <h2>Modo infinito</h2>
+        <p>Todas as estações, sem repetir, até acabarem.</p>
+      </div>
+      <div class="mode-card" data-mode="osce">
+        <div class="mode-ico">🏥</div>
+        <h2>Modo OSCE</h2>
+        <p>4 estações aleatórias, uma após a outra.</p>
+      </div>
+    </div>
+
+    <!-- sub-painel: seleção de conteúdos -->
+    <div id="tagPanel" class="tag-panel hidden">
+      <div class="label">Conteúdos disponíveis</div>
+      <div id="tagList" class="tag-list"></div>
+      <button id="btnTagStart" class="primary">Criar sala com esses conteúdos</button>
+      <p id="tagMsg" class="msg"></p>
+    </div>
+
+    <div class="room-share hidden" id="roomShare">
+      <p>Modo: <b id="modeLabel"></b> · <span id="queueInfo"></span></p>
+      <p>Compartilhe este código com o estudante:</p>
+      <div class="code-box"><span id="roomCode">----</span><button id="btnCopy" class="ghost">copiar</button></div>
+      <p class="invite-line">ou envie o link de convite:</p>
+      <div class="code-box"><a id="inviteLink" href="#" target="_blank" rel="noopener">—</a><button id="btnCopyLink" class="ghost">copiar link</button></div>
+      <p id="waitMsg" class="msg">Aguardando o estudante entrar…</p>
+    </div>
+  </section>
+
+  <!-- ETAPA 3: ESTAÇÃO EM ANDAMENTO -->
+  <section id="station" class="screen">
+    <div class="station-head">
+      <div>
+        <div class="case-progress" id="stProgress"></div>
+        <div class="case-title" id="stCaseTitle"></div>
+        <div class="case-sub" id="stCaseSub"></div>
+      </div>
+      <div class="timer-wrap">
+        <div id="timer" class="timer">--:--</div>
+        <div class="timer-ctrls" id="timerCtrls">
+          <button id="btnStart" class="ghost">▶ iniciar</button>
+          <button id="btnPause" class="ghost">⏸</button>
+          <button id="btnReset" class="ghost">⟲</button>
+        </div>
+      </div>
+    </div>
+
+    <div class="station-grid">
+      <!-- Coluna esquerda: painel do papel -->
+      <div class="panel" id="rolePanel"></div>
+
+      <!-- Coluna direita (modo à distância): chat de atendimento -->
+      <div class="panel chat-panel" id="chatPanel">
+        <div class="chat-head">Atendimento (chat)</div>
+        <div id="chatLog" class="chat-log"></div>
+        <form id="chatForm" class="chat-form">
+          <input id="chatInput" type="text" placeholder="Escreva sua fala…" autocomplete="off" />
+          <button class="primary" type="submit">Enviar</button>
+        </form>
+      </div>
+
+      <!-- Coluna direita (modo presencial): checklist ao lado do caso -->
+      <div class="panel hidden" id="sideChecklistPanel">
+        <h3>Checklist de avaliação</h3>
+        <div id="sideChecklist"></div>
+      </div>
+    </div>
+
+    <div class="station-foot">
+      <button id="btnFinish" class="danger hidden">Encerrar e avaliar</button>
+    </div>
+  </section>
+
+  <!-- ETAPA 4: RESULTADO DA ESTAÇÃO -->
+  <section id="result" class="screen">
+    <h1>Desempenho da estação</h1>
+    <div id="resultBody"></div>
+    <div class="ready-box">
+      <button id="btnReady" class="primary">✓ Estou pronto para a próxima</button>
+      <span id="readyMsg" class="msg"></span>
+    </div>
+    <button id="btnRestart" class="ghost hidden">Encerrar sessão</button>
+  </section>
+
+  <!-- ETAPA 5: RESUMO DA SESSÃO -->
+  <section id="summary" class="screen">
+    <h1>Resumo da sessão</h1>
+    <div id="summaryBody"></div>
+    <button id="btnNewSession" class="primary">Nova sessão</button>
+  </section>
+
+</main>
+
+<footer class="foot">Conexão direta navegador-a-navegador via WebRTC (PeerJS). Nada é gravado em servidor.</footer>
+
+<script src="https://unpkg.com/peerjs@1.5.4/dist/peerjs.min.js"></script>
+<script src="cases.js"></script>
+<script src="app.js"></script>
+</body>
+</html>

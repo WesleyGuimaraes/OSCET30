@@ -1,0 +1,14 @@
+# SO / editores
+.DS_Store
+Thumbs.db
+desktop.ini
+
+# logs e temporários
+*.log
+*.tmp
+
+# dependências (não usadas neste projeto estático, mas por garantia)
+node_modules/
+
+# configurações locais do Claude Code
+.claude/

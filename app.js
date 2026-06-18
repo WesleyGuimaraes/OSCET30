@@ -108,11 +108,14 @@
         addBubble(m.text, "them", m.who);
         break;
       case "timer":
+        // o aluno sincroniza o tempo e o estado (rodando/pausado) com o professor
         state.timer.remaining = m.remaining;
         state.timer.running = m.running;
         renderTimer();
+        if (state.role === "guest") guestTimerSync();
         break;
       case "finish":
+        clearInterval(state.timer.intervalId);
         showStationResult(m.total, m.max, m.items);
         break;
       case "ready": // só o host recebe (estudante ficou pronto)
@@ -311,6 +314,8 @@
 
   // ---------- ESTAÇÃO ----------
   function startStation() {
+    clearInterval(state.timer.intervalId); // limpa timer da estação anterior
+    state.timer.running = false;
     const c = state.caseObj;
     $("#stProgress").textContent = state.prog.total
       ? `Estação ${state.prog.n} de ${state.prog.total}`
@@ -404,6 +409,21 @@
   }
   function broadcastTimer() {
     sendMsg({ t: "timer", remaining: state.timer.remaining, running: state.timer.running });
+  }
+  // contagem local do ALUNO entre as sincronizações do professor (resiliente a
+  // perda de pacotes): inicia/para conforme o último estado recebido.
+  function guestTimerSync() {
+    clearInterval(state.timer.intervalId);
+    if (state.timer.running && state.timer.remaining > 0) {
+      state.timer.intervalId = setInterval(() => {
+        if (state.timer.remaining > 0) {
+          state.timer.remaining--;
+          renderTimer();
+        } else {
+          clearInterval(state.timer.intervalId);
+        }
+      }, 1000);
+    }
   }
   function startTimer() {
     if (state.timer.running) return;

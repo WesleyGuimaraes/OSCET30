@@ -1,5 +1,7 @@
 # OSCE Online — Pediatria
 
+<!-- redeploy trigger: Vercel Web Analytics habilitado em 2026-06-19 -->
+
 Versão web da skill de OSCE para treinar **em dupla**: uma pessoa é o
 **paciente/avaliador** e a outra é o **estudante**. As duas entram na **mesma sala**
 por um código, sem cadastro e sem servidor próprio — a conexão é direta entre os

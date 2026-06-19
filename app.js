@@ -22,7 +22,8 @@
   };
 
   const state = {
-    role: null,
+    role: null,        // papel de CONEXÃO: 'host' (criou a sala) | 'guest'
+    playRole: "avaliador", // papel NA ESTAÇÃO: 'avaliador' | 'estudante' (pode alternar)
     peer: null,
     conn: null,
     connectTimer: null,
@@ -79,10 +80,15 @@
         { urls: "stun:stun.l.google.com:19302" },
         { urls: "stun:stun1.l.google.com:19302" },
         {
+          // TURN: retransmite quando o NAT/firewall bloqueia a conexão direta.
+          // As variantes TCP e TLS na 443 ajudam em redes restritas (faculdade)
+          // que só liberam tráfego web (HTTPS).
           urls: [
             "turn:openrelay.metered.ca:80",
+            "turn:openrelay.metered.ca:80?transport=tcp",
             "turn:openrelay.metered.ca:443",
             "turn:openrelay.metered.ca:443?transport=tcp",
+            "turns:openrelay.metered.ca:443?transport=tcp",
           ],
           username: "openrelayproject",
           credential: "openrelayproject",
@@ -90,6 +96,18 @@
       ],
     },
   };
+
+  // sou o avaliador (paciente) nesta estação?
+  function isEvaluator() { return state.playRole === "avaliador"; }
+
+  // mostra o resultado e, se eu for o HOST (dono da sessão), guarda no resumo —
+  // independentemente de quem avaliou a estação (host ou guest).
+  function storeAndShow(total, max, items) {
+    if (state.role === "host") {
+      state.session.results.push({ titulo: state.caseObj.titulo, total, max });
+    }
+    showStationResult(total, max, items);
+  }
 
   // ---------- mensagens P2P ----------
   function sendMsg(obj) {
@@ -101,6 +119,8 @@
         state.caseObj = CASE(m.id);
         state.prog = m.prog || { n: 0, total: null };
         state.chatOn = m.chatOn !== false;
+        // o host informa quem é o avaliador nesta estação; o guest é o oposto
+        state.playRole = m.avaliadorIsHost ? "estudante" : "avaliador";
         state.scores = {};
         startStation();
         break;
@@ -108,15 +128,15 @@
         addBubble(m.text, "them", m.who);
         break;
       case "timer":
-        // o aluno sincroniza o tempo e o estado (rodando/pausado) com o professor
+        // o ESTUDANTE sincroniza o tempo e o estado (rodando/pausado) com o avaliador
         state.timer.remaining = m.remaining;
         state.timer.running = m.running;
         renderTimer();
-        if (state.role === "guest") guestTimerSync();
+        if (!isEvaluator()) studentTimerSync();
         break;
       case "finish":
         clearInterval(state.timer.intervalId);
-        showStationResult(m.total, m.max, m.items);
+        storeAndShow(m.total, m.max, m.items);
         break;
       case "ready": // só o host recebe (estudante ficou pronto)
         state.ready.guest = true;
@@ -210,10 +230,13 @@
 
   function startSession(mode, tags) {
     const queue = buildQueue(mode, tags);
-    state.session = { mode, queue, index: 0, lastId: null, count: 0, results: [] };
+    const alternate = $("#altRoles").checked;
+    state.session = { mode, queue, index: 0, lastId: null, count: 0, results: [], alternate };
 
     // info exibida ao host
-    $("#modeLabel").textContent = MODE_LABEL[mode] + (state.chatOn ? " · com chat" : " · presencial");
+    $("#modeLabel").textContent = MODE_LABEL[mode]
+      + (state.chatOn ? " · com chat" : " · presencial")
+      + (alternate ? " · alterna papéis" : "");
     let info;
     if (mode === "aleatoria") info = "estações ilimitadas";
     else if (mode === "osce")
@@ -265,7 +288,10 @@
     state.prog = { n: nx.n, total: nx.total };
     state.timer.remaining = state.caseObj.tempo;
     state.scores = {};
-    sendMsg({ t: "case", id: nx.id, prog: state.prog, chatOn: state.chatOn });
+    // papéis da estação: host começa como avaliador; se "alternar", troca a cada estação
+    const avaliadorIsHost = !(state.session.alternate && nx.n % 2 === 0);
+    state.playRole = avaliadorIsHost ? "avaliador" : "estudante";
+    sendMsg({ t: "case", id: nx.id, prog: state.prog, chatOn: state.chatOn, avaliadorIsHost });
     startStation();
   }
 
@@ -325,24 +351,24 @@
     if (!state.timer.remaining) state.timer.remaining = c.tempo;
     renderTimer();
 
-    // layout conforme proximidade (com/sem chat)
+    // layout conforme proximidade (com/sem chat) e papel da estação
     const chatOn = state.chatOn;
-    const isHost = state.role === "host";
-    const showSideChecklist = !chatOn && isHost;
+    const isEval = isEvaluator();
+    const showSideChecklist = !chatOn && isEval;
     $("#chatPanel").classList.toggle("hidden", !chatOn);
     $("#sideChecklistPanel").classList.toggle("hidden", !showSideChecklist);
-    // guest presencial fica sem coluna direita → grade em coluna única
-    $(".station-grid").classList.toggle("single", !chatOn && !isHost);
+    // estudante presencial fica sem coluna direita → grade em coluna única
+    $(".station-grid").classList.toggle("single", !chatOn && !isEval);
 
     renderRolePanel();
     if (chatOn) {
       $("#chatLog").innerHTML = "";
-      addSys(isHost
+      addSys(isEval
         ? "Você é o PACIENTE/AVALIADOR. Siga o roteiro e marque o checklist."
         : "Você é o ESTUDANTE. Conduza a anamnese e a orientação pelo chat.");
     }
-    $("#timerCtrls").style.display = isHost ? "flex" : "none";
-    $("#btnFinish").classList.toggle("hidden", !isHost);
+    $("#timerCtrls").style.display = isEval ? "flex" : "none";
+    $("#btnFinish").classList.toggle("hidden", !isEval);
     show("station");
   }
 
@@ -350,7 +376,7 @@
     const c = state.caseObj;
     const p = $("#rolePanel");
     const chatOn = state.chatOn;
-    if (state.role === "guest") {
+    if (!isEvaluator()) {
       const dica = chatOn
         ? "Conduza pelo chat: apresente-se, colha a história, levante hipóteses e oriente."
         : "Conduza pessoalmente com o avaliador: apresente-se, colha a história, levante hipóteses e oriente.";
@@ -412,7 +438,7 @@
   }
   // contagem local do ALUNO entre as sincronizações do professor (resiliente a
   // perda de pacotes): inicia/para conforme o último estado recebido.
-  function guestTimerSync() {
+  function studentTimerSync() {
     clearInterval(state.timer.intervalId);
     if (state.timer.running && state.timer.remaining > 0) {
       state.timer.intervalId = setInterval(() => {
@@ -458,7 +484,7 @@
     div.textContent = text;
     $("#chatLog").appendChild(div);
   }
-  function myLabel() { return state.role === "host" ? "Paciente" : "Estudante"; }
+  function myLabel() { return isEvaluator() ? "Paciente" : "Estudante"; }
 
   // ---------- resultado da estação ----------
   function computeResult() {
@@ -542,6 +568,66 @@
     }
   })();
 
+  // ---------- diagnóstico de conexão ----------
+  // Verifica (1) se o servidor de sinalização do PeerJS é alcançável e
+  // (2) se a rede permite obter um candidato TURN (relay) — necessário em
+  // redes restritas como Wi-Fi/5G de faculdade.
+  function testConnection() {
+    const out = $("#connResult");
+    out.className = "conn-result show";
+    out.innerHTML = "⏳ Testando… (uns 10 segundos)";
+
+    let signalingOk = false, gotRelay = false, gotSrflx = false, doneSig = false;
+
+    // (1) sinalização PeerJS
+    const p = new Peer(undefined, PEER_OPTS);
+    const sigTimer = setTimeout(() => finishSig(), 9000);
+    p.on("open", () => { signalingOk = true; finishSig(); });
+    p.on("error", () => finishSig());
+    function finishSig() {
+      if (doneSig) return;
+      doneSig = true;
+      clearTimeout(sigTimer);
+      try { p.destroy(); } catch (e) {}
+    }
+
+    // (2) ICE/TURN
+    const pc = new RTCPeerConnection(PEER_OPTS.config);
+    pc.createDataChannel("t");
+    pc.onicecandidate = (e) => {
+      if (!e.candidate) return;
+      const c = e.candidate.candidate || "";
+      if (c.includes(" typ relay")) gotRelay = true;
+      if (c.includes(" typ srflx")) gotSrflx = true;
+    };
+    pc.createOffer().then((o) => pc.setLocalDescription(o)).catch(() => {});
+
+    setTimeout(() => {
+      try { pc.close(); } catch (e) {}
+      render();
+    }, 10000);
+
+    function render() {
+      let cls, msg;
+      if (signalingOk && gotRelay) {
+        cls = "ok";
+        msg = "✅ <b>Conexão OK</b> — funciona mesmo em redes restritas (TURN disponível).";
+      } else if (signalingOk && gotSrflx) {
+        cls = "warn";
+        msg = "⚠️ <b>Conexão limitada</b> — deve funcionar em redes comuns, mas pode falhar em redes muito restritas (não obtive TURN). Se não conectar, tente o 4G/5G do celular.";
+      } else if (signalingOk) {
+        cls = "warn";
+        msg = "⚠️ <b>Servidor acessível, mas a rede bloqueia o vídeo/áudio P2P</b> (sem STUN/TURN). Provável bloqueio de firewall — use outra rede (ex.: dados móveis do celular).";
+      } else {
+        cls = "bad";
+        msg = "❌ <b>Esta rede bloqueia a conexão</b> (servidor de sinalização inacessível). Redes de faculdade/empresa costumam bloquear. Use o 4G/5G do celular ou outra rede.";
+      }
+      out.className = "conn-result show " + cls;
+      out.innerHTML = msg;
+    }
+  }
+  $("#btnTestConn").onclick = testConnection;
+
   $("#btnStart").onclick = startTimer;
   $("#btnPause").onclick = pauseTimer;
   $("#btnReset").onclick = resetTimer;
@@ -556,11 +642,11 @@
   });
 
   $("#btnFinish").onclick = () => {
+    if (!isEvaluator()) return;
     pauseTimer();
     const r = computeResult();
-    state.session.results.push({ titulo: state.caseObj.titulo, total: r.total, max: r.max });
     sendMsg({ t: "finish", total: r.total, max: r.max, items: r.items });
-    showStationResult(r.total, r.max, r.items);
+    storeAndShow(r.total, r.max, r.items); // host guarda; guest só mostra
   };
 
   // "pronto para a próxima"

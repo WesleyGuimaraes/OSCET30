@@ -26,6 +26,19 @@ Ao criar a sala, quem é paciente/avaliador escolhe:
   Nesse modo o **checklist** do avaliador fica **ao lado do caso clínico**, e o
   estudante vê só as instruções em tela cheia. A escolha vale para os dois.
 
+### Alternar papéis
+
+No setup há a opção **"Alternar papéis a cada estação"**: quando ligada, a cada
+estação vocês trocam de lado (quem era avaliador vira estudante e vice-versa) —
+ótimo no **modo infinito** para os dois praticarem os dois papéis.
+
+### Testar conexão
+
+No lobby há **"📶 Testar conexão nesta rede"**. Ele verifica se o servidor de
+sinalização é alcançável e se a rede libera TURN. Redes de **faculdade/empresa**
+costumam bloquear — se o teste acusar bloqueio, use o **4G/5G do celular** ou
+outra rede. (Conexão entre dispositivos exige o site servido por **HTTPS**.)
+
 ### Modos (escolhidos por quem cria a sala)
 
 | Modo | O que faz |

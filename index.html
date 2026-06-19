@@ -34,6 +34,11 @@
       </div>
     </div>
     <p id="lobbyMsg" class="msg"></p>
+
+    <div class="conn-test">
+      <button id="btnTestConn" class="ghost">📶 Testar conexão nesta rede</button>
+      <div id="connResult" class="conn-result"></div>
+    </div>
   </section>
 
   <!-- ETAPA 2: HOST escolhe o modo e aguarda -->
@@ -55,6 +60,14 @@
           <div class="prox-sub">Sem chat — conversam pessoalmente; checklist ao lado do caso.</div>
         </div>
       </div>
+    </div>
+
+    <div class="prox-block">
+      <label class="switch-row">
+        <input type="checkbox" id="altRoles" />
+        <span><b>Alternar papéis a cada estação</b> (avaliador ⇄ estudante)</span>
+      </label>
+      <div class="prox-sub">Ótimo no modo infinito: a cada estação vocês trocam de lado.</div>
     </div>
 
     <div class="mode-grid">

@@ -66,6 +66,17 @@ input{width:100%;padding:11px 14px;border-radius:9px;border:1px solid var(--line
 .prox-card.sel{border-color:var(--accent);box-shadow:0 0 0 1px var(--accent) inset}
 .prox-title{font-weight:600;margin-top:4px}
 .prox-sub{color:var(--muted);font-size:.85rem;margin-top:2px}
+.switch-row{display:flex;align-items:center;gap:10px;cursor:pointer;font-size:.95rem}
+.switch-row input{width:auto;margin:0}
+
+/* teste de conexão */
+.conn-test{margin-top:22px}
+.conn-result{display:none;margin-top:10px;padding:12px 14px;border-radius:10px;
+  font-size:.9rem;line-height:1.4;border:1px solid var(--line);background:var(--panel)}
+.conn-result.show{display:block}
+.conn-result.ok{border-color:var(--good);background:#16291f}
+.conn-result.warn{border-color:var(--warn);background:#2a2418}
+.conn-result.bad{border-color:var(--danger);background:#2a1a1a}
 
 /* tags */
 .tag-panel{background:var(--panel);border:1px solid var(--line);border-radius:12px;padding:18px;margin-bottom:18px}

@@ -10,5 +10,8 @@ desktop.ini
 # dependências (não usadas neste projeto estático, mas por garantia)
 node_modules/
 
+# Build output - keep dist/ for Vercel Analytics bundle
+# dist/ is intentionally NOT ignored as it contains the analytics bundle
+
 # configurações locais do Claude Code
 .claude/

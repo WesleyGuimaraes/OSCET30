@@ -1,0 +1,27 @@
+{
+  "name": "primary",
+  "version": "1.0.0",
+  "description": "Versão web da skill de OSCE para treinar **em dupla**: uma pessoa é o **paciente/avaliador** e a outra é o **estudante**. As duas entram na **mesma sala** por um código, sem cadastro e sem servidor próprio — a conexão é direta entre os navegadores via **WebRTC (PeerJS)**.",
+  "main": "app.js",
+  "scripts": {
+    "build": "esbuild analytics.js --bundle --outfile=dist/analytics.js --format=iife",
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/WesleyGuimaraes/OSCET30.git"
+  },
+  "keywords": [],
+  "author": "",
+  "license": "ISC",
+  "bugs": {
+    "url": "https://github.com/WesleyGuimaraes/OSCET30/issues"
+  },
+  "homepage": "https://github.com/WesleyGuimaraes/OSCET30#readme",
+  "dependencies": {
+    "@vercel/analytics": "^2.0.1"
+  },
+  "devDependencies": {
+    "esbuild": "^0.28.1"
+  }
+}

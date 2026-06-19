@@ -197,7 +197,7 @@
   });
 
   function renderTagPicker() {
-    const tags = [...new Set(CASES.flatMap((c) => c.conteudos))].sort();
+    const tags = [...new Set(CASES.map((c) => c.conteudos[0]))].sort();
     const box = $("#tagList");
     box.innerHTML = "";
     tags.forEach((t) => {

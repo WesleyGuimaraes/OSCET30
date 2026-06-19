@@ -25,6 +25,7 @@ window.OSCE_CASES = [
     especialidade: "Desenvolvimento infantil",
     conteudos: ["Desenvolvimento", "Lactente"],
     tempo: 300,
+    queixaPrincipal: "A mãe de Pedro, 9 meses, está preocupada porque ele \"ainda não senta sozinho\".",
     resumo: `Puericultura. A mãe de Pedro, 9 meses, está preocupada porque ele "ainda
 não senta sozinho". Avalie o desenvolvimento, identifique sinais de alerta e oriente. ~5 min.`,
     paciente: {
@@ -59,6 +60,7 @@ não senta sozinho". Avalie o desenvolvimento, identifique sinais de alerta e or
     especialidade: "Desenvolvimento infantil",
     conteudos: ["Desenvolvimento", "Pré-escolar"],
     tempo: 300,
+    queixaPrincipal: "O pai de Laura, 2 anos, diz que ela \"quase não fala\".",
     resumo: `Ambulatório. O pai de Laura, 2 anos, diz que ela "quase não fala".
 Avalie a linguagem e o desenvolvimento global, levante hipóteses e oriente. ~5 min.`,
     paciente: {
@@ -93,6 +95,7 @@ Avalie a linguagem e o desenvolvimento global, levante hipóteses e oriente. ~5 
     especialidade: "Desenvolvimento infantil",
     conteudos: ["Desenvolvimento", "Lactente"],
     tempo: 300,
+    queixaPrincipal: "A mãe de Miguel, 4 meses, quer saber se o desenvolvimento \"está no caminho certo\".",
     resumo: `Consulta de rotina. A mãe de Miguel, 4 meses, quer saber se o
 desenvolvimento "está no caminho certo". Avalie os marcos e oriente os próximos. ~5 min.`,
     paciente: {
@@ -127,6 +130,7 @@ desenvolvimento "está no caminho certo". Avalie os marcos e oriente os próximo
     especialidade: "Desenvolvimento infantil",
     conteudos: ["Desenvolvimento", "Lactente"],
     tempo: 300,
+    queixaPrincipal: "A mãe de Théo, 18 meses, conta que ele \"parou de apontar e fala menos do que falava\".",
     resumo: `Ambulatório. A mãe de Théo, 18 meses, conta que ele "parou de
 apontar e fala menos do que falava". Avalie o desenvolvimento e os sinais de alerta. ~5 min.`,
     paciente: {
@@ -161,6 +165,7 @@ apontar e fala menos do que falava". Avalie o desenvolvimento e os sinais de ale
     especialidade: "Desenvolvimento infantil",
     conteudos: ["Desenvolvimento", "Lactente"],
     tempo: 300,
+    queixaPrincipal: "A mãe de Alice, 6 meses de idade cronológica (nasceu com 32 semanas), acha que ela está \"atrasada\".",
     resumo: `Seguimento. A mãe de Alice, 6 meses de idade cronológica (nasceu com
 32 semanas), acha que ela está "atrasada". Avalie usando idade corrigida e oriente. ~5 min.`,
     paciente: {
@@ -194,6 +199,7 @@ apontar e fala menos do que falava". Avalie o desenvolvimento e os sinais de ale
     especialidade: "Desenvolvimento infantil",
     conteudos: ["Desenvolvimento", "Lactente"],
     tempo: 300,
+    queixaPrincipal: "A mãe de Davi, 2 meses, quer saber se ele está \"se desenvolvendo bem\".",
     resumo: `Consulta de rotina. A mãe de Davi, 2 meses, quer saber se ele está
 "se desenvolvendo bem". Avalie os marcos esperados para a idade e oriente. ~5 min.`,
     paciente: {
@@ -227,6 +233,7 @@ apontar e fala menos do que falava". Avalie o desenvolvimento e os sinais de ale
     especialidade: "Desenvolvimento infantil",
     conteudos: ["Desenvolvimento", "Pré-escolar"],
     tempo: 300,
+    queixaPrincipal: "Os pais de Bruna, 16 meses, estão preocupados porque ela \"ainda não anda sozinha\".",
     resumo: `Ambulatório. Os pais de Bruna, 16 meses, estão preocupados porque ela
 "ainda não anda sozinha". Avalie o desenvolvimento motor e os sinais de alerta. ~5 min.`,
     paciente: {
@@ -260,6 +267,7 @@ apontar e fala menos do que falava". Avalie o desenvolvimento e os sinais de ale
     especialidade: "Desenvolvimento infantil",
     conteudos: ["Desenvolvimento", "Pré-escolar"],
     tempo: 300,
+    queixaPrincipal: "A mãe de Gael, 2 anos e 4 meses, pergunta se já é hora de \"tirar a fralda\".",
     resumo: `Puericultura. A mãe de Gael, 2 anos e 4 meses, pergunta se já é hora de
 "tirar a fralda". Avalie a prontidão para o controle esfincteriano e oriente. ~5 min.`,
     paciente: {
@@ -292,6 +300,7 @@ apontar e fala menos do que falava". Avalie o desenvolvimento e os sinais de ale
     especialidade: "Desenvolvimento infantil",
     conteudos: ["Desenvolvimento", "Pré-escolar"],
     tempo: 300,
+    queixaPrincipal: "Os pais de Sofia, 3 anos, notaram que ela \"repete sílabas e trava\" ao falar há 1 mês.",
     resumo: `Ambulatório. Os pais de Sofia, 3 anos, notaram que ela "repete sílabas e
 trava" ao falar há 1 mês. Avalie a fala e diferencie disfluência fisiológica de gagueira. ~5 min.`,
     paciente: {
@@ -326,6 +335,7 @@ trava" ao falar há 1 mês. Avalie a fala e diferencie disfluência fisiológica
     especialidade: "Desenvolvimento infantil",
     conteudos: ["Desenvolvimento", "Escolar"],
     tempo: 300,
+    queixaPrincipal: "Os pais de Helena, 5 anos e meio, perguntam se ela está \"pronta\" para entrar no 1º ano.",
     resumo: `Puericultura. Os pais de Helena, 5 anos e meio, perguntam se ela está
 "pronta" para entrar no 1º ano. Avalie a prontidão escolar e oriente. ~5 min.`,
     paciente: {
@@ -363,6 +373,7 @@ trava" ao falar há 1 mês. Avalie a fala e diferencie disfluência fisiológica
     especialidade: "Exame físico do RN",
     conteudos: ["Exame do RN", "RN"],
     tempo: 300,
+    queixaPrincipal: "RN de 36 h de vida, a termo.",
     resumo: `Alojamento conjunto. RN de 36 h de vida, a termo. Faça o exame físico
 do recém-nascido de forma sistemática (diga ao avaliador o que examinaria) e oriente a alta. ~5 min.`,
     paciente: {
@@ -396,6 +407,7 @@ do recém-nascido de forma sistemática (diga ao avaliador o que examinaria) e o
     especialidade: "Exame físico do RN",
     conteudos: ["Exame do RN", "RN"],
     tempo: 300,
+    queixaPrincipal: "Foi auscultado um sopro no RN de 2 dias durante a rotina.",
     resumo: `Alojamento conjunto. Foi auscultado um sopro no RN de 2 dias durante a
 rotina. Avalie, diferencie sopro inocente de patológico e defina a conduta. ~5 min.`,
     paciente: {
@@ -428,6 +440,7 @@ rotina. Avalie, diferencie sopro inocente de patológico e defina a conduta. ~5 
     especialidade: "Exame físico do RN",
     conteudos: ["Exame do RN", "RN"],
     tempo: 300,
+    queixaPrincipal: "Exame do RN feminino, nascido de apresentação pélvica.",
     resumo: `Exame do RN feminino, nascido de apresentação pélvica. Realize a triagem
 para displasia do desenvolvimento do quadril (DDQ) e defina a conduta. ~5 min.`,
     paciente: {
@@ -459,6 +472,7 @@ para displasia do desenvolvimento do quadril (DDQ) e defina a conduta. ~5 min.`,
     especialidade: "Exame físico do RN",
     conteudos: ["Exame do RN", "RN"],
     tempo: 300,
+    queixaPrincipal: "A mãe está assustada com manchas na pele e um inchaço na cabeça do RN.",
     resumo: `Alojamento conjunto. A mãe está assustada com manchas na pele e um
 inchaço na cabeça do RN. Examine, identifique achados benignos e oriente. ~5 min.`,
     paciente: {
@@ -491,6 +505,7 @@ inchaço na cabeça do RN. Examine, identifique achados benignos e oriente. ~5 m
     especialidade: "Exame físico do RN",
     conteudos: ["Exame do RN", "RN"],
     tempo: 300,
+    queixaPrincipal: "A mãe percebeu que o RN \"não mexe o braço direito\" após um parto difícil.",
     resumo: `A mãe percebeu que o RN "não mexe o braço direito" após um parto
 difícil. Examine, identifique o quadro e oriente a conduta. ~5 min.`,
     paciente: {
@@ -525,6 +540,7 @@ difícil. Examine, identifique o quadro e oriente a conduta. ~5 min.`,
     especialidade: "Exame físico do RN",
     conteudos: ["Exame do RN", "RN"],
     tempo: 300,
+    queixaPrincipal: "Necessidade de classificar o RN quanto à idade gestacional e ao peso de nascimento.",
     resumo: `Alojamento conjunto. Classifique o RN quanto à idade gestacional e ao
 peso de nascimento, e explique o que isso significa para os cuidados. ~5 min.`,
     paciente: {
@@ -555,6 +571,7 @@ peso de nascimento, e explique o que isso significa para os cuidados. ~5 min.`,
     especialidade: "Exame físico do RN",
     conteudos: ["Exame do RN", "RN"],
     tempo: 300,
+    queixaPrincipal: "Mãe assustada com uma \"área mole\" notada na cabeça do RN.",
     resumo: `Alojamento conjunto. Examine a cabeça do RN de 1 dia, avaliando
 fontanelas e suturas, e responda às dúvidas da mãe. ~5 min.`,
     paciente: {
@@ -586,6 +603,7 @@ fontanelas e suturas, e responda às dúvidas da mãe. ~5 min.`,
     especialidade: "Exame físico do RN",
     conteudos: ["Exame do RN", "RN"],
     tempo: 300,
+    queixaPrincipal: "Mãe com dúvidas sobre os cuidados com o coto umbilical do RN.",
     resumo: `Alojamento conjunto. Examine o coto umbilical do RN de 2 dias e oriente
 os cuidados, identificando sinais de alarme. ~5 min.`,
     paciente: {
@@ -616,6 +634,7 @@ os cuidados, identificando sinais de alarme. ~5 min.`,
     especialidade: "Exame físico do RN",
     conteudos: ["Exame do RN", "RN"],
     tempo: 300,
+    queixaPrincipal: "Realização do teste do coraçãozinho antes da alta do RN.",
     resumo: `Alojamento conjunto. Realize e explique o teste do coraçãozinho do RN
 de 26 horas de vida antes da alta. ~5 min.`,
     paciente: {
@@ -646,6 +665,7 @@ de 26 horas de vida antes da alta. ~5 min.`,
     especialidade: "Exame físico do RN",
     conteudos: ["Exame do RN", "RN"],
     tempo: 300,
+    queixaPrincipal: "Pais assustados com a aparência \"diferente\" de um RN pré-termo.",
     resumo: `UTI neonatal. Examine um RN pré-termo de 33 semanas e descreva as
 características esperadas da prematuridade aos pais. ~5 min.`,
     paciente: {
@@ -681,6 +701,7 @@ características esperadas da prematuridade aos pais. ~5 min.`,
     especialidade: "Icterícia neonatal",
     conteudos: ["Icterícia neonatal", "RN"],
     tempo: 300,
+    queixaPrincipal: "RN de 3 dias trazido por estar \"amarelinho\".",
     resumo: `Alojamento/PA. RN de 3 dias trazido por estar "amarelinho". Avalie a
 icterícia, estime a gravidade e defina a conduta. ~5 min.`,
     paciente: {
@@ -713,6 +734,7 @@ icterícia, estime a gravidade e defina a conduta. ~5 min.`,
     especialidade: "Icterícia neonatal",
     conteudos: ["Icterícia neonatal", "RN"],
     tempo: 300,
+    queixaPrincipal: "RN com icterícia surgida com 18 h de vida.",
     resumo: `RN com icterícia surgida com 18 h de vida. Avalie — isso é esperado?
 Defina a investigação e a conduta. ~5 min.`,
     paciente: {
@@ -744,6 +766,7 @@ Defina a investigação e a conduta. ~5 min.`,
     especialidade: "Icterícia neonatal",
     conteudos: ["Icterícia neonatal", "Lactente"],
     tempo: 300,
+    queixaPrincipal: "Lactente de 20 dias continua ictérico.",
     resumo: `Ambulatório. Lactente de 20 dias continua ictérico. Diferencie causas
 benignas de colestase e defina a investigação. ~5 min.`,
     paciente: {
@@ -775,6 +798,7 @@ benignas de colestase e defina a investigação. ~5 min.`,
     especialidade: "Icterícia neonatal",
     conteudos: ["Icterícia neonatal", "RN"],
     tempo: 300,
+    queixaPrincipal: "RN de 4 dias, ictérico, com perda de peso importante.",
     resumo: `RN de 4 dias, ictérico, com perda de peso importante. Avalie a relação
 com a amamentação e oriente a conduta. ~5 min.`,
     paciente: {
@@ -805,6 +829,7 @@ com a amamentação e oriente a conduta. ~5 min.`,
     especialidade: "Icterícia neonatal",
     conteudos: ["Icterícia neonatal", "RN"],
     tempo: 300,
+    queixaPrincipal: "RN de 5 dias intensamente ictérico e letárgico.",
     resumo: `Pronto-socorro. RN de 5 dias intensamente ictérico e letárgico.
 Reconheça a gravidade e conduza. ~5 min.`,
     paciente: {
@@ -837,6 +862,7 @@ Reconheça a gravidade e conduza. ~5 min.`,
     especialidade: "Icterícia neonatal",
     conteudos: ["Icterícia neonatal", "RN"],
     tempo: 300,
+    queixaPrincipal: "RN de 30 horas de vida com icterícia precoce. A mãe é Rh negativo.",
     resumo: `RN de 30 horas de vida com icterícia precoce. A mãe é Rh negativo.
 Avalie a possível doença hemolítica por incompatibilidade Rh e conduza. ~5 min.`,
     paciente: {
@@ -867,6 +893,7 @@ Avalie a possível doença hemolítica por incompatibilidade Rh e conduza. ~5 mi
     especialidade: "Icterícia neonatal",
     conteudos: ["Icterícia neonatal", "RN"],
     tempo: 300,
+    queixaPrincipal: "RN de 4 dias internado em fototerapia. Os pais têm dúvidas sobre o tratamento.",
     resumo: `RN de 4 dias internado em fototerapia. Os pais têm dúvidas sobre o
 tratamento. Explique o mecanismo, os cuidados e os possíveis efeitos. ~5 min.`,
     paciente: {
@@ -897,6 +924,7 @@ tratamento. Explique o mecanismo, os cuidados e os possíveis efeitos. ~5 min.`,
     especialidade: "Icterícia neonatal",
     conteudos: ["Icterícia neonatal", "RN"],
     tempo: 300,
+    queixaPrincipal: "RN de 5 dias com icterícia intensa de início súbito. A família guarda roupas com naftalina.",
     resumo: `RN de 5 dias com icterícia intensa de início súbito. A família guarda
 roupas com naftalina. Avalie a possível deficiência de G6PD. ~5 min.`,
     paciente: {
@@ -928,6 +956,7 @@ roupas com naftalina. Avalie a possível deficiência de G6PD. ~5 min.`,
     especialidade: "Icterícia neonatal",
     conteudos: ["Icterícia neonatal", "RN"],
     tempo: 300,
+    queixaPrincipal: "RN em fototerapia intensiva, com bilirrubina ainda em ascensão e sinais neurológicos iniciais.",
     resumo: `RN em fototerapia intensiva, com bilirrubina ainda em ascensão e sinais
 neurológicos iniciais. Avalie a indicação de exsanguineotransfusão. ~5 min.`,
     paciente: {
@@ -957,6 +986,7 @@ neurológicos iniciais. Avalie a indicação de exsanguineotransfusão. ~5 min.`
     especialidade: "Icterícia neonatal",
     conteudos: ["Icterícia neonatal", "RN"],
     tempo: 300,
+    queixaPrincipal: "RN de 38 horas de vida recebendo alta da maternidade.",
     resumo: `RN de 38 horas de vida recebendo alta da maternidade. Avalie o risco de
 icterícia significativa e programe a reavaliação. ~5 min.`,
     paciente: {
@@ -990,6 +1020,7 @@ icterícia significativa e programe a reavaliação. ~5 min.`,
     especialidade: "Maus-tratos na infância",
     conteudos: ["Maus-tratos", "Lactente"],
     tempo: 300,
+    queixaPrincipal: "Lactente de 8 meses trazido por \"queda do sofá\", com hematomas de cores diferentes.",
     resumo: `Pronto-socorro. Lactente de 8 meses trazido por "queda do sofá", com
 hematomas de cores diferentes. Avalie, identifique sinais de alerta e conduza. ~5 min.`,
     paciente: {
@@ -1023,6 +1054,7 @@ hematomas de cores diferentes. Avalie, identifique sinais de alerta e conduza. ~
     especialidade: "Maus-tratos na infância",
     conteudos: ["Maus-tratos", "Pré-escolar"],
     tempo: 300,
+    queixaPrincipal: "Criança de 2 anos com baixo peso, atraso e faltas repetidas.",
     resumo: `Ambulatório. Criança de 2 anos com baixo peso, atraso e faltas repetidas.
 Avalie possível negligência e conduza. ~5 min.`,
     paciente: {
@@ -1055,6 +1087,7 @@ Avalie possível negligência e conduza. ~5 min.`,
     especialidade: "Maus-tratos na infância",
     conteudos: ["Maus-tratos", "Pré-escolar"],
     tempo: 300,
+    queixaPrincipal: "A mãe relata que a filha de 5 anos \"contou algo\" e tem queixas geniturinárias.",
     resumo: `Ambulatório. A mãe relata que a filha de 5 anos "contou algo" e tem
 queixas geniturinárias. Conduza a abordagem inicial e a conduta. ~5 min.`,
     paciente: {
@@ -1087,6 +1120,7 @@ queixas geniturinárias. Conduza a abordagem inicial e a conduta. ~5 min.`,
     especialidade: "Maus-tratos na infância",
     conteudos: ["Maus-tratos", "Lactente"],
     tempo: 300,
+    queixaPrincipal: "Lactente de 3 meses com irritabilidade, vômitos e sonolência, sem trauma relatado.",
     resumo: `Pronto-socorro. Lactente de 3 meses com irritabilidade, vômitos e
 sonolência, sem trauma relatado. Avalie e reconheça o quadro. ~5 min.`,
     paciente: {
@@ -1118,6 +1152,7 @@ sonolência, sem trauma relatado. Avalie e reconheça o quadro. ~5 min.`,
     especialidade: "Maus-tratos na infância",
     conteudos: ["Maus-tratos", "Escolar"],
     tempo: 300,
+    queixaPrincipal: "Você confirmou a suspeita de maus-tratos numa criança de 6 anos.",
     resumo: `Você confirmou a suspeita de maus-tratos numa criança de 6 anos.
 Conduza a comunicação com o cuidador e as providências de proteção e notificação. ~5 min.`,
     paciente: {
@@ -1149,6 +1184,7 @@ Conduza a comunicação com o cuidador e as providências de proteção e notifi
     especialidade: "Maus-tratos na infância",
     conteudos: ["Maus-tratos", "Adolescente"],
     tempo: 300,
+    queixaPrincipal: "Adolescente de 14 anos trazida pela mãe relatando abuso sexual ocorrido há 10 horas.",
     resumo: `Pronto-socorro. Adolescente de 14 anos trazida pela mãe relatando
 abuso sexual ocorrido há 10 horas. Conduza o atendimento agudo. ~5 min.`,
     paciente: {
@@ -1181,6 +1217,7 @@ abuso sexual ocorrido há 10 horas. Conduza o atendimento agudo. ~5 min.`,
     especialidade: "Maus-tratos na infância",
     conteudos: ["Maus-tratos", "Adolescente"],
     tempo: 300,
+    queixaPrincipal: "Adolescente retorna 2 semanas após atendimento agudo por violência sexual.",
     resumo: `Ambulatório. Adolescente retorna 2 semanas após atendimento agudo por
 violência sexual. Conduza o seguimento clínico e sorológico. ~5 min.`,
     paciente: {
@@ -1210,6 +1247,7 @@ violência sexual. Conduza o seguimento clínico e sorológico. ~5 min.`,
     especialidade: "Maus-tratos na infância",
     conteudos: ["Maus-tratos", "Adolescente"],
     tempo: 300,
+    queixaPrincipal: "Adolescente de 16 anos atendida após ingestão proposital de medicamentos.",
     resumo: `Pronto-socorro. Adolescente de 16 anos atendida após ingestão proposital
 de medicamentos. Conduza a notificação e o encaminhamento. ~5 min.`,
     paciente: {
@@ -1239,6 +1277,7 @@ de medicamentos. Conduza a notificação e o encaminhamento. ~5 min.`,
     especialidade: "Maus-tratos na infância",
     conteudos: ["Maus-tratos", "Lactente"],
     tempo: 300,
+    queixaPrincipal: "Lactente de 3 meses trazido por vômitos e sonolência após \"chorar muito e parar de repente\".",
     resumo: `Pronto-socorro. Lactente de 3 meses trazido por vômitos e sonolência
 após "chorar muito e parar de repente". Avalie a possibilidade de síndrome do
 bebê sacudido. ~5 min.`,
@@ -1270,6 +1309,7 @@ bebê sacudido. ~5 min.`,
     especialidade: "Maus-tratos na infância",
     conteudos: ["Maus-tratos", "Lactente"],
     tempo: 300,
+    queixaPrincipal: "Lactente de 7 meses, ainda não deambula, trazido com choro ao manipular o braço.",
     resumo: `Pronto-socorro. Lactente de 7 meses, ainda não deambula, trazido com
 choro ao manipular o braço. Avalie a suspeita de fratura não acidental. ~5 min.`,
     paciente: {
@@ -1304,6 +1344,7 @@ choro ao manipular o braço. Avalie a suspeita de fratura não acidental. ~5 min
     especialidade: "Síndrome nefrítica",
     conteudos: ["Síndrome nefrítica", "Escolar"],
     tempo: 300,
+    queixaPrincipal: "Menino de 6 anos com urina \"cor de coca-cola\", edema e mal-estar.",
     resumo: `Ambulatório/PS. Menino de 6 anos com urina "cor de coca-cola", edema
 e mal-estar. Avalie a síndrome nefrítica e conduza. ~5 min.`,
     paciente: {
@@ -1337,6 +1378,7 @@ e mal-estar. Avalie a síndrome nefrítica e conduza. ~5 min.`,
     especialidade: "Síndrome nefrítica",
     conteudos: ["Síndrome nefrítica", "Escolar"],
     tempo: 300,
+    queixaPrincipal: "Menina de 8 anos com urina avermelhada.",
     resumo: `Ambulatório. Menina de 8 anos com urina avermelhada. Avalie e
 diferencie as causas de hematúria, definindo a investigação. ~5 min.`,
     paciente: {
@@ -1368,6 +1410,7 @@ diferencie as causas de hematúria, definindo a investigação. ~5 min.`,
     especialidade: "Síndrome nefrítica",
     conteudos: ["Síndrome nefrítica", "Escolar"],
     tempo: 300,
+    queixaPrincipal: "Menino de 7 anos com nefrite, agora com cefaleia intensa, vômitos e PA muito elevada.",
     resumo: `Pronto-socorro. Menino de 7 anos com nefrite, agora com cefaleia
 intensa, vômitos e PA muito elevada. Reconheça a emergência e conduza. ~5 min.`,
     paciente: {
@@ -1399,6 +1442,7 @@ intensa, vômitos e PA muito elevada. Reconheça a emergência e conduza. ~5 min
     especialidade: "Síndrome nefrítica",
     conteudos: ["Síndrome nefrítica", "Pré-escolar"],
     tempo: 300,
+    queixaPrincipal: "Pré-escolar de 4 anos com edema importante.",
     resumo: `Ambulatório. Pré-escolar de 4 anos com edema importante. Diferencie
 síndrome nefrítica de nefrótica e oriente a investigação. ~5 min.`,
     paciente: {
@@ -1429,6 +1473,7 @@ síndrome nefrítica de nefrótica e oriente a investigação. ~5 min.`,
     especialidade: "Síndrome nefrítica",
     conteudos: ["Síndrome nefrítica", "Escolar"],
     tempo: 300,
+    queixaPrincipal: "A mãe de um menino de 6 anos com GNDA pós-estreptocócica quer entender a evolução e os cuidados.",
     resumo: `Retorno. A mãe de um menino de 6 anos com GNDA pós-estreptocócica quer
 entender a evolução e os cuidados. Oriente e defina o seguimento. ~5 min.`,
     paciente: {
@@ -1461,6 +1506,7 @@ entender a evolução e os cuidados. Oriente e defina o seguimento. ~5 min.`,
     especialidade: "Síndrome nefrótica",
     conteudos: ["Síndrome nefrítica", "Pré-escolar"],
     tempo: 300,
+    queixaPrincipal: "Criança de 4 anos com edema progressivo há 5 dias, iniciado na face.",
     resumo: `Ambulatório. Criança de 4 anos com edema progressivo há 5 dias, iniciado
 na face. Conduza a investigação da síndrome nefrótica. ~5 min.`,
     paciente: {
@@ -1492,6 +1538,7 @@ na face. Conduza a investigação da síndrome nefrótica. ~5 min.`,
     especialidade: "Síndrome nefrótica",
     conteudos: ["Síndrome nefrítica", "Pré-escolar"],
     tempo: 300,
+    queixaPrincipal: "Criança de 5 anos com diagnóstico recente de síndrome nefrótica idiopática (lesão mínima).",
     resumo: `Ambulatório. Criança de 5 anos com diagnóstico recente de síndrome
 nefrótica idiopática (lesão mínima). Explique o tratamento e o prognóstico aos pais. ~5 min.`,
     paciente: {
@@ -1522,6 +1569,7 @@ nefrótica idiopática (lesão mínima). Explique o tratamento e o prognóstico 
     especialidade: "Síndrome nefrótica",
     conteudos: ["Síndrome nefrítica", "Pré-escolar"],
     tempo: 300,
+    queixaPrincipal: "Criança com síndrome nefrótica em atividade, apresenta febre e dor abdominal súbita.",
     resumo: `Pronto-socorro. Criança com síndrome nefrótica em atividade, apresenta
 febre e dor abdominal súbita. Avalie as complicações possíveis. ~5 min.`,
     paciente: {
@@ -1551,6 +1599,7 @@ febre e dor abdominal súbita. Avalie as complicações possíveis. ~5 min.`,
     especialidade: "Síndrome nefrótica",
     conteudos: ["Síndrome nefrítica", "Escolar"],
     tempo: 300,
+    queixaPrincipal: "Criança de 6 anos com história de síndrome nefrótica, já tratada antes, retorna com edema e proteinúria novamente.",
     resumo: `Ambulatório. Criança de 6 anos com história de síndrome nefrótica,
 já tratada antes, retorna com edema e proteinúria novamente. Avalie a recidiva. ~5 min.`,
     paciente: {
@@ -1580,6 +1629,7 @@ já tratada antes, retorna com edema e proteinúria novamente. Avalie a recidiva
     especialidade: "Síndrome nefrítica",
     conteudos: ["Síndrome nefrítica", "Escolar"],
     tempo: 300,
+    queixaPrincipal: "Criança com GNPE há 6 semanas, ainda com alterações urinárias.",
     resumo: `Ambulatório de seguimento. Criança com GNPE há 6 semanas, ainda com
 alterações urinárias. Avalie a necessidade de biópsia renal. ~5 min.`,
     paciente: {
@@ -1614,6 +1664,7 @@ alterações urinárias. Avalie a necessidade de biópsia renal. ~5 min.`,
     especialidade: "Distúrbios funcionais",
     conteudos: ["Distúrbios funcionais", "Lactente"],
     tempo: 300,
+    queixaPrincipal: "Lactente de 6 semanas com choro intenso no fim do dia.",
     resumo: `Ambulatório. Lactente de 6 semanas com choro intenso no fim do dia.
 Avalie, descarte causas orgânicas e oriente. ~5 min.`,
     paciente: {
@@ -1645,6 +1696,7 @@ Avalie, descarte causas orgânicas e oriente. ~5 min.`,
     especialidade: "Distúrbios funcionais",
     conteudos: ["Distúrbios funcionais", "Pré-escolar"],
     tempo: 300,
+    queixaPrincipal: "Pré-escolar de 3 anos com fezes duras, dolorosas e infrequentes.",
     resumo: `Ambulatório. Pré-escolar de 3 anos com fezes duras, dolorosas e
 infrequentes. Avalie constipação funcional e oriente. ~5 min.`,
     paciente: {
@@ -1678,6 +1730,7 @@ infrequentes. Avalie constipação funcional e oriente. ~5 min.`,
     especialidade: "Distúrbios funcionais",
     conteudos: ["Distúrbios funcionais", "Escolar"],
     tempo: 300,
+    queixaPrincipal: "Escolar de 9 anos com dor abdominal recorrente há meses.",
     resumo: `Ambulatório. Escolar de 9 anos com dor abdominal recorrente há meses.
 Avalie, descarte organicidade e oriente. ~5 min.`,
     paciente: {
@@ -1710,6 +1763,7 @@ Avalie, descarte organicidade e oriente. ~5 min.`,
     especialidade: "Distúrbios funcionais",
     conteudos: ["Distúrbios funcionais", "Lactente"],
     tempo: 300,
+    queixaPrincipal: "Lactente de 3 meses que \"golfa\" após as mamadas.",
     resumo: `Ambulatório. Lactente de 3 meses que "golfa" após as mamadas.
 Diferencie regurgitação fisiológica de DRGE e oriente. ~5 min.`,
     paciente: {
@@ -1742,6 +1796,7 @@ Diferencie regurgitação fisiológica de DRGE e oriente. ~5 min.`,
     especialidade: "Distúrbios funcionais",
     conteudos: ["Distúrbios funcionais", "Escolar"],
     tempo: 300,
+    queixaPrincipal: "Escolar de 7 anos que urina à noite na cama.",
     resumo: `Ambulatório. Escolar de 7 anos que urina à noite na cama. Avalie a
 enurese, classifique e oriente a conduta. ~5 min.`,
     paciente: {
@@ -1775,6 +1830,7 @@ enurese, classifique e oriente a conduta. ~5 min.`,
     especialidade: "Distúrbios funcionais",
     conteudos: ["Distúrbios funcionais", "Lactente"],
     tempo: 300,
+    queixaPrincipal: "Lactente de 2 meses, antes de evacuar, \"fica vermelho, chora e faz força\" por minutos, mas evacua fezes pastosas/normais.",
     resumo: `Ambulatório. Lactente de 2 meses, antes de evacuar, "fica vermelho,
 chora e faz força" por minutos, mas evacua fezes pastosas/normais. Avalie a
 disquezia do lactente. ~5 min.`,
@@ -1807,6 +1863,7 @@ disquezia do lactente. ~5 min.`,
     especialidade: "Distúrbios funcionais",
     conteudos: ["Distúrbios funcionais", "Escolar"],
     tempo: 300,
+    queixaPrincipal: "Criança de 7 anos com episódios recorrentes de vômitos intensos que duram horas, intercalados com períodos de saúde plena.",
     resumo: `Ambulatório. Criança de 7 anos com episódios recorrentes de vômitos
 intensos que duram horas, intercalados com períodos de saúde plena. Avalie a
 síndrome do vômito cíclico. ~5 min.`,
@@ -1839,6 +1896,7 @@ síndrome do vômito cíclico. ~5 min.`,
     especialidade: "Distúrbios funcionais",
     conteudos: ["Distúrbios funcionais", "Escolar"],
     tempo: 300,
+    queixaPrincipal: "Criança de 9 anos com episódios recorrentes de dor abdominal intensa periumbilical, associada a palidez e mal-estar.",
     resumo: `Ambulatório. Criança de 9 anos com episódios recorrentes de dor
 abdominal intensa periumbilical, associada a palidez e mal-estar. Avalie a
 migrânea/enxaqueca abdominal. ~5 min.`,
@@ -1871,6 +1929,7 @@ migrânea/enxaqueca abdominal. ~5 min.`,
     especialidade: "Distúrbios funcionais",
     conteudos: ["Distúrbios funcionais", "Escolar"],
     tempo: 300,
+    queixaPrincipal: "Criança de 6 anos, já com controle esfincteriano prévio, apresenta episódios de escape fecal nas roupas.",
     resumo: `Ambulatório. Criança de 6 anos, já com controle esfincteriano prévio,
 apresenta episódios de escape fecal nas roupas. Avalie a encoprese por
 constipação subjacente. ~5 min.`,
@@ -1902,6 +1961,7 @@ constipação subjacente. ~5 min.`,
     especialidade: "Distúrbios funcionais",
     conteudos: ["Distúrbios funcionais", "Adolescente"],
     tempo: 300,
+    queixaPrincipal: "Adolescente de 13 anos com dor abdominal recorrente associada a alternância entre diarreia e constipação.",
     resumo: `Ambulatório. Adolescente de 13 anos com dor abdominal recorrente
 associada a alternância entre diarreia e constipação. Avalie a síndrome do
 intestino irritável. ~5 min.`,
@@ -1938,6 +1998,7 @@ intestino irritável. ~5 min.`,
     especialidade: "Uso abusivo de telas",
     conteudos: ["Uso de telas", "Lactente"],
     tempo: 300,
+    queixaPrincipal: "Os pais relatam que o filho de 18 meses passa horas com vídeos no celular/TV.",
     resumo: `Puericultura. Os pais relatam que o filho de 18 meses passa horas com
 vídeos no celular/TV. Avalie o impacto e oriente. ~5 min.`,
     paciente: {
@@ -1969,6 +2030,7 @@ vídeos no celular/TV. Avalie o impacto e oriente. ~5 min.`,
     especialidade: "Uso abusivo de telas",
     conteudos: ["Uso de telas", "Pré-escolar"],
     tempo: 300,
+    queixaPrincipal: "Pré-escolar de 4 anos com irritabilidade, birras e sono ruim; usa tablet à noite.",
     resumo: `Ambulatório. Pré-escolar de 4 anos com irritabilidade, birras e sono
 ruim; usa tablet à noite. Avalie a relação com as telas e oriente. ~5 min.`,
     paciente: {
@@ -2000,6 +2062,7 @@ ruim; usa tablet à noite. Avalie a relação com as telas e oriente. ~5 min.`,
     especialidade: "Uso abusivo de telas",
     conteudos: ["Uso de telas", "Escolar"],
     tempo: 300,
+    queixaPrincipal: "Escolar de 10 anos com ganho de peso, muitas horas em telas e pouca atividade física.",
     resumo: `Ambulatório. Escolar de 10 anos com ganho de peso, muitas horas em
 telas e pouca atividade física. Avalie e oriente hábitos. ~5 min.`,
     paciente: {
@@ -2031,6 +2094,7 @@ telas e pouca atividade física. Avalie e oriente hábitos. ~5 min.`,
     especialidade: "Uso abusivo de telas",
     conteudos: ["Uso de telas", "Adolescente"],
     tempo: 300,
+    queixaPrincipal: "Adolescente de 14 anos com uso intenso de redes sociais, queda no rendimento e queixas de humor e sono.",
     resumo: `Ambulatório. Adolescente de 14 anos com uso intenso de redes sociais,
 queda no rendimento e queixas de humor e sono. Avalie o uso problemático e oriente. ~5 min.`,
     paciente: {
@@ -2062,6 +2126,7 @@ queda no rendimento e queixas de humor e sono. Avalie o uso problemático e orie
     especialidade: "Uso abusivo de telas",
     conteudos: ["Uso de telas", "Pré-escolar"],
     tempo: 300,
+    queixaPrincipal: "Puericultura de criança de 2 anos saudável. Os pais pedem orientação sobre uso de telas.",
     resumo: `Puericultura de criança de 2 anos saudável. Os pais pedem orientação
 sobre uso de telas. Faça o aconselhamento preventivo. ~5 min.`,
     paciente: {
@@ -2092,6 +2157,7 @@ sobre uso de telas. Faça o aconselhamento preventivo. ~5 min.`,
     especialidade: "Uso abusivo de telas",
     conteudos: ["Uso de telas", "Adolescente"],
     tempo: 300,
+    queixaPrincipal: "Pais de adolescente de 15 anos relatam que ele \"só pensa em jogos online\", com queda no desempenho escolar.",
     resumo: `Ambulatório. Pais de adolescente de 15 anos relatam que ele "só
 pensa em jogos online", com queda no desempenho escolar. Avalie o Transtorno
 do Jogo (Gaming Disorder). ~5 min.`,
@@ -2124,6 +2190,7 @@ do Jogo (Gaming Disorder). ~5 min.`,
     especialidade: "Uso abusivo de telas",
     conteudos: ["Uso de telas", "Adolescente"],
     tempo: 300,
+    queixaPrincipal: "Adolescente de 16 anos relata \"desespero\" quando fica sem o celular ou sem internet.",
     resumo: `Ambulatório. Adolescente de 16 anos relata "desespero" quando fica
 sem o celular ou sem internet. Avalie a nomofobia e o FoMO. ~5 min.`,
     paciente: {
@@ -2154,6 +2221,7 @@ sem o celular ou sem internet. Avalie a nomofobia e o FoMO. ~5 min.`,
     especialidade: "Uso abusivo de telas",
     conteudos: ["Uso de telas", "Pré-escolar"],
     tempo: 300,
+    queixaPrincipal: "Pais de criança de 4 anos relatam que ela \"só come vendo desenho\" e usa tablet até a hora de dormir.",
     resumo: `Puericultura. Pais de criança de 4 anos relatam que ela "só come
 vendo desenho" e usa tablet até a hora de dormir. Oriente sobre os momentos a
 evitar o uso de telas. ~5 min.`,
@@ -2185,6 +2253,7 @@ evitar o uso de telas. ~5 min.`,
     especialidade: "Uso abusivo de telas",
     conteudos: ["Uso de telas", "Escolar"],
     tempo: 300,
+    queixaPrincipal: "Pais de criança de 8 anos perguntam qual o tempo de tela recomendado e como negociar regras em casa.",
     resumo: `Puericultura. Pais de criança de 8 anos perguntam qual o tempo de
 tela recomendado e como negociar regras em casa. ~5 min.`,
     paciente: {
@@ -2214,6 +2283,7 @@ tela recomendado e como negociar regras em casa. ~5 min.`,
     especialidade: "Uso abusivo de telas",
     conteudos: ["Uso de telas", "Adolescente"],
     tempo: 300,
+    queixaPrincipal: "Pais de adolescente de 13 anos relatam conflitos diários e intensos na tentativa de limitar o uso do celular.",
     resumo: `Ambulatório. Pais de adolescente de 13 anos relatam conflitos
 diários e intensos na tentativa de limitar o uso do celular. Oriente uma
 abordagem familiar para o uso de telas. ~5 min.`,
@@ -2249,6 +2319,7 @@ abordagem familiar para o uso de telas. ~5 min.`,
     especialidade: "IVAS",
     conteudos: ["IVAS", "Pré-escolar"],
     tempo: 300,
+    queixaPrincipal: "Pré-escolar de 3 anos com coriza, tosse e febre baixa há 3 dias.",
     resumo: `Ambulatório. Pré-escolar de 3 anos com coriza, tosse e febre baixa há
 3 dias. Avalie, defina a conduta e oriente. ~5 min.`,
     paciente: {
@@ -2280,6 +2351,7 @@ abordagem familiar para o uso de telas. ~5 min.`,
     especialidade: "IVAS",
     conteudos: ["IVAS", "Escolar"],
     tempo: 300,
+    queixaPrincipal: "Escolar de 7 anos com dor de garganta intensa e febre alta.",
     resumo: `Ambulatório. Escolar de 7 anos com dor de garganta intensa e febre alta.
 Diferencie faringite viral de estreptocócica e defina a conduta. ~5 min.`,
     paciente: {
@@ -2312,6 +2384,7 @@ Diferencie faringite viral de estreptocócica e defina a conduta. ~5 min.`,
     especialidade: "IVAS",
     conteudos: ["IVAS", "Pré-escolar"],
     tempo: 300,
+    queixaPrincipal: "Criança de 2 anos com dor de ouvido, febre e irritabilidade depois de um resfriado.",
     resumo: `Ambulatório. Criança de 2 anos com dor de ouvido, febre e irritabilidade
 depois de um resfriado. Avalie a otite média aguda e defina a conduta. ~5 min.`,
     paciente: {
@@ -2343,6 +2416,7 @@ depois de um resfriado. Avalie a otite média aguda e defina a conduta. ~5 min.`
     especialidade: "IVAS",
     conteudos: ["IVAS", "Escolar"],
     tempo: 300,
+    queixaPrincipal: "Escolar de 8 anos com coriza e tosse há 12 dias, sem melhora.",
     resumo: `Ambulatório. Escolar de 8 anos com coriza e tosse há 12 dias, sem
 melhora. Diferencie rinossinusite bacteriana de viral e oriente. ~5 min.`,
     paciente: {
@@ -2375,6 +2449,7 @@ melhora. Diferencie rinossinusite bacteriana de viral e oriente. ~5 min.`,
     especialidade: "IVAS",
     conteudos: ["IVAS", "Pré-escolar"],
     tempo: 300,
+    queixaPrincipal: "Pré-escolar de 2 anos com tosse \"de cachorro\", rouquidão e ruído ao respirar, à noite.",
     resumo: `Pronto-socorro. Pré-escolar de 2 anos com tosse "de cachorro",
 rouquidão e ruído ao respirar, à noite. Avalie o crupe e conduza. ~5 min.`,
     paciente: {
@@ -2407,6 +2482,7 @@ rouquidão e ruído ao respirar, à noite. Avalie o crupe e conduza. ~5 min.`,
     especialidade: "IVAS",
     conteudos: ["IVAS", "Pré-escolar"],
     tempo: 300,
+    queixaPrincipal: "Mãe de criança de 3 anos que frequenta a creche está preocupada porque ele \"está sempre resfriado\".",
     resumo: `Ambulatório. Mãe de criança de 3 anos que frequenta a creche está
 preocupada porque ele "está sempre resfriado". Avalie a frequência esperada de
 IVAS e oriente. ~5 min.`,
@@ -2438,6 +2514,7 @@ IVAS e oriente. ~5 min.`,
     especialidade: "IVAS",
     conteudos: ["IVAS", "Pré-escolar"],
     tempo: 300,
+    queixaPrincipal: "Criança de 3 anos com otalgia leve há 12 horas.",
     resumo: `Ambulatório. Criança de 3 anos com otalgia leve há 12 horas. Avalie
 se a conduta expectante (observação) é apropriada neste caso de OMA. ~5 min.`,
     paciente: {
@@ -2468,6 +2545,7 @@ se a conduta expectante (observação) é apropriada neste caso de OMA. ~5 min.`
     especialidade: "IVAS",
     conteudos: ["IVAS", "Escolar"],
     tempo: 300,
+    queixaPrincipal: "Pai de criança de 6 anos com resfriado de 4 dias insiste em antibiótico porque a secreção nasal \"ficou verde\".",
     resumo: `Ambulatório. Pai de criança de 6 anos com resfriado de 4 dias insiste
 em antibiótico porque a secreção nasal "ficou verde". Esclareça o mito e
 oriente a conduta correta. ~5 min.`,
@@ -2498,6 +2576,7 @@ oriente a conduta correta. ~5 min.`,
     especialidade: "IVAS",
     conteudos: ["IVAS", "Escolar"],
     tempo: 300,
+    queixaPrincipal: "Criança de 7 anos com quadro de sinusite há 10 dias, agora com edema e vermelhidão ao redor do olho.",
     resumo: `Pronto-socorro. Criança de 7 anos com quadro de sinusite há 10 dias,
 agora com edema e vermelhidão ao redor do olho. Reconheça a complicação e
 conduza com urgência. ~5 min.`,
@@ -2528,6 +2607,7 @@ conduza com urgência. ~5 min.`,
     especialidade: "IVAS",
     conteudos: ["IVAS", "Pré-escolar"],
     tempo: 300,
+    queixaPrincipal: "Criança de 4 anos com início súbito de febre alta, dor de garganta intensa, voz \"engolada\" e estridor, sem tosse.",
     resumo: `Pronto-socorro. Criança de 4 anos com início súbito de febre alta,
 dor de garganta intensa, voz "engolada" e estridor, sem tosse. Reconheça a
 emergência e diferencie do crupe viral. ~5 min.`,
@@ -2562,6 +2642,7 @@ emergência e diferencie do crupe viral. ~5 min.`,
     especialidade: "Asma",
     conteudos: ["Asma", "Escolar"],
     tempo: 300,
+    queixaPrincipal: "Escolar de 8 anos, asmático, com dispneia e sibilância iniciadas hoje.",
     resumo: `Pronto-socorro. Escolar de 8 anos, asmático, com dispneia e sibilância
 iniciadas hoje. Avalie a gravidade da crise e conduza o tratamento. ~5 min.`,
     paciente: {
@@ -2594,6 +2675,7 @@ iniciadas hoje. Avalie a gravidade da crise e conduza o tratamento. ~5 min.`,
     especialidade: "Asma",
     conteudos: ["Asma", "Pré-escolar"],
     tempo: 300,
+    queixaPrincipal: "Criança de 5 anos com episódios recorrentes de tosse e chiado.",
     resumo: `Ambulatório. Criança de 5 anos com episódios recorrentes de tosse e
 chiado. Avalie a hipótese de asma e oriente. ~5 min.`,
     paciente: {
@@ -2626,6 +2708,7 @@ chiado. Avalie a hipótese de asma e oriente. ~5 min.`,
     especialidade: "Asma",
     conteudos: ["Asma", "Escolar"],
     tempo: 300,
+    queixaPrincipal: "Escolar de 9 anos asmático, usando só a bombinha de alívio, com sintomas frequentes.",
     resumo: `Retorno. Escolar de 9 anos asmático, usando só a bombinha de alívio,
 com sintomas frequentes. Avalie o controle e ajuste o tratamento. ~5 min.`,
     paciente: {
@@ -2658,6 +2741,7 @@ com sintomas frequentes. Avalie o controle e ajuste o tratamento. ~5 min.`,
     especialidade: "Asma",
     conteudos: ["Asma", "Escolar"],
     tempo: 300,
+    queixaPrincipal: "A mãe de uma criança de 6 anos asmática diz que \"a bombinha não faz efeito\".",
     resumo: `Retorno. A mãe de uma criança de 6 anos asmática diz que "a bombinha
 não faz efeito". Avalie e corrija a técnica inalatória. ~5 min.`,
     paciente: {
@@ -2689,6 +2773,7 @@ não faz efeito". Avalie e corrija a técnica inalatória. ~5 min.`,
     especialidade: "Asma",
     conteudos: ["Asma", "Escolar"],
     tempo: 300,
+    queixaPrincipal: "Os pais de uma criança asmática de 7 anos querem reduzir as crises.",
     resumo: `Ambulatório. Os pais de uma criança asmática de 7 anos querem reduzir
 as crises. Faça a orientação sobre desencadeantes e plano de ação. ~5 min.`,
     paciente: {
@@ -2721,6 +2806,7 @@ as crises. Faça a orientação sobre desencadeantes e plano de ação. ~5 min.`
     especialidade: "Asma",
     conteudos: ["Asma", "Lactente"],
     tempo: 300,
+    queixaPrincipal: "Lactente de 14 meses com terceiro episódio de chiado no peito, sempre associado a resfriados.",
     resumo: `Ambulatório. Lactente de 14 meses com terceiro episódio de chiado no
 peito, sempre associado a resfriados. Diferencie "bebê chiador" de asma. ~5 min.`,
     paciente: {
@@ -2750,6 +2836,7 @@ peito, sempre associado a resfriados. Diferencie "bebê chiador" de asma. ~5 min
     especialidade: "Asma",
     conteudos: ["Asma", "Escolar"],
     tempo: 300,
+    queixaPrincipal: "Criança de 8 anos chega com crise de asma.",
     resumo: `Pronto-socorro. Criança de 8 anos chega com crise de asma. Classifique
 a gravidade da exacerbação e defina a conduta inicial. ~5 min.`,
     paciente: {
@@ -2779,6 +2866,7 @@ a gravidade da exacerbação e defina a conduta inicial. ~5 min.`,
     especialidade: "Asma",
     conteudos: ["Asma", "Escolar"],
     tempo: 300,
+    queixaPrincipal: "Criança de 25 kg em crise de asma moderada.",
     resumo: `Pronto-socorro. Criança de 25 kg em crise de asma moderada. Calcule
 e justifique as doses dos medicamentos a serem administrados. ~5 min.`,
     paciente: {
@@ -2807,6 +2895,7 @@ e justifique as doses dos medicamentos a serem administrados. ~5 min.`,
     especialidade: "Asma",
     conteudos: ["Asma", "Escolar"],
     tempo: 300,
+    queixaPrincipal: "Criança de 9 anos com suspeita de asma realizou espirometria.",
     resumo: `Ambulatório. Criança de 9 anos com suspeita de asma realizou
 espirometria. Interprete o exame e explique aos pais. ~5 min.`,
     paciente: {
@@ -2835,6 +2924,7 @@ espirometria. Interprete o exame e explique aos pais. ~5 min.`,
     especialidade: "Asma",
     conteudos: ["Asma", "Escolar"],
     tempo: 300,
+    queixaPrincipal: "Criança de 10 anos com asma persistente, mesmo em uso de corticoide inalatório em dose baixa.",
     resumo: `Ambulatório. Criança de 10 anos com asma persistente, mesmo em uso
 de corticoide inalatório em dose baixa. Avalie o controle e ajuste o tratamento
 conforme a terapia em escada (stepwise). ~5 min.`,
@@ -2870,6 +2960,7 @@ conforme a terapia em escada (stepwise). ~5 min.`,
     especialidade: "Alimentação infantil",
     conteudos: ["Alimentação infantil", "RN"],
     tempo: 300,
+    queixaPrincipal: "Mãe de RN de 20 dias com dúvidas sobre amamentação.",
     resumo: `Puericultura. Mãe de RN de 20 dias com dúvidas sobre amamentação.
 Faça a orientação sobre aleitamento materno exclusivo. ~5 min.`,
     paciente: {
@@ -2902,6 +2993,7 @@ Faça a orientação sobre aleitamento materno exclusivo. ~5 min.`,
     especialidade: "Alimentação infantil",
     conteudos: ["Alimentação infantil", "Lactente"],
     tempo: 300,
+    queixaPrincipal: "A mãe de um lactente de 6 meses quer saber como iniciar a alimentação complementar.",
     resumo: `Puericultura. A mãe de um lactente de 6 meses quer saber como iniciar
 a alimentação complementar. Oriente. ~5 min.`,
     paciente: {
@@ -2934,6 +3026,7 @@ a alimentação complementar. Oriente. ~5 min.`,
     especialidade: "Alimentação infantil",
     conteudos: ["Alimentação infantil", "RN"],
     tempo: 300,
+    queixaPrincipal: "Mãe de RN de 10 dias com dor e fissura nos mamilos, pensando em desmamar.",
     resumo: `Mãe de RN de 10 dias com dor e fissura nos mamilos, pensando em
 desmamar. Avalie e oriente. ~5 min.`,
     paciente: {
@@ -2965,6 +3058,7 @@ desmamar. Avalie e oriente. ~5 min.`,
     especialidade: "Alimentação infantil",
     conteudos: ["Alimentação infantil", "Lactente"],
     tempo: 300,
+    queixaPrincipal: "Lactente de 2 meses cuja mãe precisará usar fórmula.",
     resumo: `Lactente de 2 meses cuja mãe precisará usar fórmula. Oriente o uso e o
 preparo corretos da fórmula infantil. ~5 min.`,
     paciente: {
@@ -2995,6 +3089,7 @@ preparo corretos da fórmula infantil. ~5 min.`,
     especialidade: "Alimentação infantil",
     conteudos: ["Alimentação infantil", "Lactente"],
     tempo: 300,
+    queixaPrincipal: "Lactente de 8 meses cuja família relata a dieta atual.",
     resumo: `Lactente de 8 meses cuja família relata a dieta atual. Identifique os
 erros alimentares comuns e oriente. ~5 min.`,
     paciente: {
@@ -3027,6 +3122,7 @@ erros alimentares comuns e oriente. ~5 min.`,
     especialidade: "Alimentação infantil",
     conteudos: ["Alimentação infantil", "Lactente"],
     tempo: 300,
+    queixaPrincipal: "Mãe de bebê de 8 meses pergunta se já pode parar de amassar a comida e oferecer pedaços.",
     resumo: `Puericultura. Mãe de bebê de 8 meses pergunta se já pode parar de
 amassar a comida e oferecer pedaços. Oriente a progressão da consistência
 alimentar no primeiro ano. ~5 min.`,
@@ -3057,6 +3153,7 @@ alimentar no primeiro ano. ~5 min.`,
     especialidade: "Alimentação infantil",
     conteudos: ["Alimentação infantil", "Pré-escolar"],
     tempo: 300,
+    queixaPrincipal: "Mãe de criança de 2 anos relata que ele recusa qualquer alimento novo, \"cospe e chora\".",
     resumo: `Ambulatório. Mãe de criança de 2 anos relata que ele recusa qualquer
 alimento novo, "cospe e chora". Oriente sobre a neofobia alimentar. ~5 min.`,
     paciente: {
@@ -3087,6 +3184,7 @@ alimento novo, "cospe e chora". Oriente sobre a neofobia alimentar. ~5 min.`,
     especialidade: "Alimentação infantil",
     conteudos: ["Alimentação infantil", "Lactente"],
     tempo: 300,
+    queixaPrincipal: "Mãe de bebê de 8 meses com resfriado pergunta se pode dar mel para \"aliviar a tosse\" e se pode adoçar as frutas.",
     resumo: `Ambulatório. Mãe de bebê de 8 meses com resfriado pergunta se pode
 dar mel para "aliviar a tosse" e se pode adoçar as frutas. Oriente sobre os
 riscos do mel e do açúcar antes de determinadas idades. ~5 min.`,
@@ -3116,6 +3214,7 @@ riscos do mel e do açúcar antes de determinadas idades. ~5 min.`,
     especialidade: "Alimentação infantil",
     conteudos: ["Alimentação infantil", "Lactente"],
     tempo: 300,
+    queixaPrincipal: "Pais de bebê de 9 meses, que iniciaram a oferta de pedaços de alimento, perguntam quais alimentos devem ser evitados pelo risco de engasgo/sufocação.",
     resumo: `Puericultura. Pais de bebê de 9 meses, que iniciaram a oferta de
 pedaços de alimento, perguntam quais alimentos devem ser evitados pelo risco
 de engasgo/sufocação. ~5 min.`,
@@ -3145,6 +3244,7 @@ de engasgo/sufocação. ~5 min.`,
     especialidade: "Alimentação infantil",
     conteudos: ["Alimentação infantil", "Lactente"],
     tempo: 300,
+    queixaPrincipal: "Mãe de bebê de 9 meses preocupada que ele \"come muito pouco\" em comparação a outros bebês.",
     resumo: `Puericultura. Mãe de bebê de 9 meses preocupada que ele "come muito
 pouco" em comparação a outros bebês. Oriente sobre os volumes e número de
 refeições esperados. ~5 min.`,
@@ -3178,6 +3278,7 @@ refeições esperados. ~5 min.`,
     especialidade: "APLV",
     conteudos: ["APLV", "Lactente"],
     tempo: 300,
+    queixaPrincipal: "Lactente de 2 meses em aleitamento materno com estrias de sangue nas fezes, mas em bom estado.",
     resumo: `Ambulatório. Lactente de 2 meses em aleitamento materno com estrias de
 sangue nas fezes, mas em bom estado. Avalie APLV e oriente. ~5 min.`,
     paciente: {
@@ -3209,6 +3310,7 @@ sangue nas fezes, mas em bom estado. Avalie APLV e oriente. ~5 min.`,
     especialidade: "APLV",
     conteudos: ["APLV", "Lactente"],
     tempo: 300,
+    queixaPrincipal: "Lactente de 4 meses que apresentou urticária e inchaço logo após uma mamadeira de fórmula.",
     resumo: `Lactente de 4 meses que apresentou urticária e inchaço logo após uma
 mamadeira de fórmula. Avalie a reação e conduza. ~5 min.`,
     paciente: {
@@ -3241,6 +3343,7 @@ mamadeira de fórmula. Avalie a reação e conduza. ~5 min.`,
     especialidade: "APLV",
     conteudos: ["APLV", "Lactente"],
     tempo: 300,
+    queixaPrincipal: "Lactente de 5 meses com diagnóstico de APLV, em uso de fórmula. A mãe trouxe uma \"fórmula sem lactose\".",
     resumo: `Lactente de 5 meses com diagnóstico de APLV, em uso de fórmula. A mãe
 trouxe uma "fórmula sem lactose". Oriente o manejo dietético correto. ~5 min.`,
     paciente: {
@@ -3271,6 +3374,7 @@ trouxe uma "fórmula sem lactose". Oriente o manejo dietético correto. ~5 min.`
     especialidade: "APLV",
     conteudos: ["APLV", "Lactente"],
     tempo: 300,
+    queixaPrincipal: "Lactente de 7 meses com sintomas digestivos. A família mistura os conceitos de \"alergia\" e \"intolerância\".",
     resumo: `Lactente de 7 meses com sintomas digestivos. A família mistura os
 conceitos de "alergia" e "intolerância". Diferencie e oriente. ~5 min.`,
     paciente: {
@@ -3301,6 +3405,7 @@ conceitos de "alergia" e "intolerância". Diferencie e oriente. ~5 min.`,
     especialidade: "APLV",
     conteudos: ["APLV", "Lactente"],
     tempo: 300,
+    queixaPrincipal: "Lactente de 12 meses com APLV bem controlada há meses em dieta de exclusão. Os pais perguntam sobre reintrodução e prognóstico.",
     resumo: `Lactente de 12 meses com APLV bem controlada há meses em dieta de
 exclusão. Os pais perguntam sobre reintrodução e prognóstico. Oriente. ~5 min.`,
     paciente: {
@@ -3330,6 +3435,7 @@ exclusão. Os pais perguntam sobre reintrodução e prognóstico. Oriente. ~5 mi
     especialidade: "APLV",
     conteudos: ["APLV", "Lactente"],
     tempo: 300,
+    queixaPrincipal: "Lactente de 5 meses apresenta vômitos intensos e repetitivos, palidez e letargia cerca de 2 horas após receber fórmula infantil por primeira vez.",
     resumo: `Pronto-socorro. Lactente de 5 meses apresenta vômitos intensos e
 repetitivos, palidez e letargia cerca de 2 horas após receber fórmula infantil
 por primeira vez. Avalie a FPIES. ~5 min.`,
@@ -3361,6 +3467,7 @@ por primeira vez. Avalie a FPIES. ~5 min.`,
     especialidade: "APLV",
     conteudos: ["APLV", "Lactente"],
     tempo: 300,
+    queixaPrincipal: "Lactente de 4 meses, em uso de fórmula infantil, com diarreia crônica e ganho de peso insuficiente.",
     resumo: `Ambulatório. Lactente de 4 meses, em uso de fórmula infantil, com
 diarreia crônica e ganho de peso insuficiente. Avalie a enteropatia induzida
 pela proteína do leite de vaca. ~5 min.`,
@@ -3392,6 +3499,7 @@ pela proteína do leite de vaca. ~5 min.`,
     especialidade: "APLV",
     conteudos: ["APLV", "Lactente"],
     tempo: 300,
+    queixaPrincipal: "Lactente de 2 meses em aleitamento materno exclusivo apresenta raias de sangue nas fezes.",
     resumo: `Ambulatório. Lactente de 2 meses em aleitamento materno exclusivo
 apresenta raias de sangue nas fezes. Avalie a possível APLV via dieta materna. ~5 min.`,
     paciente: {
@@ -3422,6 +3530,7 @@ apresenta raias de sangue nas fezes. Avalie a possível APLV via dieta materna. 
     especialidade: "APLV",
     conteudos: ["APLV", "Pré-escolar"],
     tempo: 300,
+    queixaPrincipal: "Criança de 2 anos com diagnóstico prévio de APLV IgE-mediada pergunta-se se já pode reintroduzir o leite de vaca.",
     resumo: `Ambulatório. Criança de 2 anos com diagnóstico prévio de APLV
 IgE-mediada pergunta-se se já pode reintroduzir o leite de vaca. Explique o
 papel do teste de provocação oral (TPO). ~5 min.`,
@@ -3451,6 +3560,7 @@ papel do teste de provocação oral (TPO). ~5 min.`,
     especialidade: "APLV",
     conteudos: ["APLV", "Lactente"],
     tempo: 300,
+    queixaPrincipal: "Lactente de 6 meses com urticária generalizada, edema labial e dificuldade respiratória minutos após receber fórmula infantil por primeira vez.",
     resumo: `Pronto-socorro. Lactente de 6 meses com urticária generalizada,
 edema labial e dificuldade respiratória minutos após receber fórmula infantil
 por primeira vez. Conduza a anafilaxia e oriente a fórmula de substituição. ~5 min.`,
@@ -3487,6 +3597,7 @@ por primeira vez. Conduza a anafilaxia e oriente a fórmula de substituição. ~
     especialidade: "Desenvolvimento infantil",
     conteudos: ["Desenvolvimento", "Lactente"],
     tempo: 300,
+    queixaPrincipal: "Puericultura de Lívia, 6 meses, trazida pela mãe para consulta de rotina.",
     resumo: `Puericultura de Lívia, 6 meses, trazida pela mãe para consulta de rotina.
 Avalie os marcos do desenvolvimento, diga se estão adequados e oriente. ~5 min.`,
     paciente: {
@@ -3519,6 +3630,7 @@ Avalie os marcos do desenvolvimento, diga se estão adequados e oriente. ~5 min.
     especialidade: "Desenvolvimento infantil",
     conteudos: ["Desenvolvimento", "Lactente"],
     tempo: 300,
+    queixaPrincipal: "A mãe de Théo, 18 meses, relata que ele ainda não anda sozinho.",
     resumo: `A mãe de Théo, 18 meses, relata que ele ainda não anda sozinho.
 Avalie, identifique sinal de alerta e defina conduta. ~5 min.`,
     paciente: {
@@ -3550,6 +3662,7 @@ Avalie, identifique sinal de alerta e defina conduta. ~5 min.`,
     especialidade: "Desenvolvimento infantil",
     conteudos: ["Desenvolvimento", "Lactente"],
     tempo: 300,
+    queixaPrincipal: "A mãe de Sofia, 15 meses, conta que ela \"desaprendeu\" coisas que já fazia.",
     resumo: `A mãe de Sofia, 15 meses, conta que ela "desaprendeu" coisas que já fazia.
 Avalie e reconheça a gravidade do quadro. ~5 min.`,
     paciente: {
@@ -3580,6 +3693,7 @@ Avalie e reconheça a gravidade do quadro. ~5 min.`,
     especialidade: "Desenvolvimento infantil",
     conteudos: ["Desenvolvimento", "Pré-escolar"],
     tempo: 300,
+    queixaPrincipal: "Os pais de Caio, 3 anos, acham que ele \"não escuta direito\" e fala pouco.",
     resumo: `Os pais de Caio, 3 anos, acham que ele "não escuta direito" e fala pouco.
 Avalie a linguagem, levante a hipótese auditiva e oriente. ~5 min.`,
     paciente: {
@@ -3611,6 +3725,7 @@ Avalie a linguagem, levante a hipótese auditiva e oriente. ~5 min.`,
     especialidade: "Desenvolvimento infantil",
     conteudos: ["Desenvolvimento", "Lactente"],
     tempo: 300,
+    queixaPrincipal: "Puericultura de Bento, 12 meses. A mãe pergunta se a \"coordenação das mãos\" está normal.",
     resumo: `Puericultura de Bento, 12 meses. A mãe pergunta se a "coordenação das mãos" está normal.
 Avalie a motricidade fina e os demais marcos. ~5 min.`,
     paciente: {
@@ -3643,6 +3758,7 @@ Avalie a motricidade fina e os demais marcos. ~5 min.`,
     especialidade: "Neonatologia",
     conteudos: ["Exame do RN", "RN"],
     tempo: 300,
+    queixaPrincipal: "RN a termo, 2 dias, em alojamento conjunto. A mãe pergunta sobre os \"movimentos\" do bebê.",
     resumo: `RN a termo, 2 dias, em alojamento conjunto. A mãe pergunta sobre os "movimentos" do bebê.
 Examine os reflexos primitivos e explique o que avalia. ~5 min.`,
     paciente: {
@@ -3674,6 +3790,7 @@ Examine os reflexos primitivos e explique o que avalia. ~5 min.`,
     especialidade: "Neonatologia",
     conteudos: ["Exame do RN", "RN"],
     tempo: 300,
+    queixaPrincipal: "Mãe de RN feminina, 4 dias, assustada com \"secreção e sangramento\" na vagina do bebê.",
     resumo: `Mãe de RN feminina, 4 dias, assustada com "secreção e sangramento" na vagina do bebê.
 Avalie, diferencie do patológico e oriente. ~5 min.`,
     paciente: {
@@ -3703,6 +3820,7 @@ Avalie, diferencie do patológico e oriente. ~5 min.`,
     especialidade: "Neonatologia",
     conteudos: ["Exame do RN", "RN"],
     tempo: 300,
+    queixaPrincipal: "RN a termo, 3 dias, com história de baixa ingesta nas últimas horas.",
     resumo: `RN a termo, 3 dias, com história de baixa ingesta nas últimas horas.
 Avalie o crânio (perímetro, suturas e fontanelas) e interprete os achados. ~5 min.`,
     paciente: {
@@ -3732,6 +3850,7 @@ Avalie o crânio (perímetro, suturas e fontanelas) e interprete os achados. ~5 
     especialidade: "Neonatologia",
     conteudos: ["Exame do RN", "RN"],
     tempo: 300,
+    queixaPrincipal: "RN a termo, 1 dia, com \"inchaço\" na cabeça após parto vaginal prolongado.",
     resumo: `RN a termo, 1 dia, com "inchaço" na cabeça após parto vaginal prolongado.
 Examine, diferencie bossa de cefalo-hematoma e oriente. ~5 min.`,
     paciente: {
@@ -3761,6 +3880,7 @@ Examine, diferencie bossa de cefalo-hematoma e oriente. ~5 min.`,
     especialidade: "Neonatologia",
     conteudos: ["Exame do RN", "RN"],
     tempo: 300,
+    queixaPrincipal: "RN admitido com DUM incerta e sem USG precoce confiável.",
     resumo: `RN admitido com DUM incerta e sem USG precoce confiável.
 Explique e demonstre como estimar a idade gestacional e classifique o RN. ~5 min.`,
     paciente: {
@@ -3791,6 +3911,7 @@ Explique e demonstre como estimar a idade gestacional e classifique o RN. ~5 min
     especialidade: "Neonatologia",
     conteudos: ["Icterícia neonatal", "RN"],
     tempo: 300,
+    queixaPrincipal: "RN com 20 horas de vida, ictérico, mãe tipo O e RN tipo A.",
     resumo: `RN com 20 horas de vida, ictérico, mãe tipo O e RN tipo A.
 Avalie a causa, peça exames e defina conduta inicial. ~5 min.`,
     paciente: {
@@ -3820,6 +3941,7 @@ Avalie a causa, peça exames e defina conduta inicial. ~5 min.`,
     especialidade: "Neonatologia",
     conteudos: ["Icterícia neonatal", "Lactente"],
     tempo: 300,
+    queixaPrincipal: "Lactente de 5 semanas com icterícia que não regrediu, urina escura e fezes claras.",
     resumo: `Lactente de 5 semanas com icterícia que não regrediu, urina escura e fezes claras.
 Avalie, suspeite de colestase e defina prioridade de investigação. ~5 min.`,
     paciente: {
@@ -3849,6 +3971,7 @@ Avalie, suspeite de colestase e defina prioridade de investigação. ~5 min.`,
     especialidade: "Neonatologia",
     conteudos: ["Icterícia neonatal", "RN"],
     tempo: 300,
+    queixaPrincipal: "Pais de RN a termo, 3 dias, com icterícia fisiológica, querem entender \"por que o bebê fica amarelo\".",
     resumo: `Pais de RN a termo, 3 dias, com icterícia fisiológica, querem entender "por que o bebê fica amarelo".
 Explique o metabolismo da bilirrubina e diferencie fisiológico de patológico. ~5 min.`,
     paciente: {
@@ -3878,6 +4001,7 @@ Explique o metabolismo da bilirrubina e diferencie fisiológico de patológico. 
     especialidade: "Neonatologia",
     conteudos: ["Icterícia neonatal", "RN"],
     tempo: 300,
+    queixaPrincipal: "RN a termo, 40 horas, em vias de alta. A equipe pede avaliação do risco de hiperbilirrubinemia.",
     resumo: `RN a termo, 40 horas, em vias de alta. A equipe pede avaliação do risco de hiperbilirrubinemia.
 Avalie fatores de risco e oriente reavaliação. ~5 min.`,
     paciente: {
@@ -3907,6 +4031,7 @@ Avalie fatores de risco e oriente reavaliação. ~5 min.`,
     especialidade: "Neonatologia",
     conteudos: ["Icterícia neonatal", "RN"],
     tempo: 300,
+    queixaPrincipal: "RN em fototerapia há 1 dia. A mãe está preocupada com mudanças que notou no bebê.",
     resumo: `RN em fototerapia há 1 dia. A mãe está preocupada com mudanças que notou no bebê.
 Avalie, explique os efeitos adversos esperados e oriente cuidados. ~5 min.`,
     paciente: {
@@ -3938,6 +4063,7 @@ Avalie, explique os efeitos adversos esperados e oriente cuidados. ~5 min.`,
     especialidade: "Pediatria / Proteção à criança",
     conteudos: ["Maus-tratos", "Pré-escolar"],
     tempo: 300,
+    queixaPrincipal: "Pré-escolar de 2 anos levado por queimadura nos pés/nádegas. A história não bate com a lesão.",
     resumo: `Pré-escolar de 2 anos levado por queimadura nos pés/nádegas. A história não bate com a lesão.
 Avalie, reconheça sinais de alerta e defina conduta. ~5 min.`,
     paciente: {
@@ -3967,6 +4093,7 @@ Avalie, reconheça sinais de alerta e defina conduta. ~5 min.`,
     especialidade: "Pediatria / Proteção à criança",
     conteudos: ["Maus-tratos", "Escolar"],
     tempo: 300,
+    queixaPrincipal: "Adolescente de 11 anos trazida pela tia com suspeita de violência. A família pergunta se \"precisa de BO antes\".",
     resumo: `Adolescente de 11 anos trazida pela tia com suspeita de violência. A família pergunta se "precisa de BO antes".
 Conduza o atendimento e a notificação corretamente. ~5 min.`,
     paciente: {
@@ -3996,6 +4123,7 @@ Conduza o atendimento e a notificação corretamente. ~5 min.`,
     especialidade: "Pediatria / Proteção à criança",
     conteudos: ["Maus-tratos", "Escolar"],
     tempo: 300,
+    queixaPrincipal: "Escolar de 8 anos com queixas vagas, queda escolar e medo de um familiar.",
     resumo: `Escolar de 8 anos com queixas vagas, queda escolar e medo de um familiar.
 Avalie sinais comportamentais e defina conduta. ~5 min.`,
     paciente: {
@@ -4025,6 +4153,7 @@ Avalie sinais comportamentais e defina conduta. ~5 min.`,
     especialidade: "Pediatria / Proteção à criança",
     conteudos: ["Maus-tratos", "Pré-escolar"],
     tempo: 300,
+    queixaPrincipal: "Pré-escolar de 4 anos com relato espontâneo sugestivo de abuso, trazida pela mãe.",
     resumo: `Pré-escolar de 4 anos com relato espontâneo sugestivo de abuso, trazida pela mãe.
 Conduza o acolhimento e a sequência de cuidado adequada. ~5 min.`,
     paciente: {
@@ -4053,6 +4182,7 @@ Conduza o acolhimento e a sequência de cuidado adequada. ~5 min.`,
     especialidade: "Pediatria / Proteção à criança",
     conteudos: ["Maus-tratos", "Lactente"],
     tempo: 300,
+    queixaPrincipal: "Lactente de 10 meses com baixo peso, atraso vacinal e cuidados inadequados.",
     resumo: `Lactente de 10 meses com baixo peso, atraso vacinal e cuidados inadequados.
 Avalie sinais de negligência e defina conduta. ~5 min.`,
     paciente: {
@@ -4084,6 +4214,7 @@ Avalie sinais de negligência e defina conduta. ~5 min.`,
     especialidade: "Nefrologia pediátrica",
     conteudos: ["Síndrome nefrítica", "Escolar"],
     tempo: 300,
+    queixaPrincipal: "Escolar de 7 anos com urina escura e edema, semanas após lesões de pele.",
     resumo: `Escolar de 7 anos com urina escura e edema, semanas após lesões de pele.
 Avalie, levante a hipótese de GNPE e oriente investigação. ~5 min.`,
     paciente: {
@@ -4113,6 +4244,7 @@ Avalie, levante a hipótese de GNPE e oriente investigação. ~5 min.`,
     especialidade: "Nefrologia pediátrica",
     conteudos: ["Síndrome nefrítica", "Escolar"],
     tempo: 300,
+    queixaPrincipal: "Escolar de 8 anos com quadro nefrítico e exames já colhidos.",
     resumo: `Escolar de 8 anos com quadro nefrítico e exames já colhidos.
 Interprete o complemento e os marcadores estreptocócicos e explique aos pais. ~5 min.`,
     paciente: {
@@ -4142,6 +4274,7 @@ Interprete o complemento e os marcadores estreptocócicos e explique aos pais. ~
     especialidade: "Nefrologia pediátrica",
     conteudos: ["Síndrome nefrítica", "Pré-escolar"],
     tempo: 300,
+    queixaPrincipal: "Pré-escolar de 3 anos com edema facial progressivo e urina espumosa.",
     resumo: `Pré-escolar de 3 anos com edema facial progressivo e urina espumosa.
 Avalie, levante síndrome nefrótica e oriente tratamento inicial. ~5 min.`,
     paciente: {
@@ -4171,6 +4304,7 @@ Avalie, levante síndrome nefrótica e oriente tratamento inicial. ~5 min.`,
     especialidade: "Nefrologia pediátrica",
     conteudos: ["Síndrome nefrítica", "Pré-escolar"],
     tempo: 300,
+    queixaPrincipal: "Pré-escolar com síndrome nefrótica em atividade apresenta febre e dor abdominal.",
     resumo: `Pré-escolar com síndrome nefrótica em atividade apresenta febre e dor abdominal.
 Reconheça as complicações de risco e oriente conduta. ~5 min.`,
     paciente: {
@@ -4200,6 +4334,7 @@ Reconheça as complicações de risco e oriente conduta. ~5 min.`,
     especialidade: "Nefrologia pediátrica",
     conteudos: ["Síndrome nefrítica", "Escolar"],
     tempo: 300,
+    queixaPrincipal: "Você é solicitado a explicar a um estudante as diferenças entre as duas síndromes a partir de dois casos.",
     resumo: `Você é solicitado a explicar a um estudante as diferenças entre as duas síndromes a partir de dois casos.
 Conduza o raciocínio comparativo. ~5 min.`,
     paciente: {
@@ -4231,6 +4366,7 @@ Conduza o raciocínio comparativo. ~5 min.`,
     especialidade: "Pediatria geral",
     conteudos: ["Distúrbios funcionais", "Lactente"],
     tempo: 300,
+    queixaPrincipal: "Lactente de 6 semanas com choro intenso vespertino. Os pais estão exaustos.",
     resumo: `Lactente de 6 semanas com choro intenso vespertino. Os pais estão exaustos.
 Avalie, diferencie de causa orgânica e oriente. ~5 min.`,
     paciente: {
@@ -4260,6 +4396,7 @@ Avalie, diferencie de causa orgânica e oriente. ~5 min.`,
     especialidade: "Pediatria geral",
     conteudos: ["Distúrbios funcionais", "Pré-escolar"],
     tempo: 300,
+    queixaPrincipal: "Pré-escolar de 3 anos com fezes endurecidas e comportamento de retenção.",
     resumo: `Pré-escolar de 3 anos com fezes endurecidas e comportamento de retenção.
 Avalie, diferencie de causa orgânica e oriente manejo. ~5 min.`,
     paciente: {
@@ -4289,6 +4426,7 @@ Avalie, diferencie de causa orgânica e oriente manejo. ~5 min.`,
     especialidade: "Pediatria geral",
     conteudos: ["Distúrbios funcionais", "Escolar"],
     tempo: 300,
+    queixaPrincipal: "Escolar de 9 anos com dor abdominal periumbilical recorrente, sem sinais de alarme.",
     resumo: `Escolar de 9 anos com dor abdominal periumbilical recorrente, sem sinais de alarme.
 Avalie e diferencie de causa orgânica. ~5 min.`,
     paciente: {
@@ -4318,6 +4456,7 @@ Avalie e diferencie de causa orgânica. ~5 min.`,
     especialidade: "Pediatria geral",
     conteudos: ["Distúrbios funcionais", "Escolar"],
     tempo: 300,
+    queixaPrincipal: "Escolar de 7 anos que ainda urina na cama à noite. A mãe quer orientação.",
     resumo: `Escolar de 7 anos que ainda urina na cama à noite. A mãe quer orientação.
 Avalie, classifique e oriente manejo inicial. ~5 min.`,
     paciente: {
@@ -4347,6 +4486,7 @@ Avalie, classifique e oriente manejo inicial. ~5 min.`,
     especialidade: "Pediatria geral",
     conteudos: ["Distúrbios funcionais", "Lactente"],
     tempo: 300,
+    queixaPrincipal: "Lactente de 3 meses que \"golfa\" após as mamadas, mas está bem e ganhando peso.",
     resumo: `Lactente de 3 meses que "golfa" após as mamadas, mas está bem e ganhando peso.
 Avalie, diferencie de DRGE e oriente. ~5 min.`,
     paciente: {
@@ -4378,6 +4518,7 @@ Avalie, diferencie de DRGE e oriente. ~5 min.`,
     especialidade: "Pediatria / Saúde mental",
     conteudos: ["Uso de telas", "Lactente"],
     tempo: 300,
+    queixaPrincipal: "Lactente de 18 meses exposto passivamente a telas durante boa parte do dia.",
     resumo: `Lactente de 18 meses exposto passivamente a telas durante boa parte do dia.
 Oriente os pais com base nas recomendações por idade. ~5 min.`,
     paciente: {
@@ -4407,6 +4548,7 @@ Oriente os pais com base nas recomendações por idade. ~5 min.`,
     especialidade: "Pediatria / Saúde mental",
     conteudos: ["Uso de telas", "Adolescente"],
     tempo: 300,
+    queixaPrincipal: "Adolescente de 14 anos com uso intenso de redes/jogos. Os pais querem entender os conceitos.",
     resumo: `Adolescente de 14 anos com uso intenso de redes/jogos. Os pais querem entender os conceitos.
 Diferencie FoMO, nomofobia e Gaming Disorder e oriente. ~5 min.`,
     paciente: {
@@ -4436,6 +4578,7 @@ Diferencie FoMO, nomofobia e Gaming Disorder e oriente. ~5 min.`,
     especialidade: "Pediatria / Saúde mental",
     conteudos: ["Uso de telas", "Escolar"],
     tempo: 300,
+    queixaPrincipal: "Escolar de 10 anos com dificuldade para dormir e uso de telas à noite.",
     resumo: `Escolar de 10 anos com dificuldade para dormir e uso de telas à noite.
 Explique a relação com o sono e oriente higiene de sono. ~5 min.`,
     paciente: {
@@ -4465,6 +4608,7 @@ Explique a relação com o sono e oriente higiene de sono. ~5 min.`,
     especialidade: "Pediatria / Saúde mental",
     conteudos: ["Uso de telas", "Adolescente"],
     tempo: 300,
+    queixaPrincipal: "Adolescente de 13 anos com retraimento e queda escolar após situações nas redes sociais.",
     resumo: `Adolescente de 13 anos com retraimento e queda escolar após situações nas redes sociais.
 Avalie riscos online e oriente proteção. ~5 min.`,
     paciente: {
@@ -4494,6 +4638,7 @@ Avalie riscos online e oriente proteção. ~5 min.`,
     especialidade: "Pediatria / Saúde mental",
     conteudos: ["Uso de telas", "Pré-escolar"],
     tempo: 300,
+    queixaPrincipal: "Pré-escolar de 4 anos com uso crescente de telas. Os pais pedim orientação prática.",
     resumo: `Pré-escolar de 4 anos com uso crescente de telas. Os pais pedim orientação prática.
 Oriente limites e estratégias por idade. ~5 min.`,
     paciente: {
@@ -4525,6 +4670,7 @@ Oriente limites e estratégias por idade. ~5 min.`,
     especialidade: "Pediatria geral",
     conteudos: ["IVAS", "Pré-escolar"],
     tempo: 300,
+    queixaPrincipal: "Pré-escolar de 3 anos com coriza e tosse há 3 dias; a mãe quer antibiótico.",
     resumo: `Pré-escolar de 3 anos com coriza e tosse há 3 dias; a mãe quer antibiótico.
 Avalie, diferencie de quadro bacteriano e oriente. ~5 min.`,
     paciente: {
@@ -4554,6 +4700,7 @@ Avalie, diferencie de quadro bacteriano e oriente. ~5 min.`,
     especialidade: "Pediatria geral",
     conteudos: ["IVAS", "Escolar"],
     tempo: 300,
+    queixaPrincipal: "Escolar de 8 anos com resfriado que melhorou e voltou a piorar no 5º dia.",
     resumo: `Escolar de 8 anos com resfriado que melhorou e voltou a piorar no 5º dia.
 Avalie e defina diagnóstico e conduta. ~5 min.`,
     paciente: {
@@ -4583,6 +4730,7 @@ Avalie e defina diagnóstico e conduta. ~5 min.`,
     especialidade: "Pediatria geral",
     conteudos: ["IVAS", "Pré-escolar"],
     tempo: 300,
+    queixaPrincipal: "Pré-escolar de 4 anos com dor de garganta.",
     resumo: `Pré-escolar de 4 anos com dor de garganta. Diferencie etiologia viral de estreptocócica.
 Avalie e defina conduta. ~5 min.`,
     paciente: {
@@ -4612,6 +4760,7 @@ Avalie e defina conduta. ~5 min.`,
     especialidade: "Pediatria geral",
     conteudos: ["IVAS", "Lactente"],
     tempo: 300,
+    queixaPrincipal: "Lactente de 18 meses com otalgia e febre; otoscopia com abaulamento timpânico.",
     resumo: `Lactente de 18 meses com otalgia e febre; otoscopia com abaulamento timpânico.
 Avalie e decida entre observação e antibiótico. ~5 min.`,
     paciente: {
@@ -4641,6 +4790,7 @@ Avalie e decida entre observação e antibiótico. ~5 min.`,
     especialidade: "Pediatria geral",
     conteudos: ["IVAS", "Escolar"],
     tempo: 300,
+    queixaPrincipal: "Escolar de 9 anos com faringite estreptocócica confirmada. A mãe pergunta sobre \"complicações\".",
     resumo: `Escolar de 9 anos com faringite estreptocócica confirmada. A mãe pergunta sobre "complicações".
 Explique as complicações e a importância do tratamento. ~5 min.`,
     paciente: {
@@ -4672,6 +4822,7 @@ Explique as complicações e a importância do tratamento. ~5 min.`,
     especialidade: "Pneumologia pediátrica",
     conteudos: ["Asma", "Escolar"],
     tempo: 300,
+    queixaPrincipal: "Escolar de 7 anos asmático em crise, com grande esforço e saturação baixa.",
     resumo: `Escolar de 7 anos asmático em crise, com grande esforço e saturação baixa.
 Avalie a gravidade, conduza a crise e defina destino. ~5 min.`,
     paciente: {
@@ -4701,6 +4852,7 @@ Avalie a gravidade, conduza a crise e defina destino. ~5 min.`,
     especialidade: "Pneumologia pediátrica",
     conteudos: ["Asma", "Pré-escolar"],
     tempo: 300,
+    queixaPrincipal: "Pré-escolar de 4 anos com sibilância recorrente e atopia.",
     resumo: `Pré-escolar de 4 anos com sibilância recorrente e atopia. Avalie e proponha abordagem diagnóstica.
 ~5 min.`,
     paciente: {
@@ -4730,6 +4882,7 @@ Avalie a gravidade, conduza a crise e defina destino. ~5 min.`,
     especialidade: "Pneumologia pediátrica",
     conteudos: ["Asma", "Escolar"],
     tempo: 300,
+    queixaPrincipal: "Escolar de 9 anos com asma sintomática na maioria dos dias.",
     resumo: `Escolar de 9 anos com asma sintomática na maioria dos dias. Defina a terapia de manutenção escalonada.
 ~5 min.`,
     paciente: {
@@ -4759,6 +4912,7 @@ Avalie a gravidade, conduza a crise e defina destino. ~5 min.`,
     especialidade: "Pneumologia pediátrica",
     conteudos: ["Asma", "Lactente"],
     tempo: 300,
+    queixaPrincipal: "Lactente de 14 meses com episódios de chiado sempre associados a resfriados.",
     resumo: `Lactente de 14 meses com episódios de chiado sempre associados a resfriados.
 Avalie e diferencie bebê chiador de asma. ~5 min.`,
     paciente: {
@@ -4788,6 +4942,7 @@ Avalie e diferencie bebê chiador de asma. ~5 min.`,
     especialidade: "Pneumologia pediátrica",
     conteudos: ["Asma", "Pré-escolar"],
     tempo: 300,
+    queixaPrincipal: "Pré-escolar de 5 anos asmático com controle ruim; a mãe relata dúvidas no uso da bombinha.",
     resumo: `Pré-escolar de 5 anos asmático com controle ruim; a mãe relata dúvidas no uso da bombinha.
 Avalie e ensine a técnica correta com espaçador. ~5 min.`,
     paciente: {
@@ -4819,6 +4974,7 @@ Avalie e ensine a técnica correta com espaçador. ~5 min.`,
     especialidade: "Pediatria geral",
     conteudos: ["Alimentação infantil", "Lactente"],
     tempo: 300,
+    queixaPrincipal: "Lactente de 6 meses; a mãe quer iniciar alimentos.",
     resumo: `Lactente de 6 meses; a mãe quer iniciar alimentos. Avalie a prontidão e oriente o início.
 ~5 min.`,
     paciente: {
@@ -4848,6 +5004,7 @@ Avalie e ensine a técnica correta com espaçador. ~5 min.`,
     especialidade: "Pediatria geral",
     conteudos: ["Alimentação infantil", "Lactente"],
     tempo: 300,
+    queixaPrincipal: "Lactente de 8 meses já comendo papas; a mãe pergunta sobre consistência e volume.",
     resumo: `Lactente de 8 meses já comendo papas; a mãe pergunta sobre consistência e volume.
 Oriente a progressão. ~5 min.`,
     paciente: {
@@ -4877,6 +5034,7 @@ Oriente a progressão. ~5 min.`,
     especialidade: "Pediatria geral",
     conteudos: ["Alimentação infantil", "Lactente"],
     tempo: 300,
+    queixaPrincipal: "Lactente de 9 meses; a família oferece mel, suco e ultraprocessados.",
     resumo: `Lactente de 9 meses; a família oferece mel, suco e ultraprocessados.
 Corrija erros alimentares e oriente. ~5 min.`,
     paciente: {
@@ -4906,6 +5064,7 @@ Corrija erros alimentares e oriente. ~5 min.`,
     especialidade: "Pediatria geral",
     conteudos: ["Alimentação infantil", "Lactente"],
     tempo: 300,
+    queixaPrincipal: "Lactente de 5 meses; a mãe quer iniciar comida e água por pressão da família.",
     resumo: `Lactente de 5 meses; a mãe quer iniciar comida e água por pressão da família.
 Oriente conforme as recomendações. ~5 min.`,
     paciente: {
@@ -4935,6 +5094,7 @@ Oriente conforme as recomendações. ~5 min.`,
     especialidade: "Pediatria geral",
     conteudos: ["Alimentação infantil", "Pré-escolar"],
     tempo: 300,
+    queixaPrincipal: "Pré-escolar de 2 anos que recusa alimentos novos. A mãe está preocupada e força a comida.",
     resumo: `Pré-escolar de 2 anos que recusa alimentos novos. A mãe está preocupada e força a comida.
 Oriente o manejo. ~5 min.`,
     paciente: {
@@ -4966,6 +5126,7 @@ Oriente o manejo. ~5 min.`,
     especialidade: "Alergia / Gastropediatria",
     conteudos: ["APLV", "Lactente"],
     tempo: 300,
+    queixaPrincipal: "Lactente de 2 meses saudável, com raias de sangue nas fezes.",
     resumo: `Lactente de 2 meses saudável, com raias de sangue nas fezes.
 Avalie, levante FPIAP e oriente conduta. ~5 min.`,
     paciente: {
@@ -4995,6 +5156,7 @@ Avalie, levante FPIAP e oriente conduta. ~5 min.`,
     especialidade: "Alergia / Gastropediatria",
     conteudos: ["APLV", "Lactente"],
     tempo: 300,
+    queixaPrincipal: "Lactente com vômitos intensos, palidez e letargia cerca de 2 horas após fórmula.",
     resumo: `Lactente com vômitos intensos, palidez e letargia cerca de 2 horas após fórmula.
 Avalie, reconheça FPIES e conduza. ~5 min.`,
     paciente: {
@@ -5024,6 +5186,7 @@ Avalie, reconheça FPIES e conduza. ~5 min.`,
     especialidade: "Alergia / Gastropediatria",
     conteudos: ["APLV", "Lactente"],
     tempo: 300,
+    queixaPrincipal: "Lactente de 4 meses em fórmula com diagnóstico de APLV; a mãe pergunta qual fórmula usar.",
     resumo: `Lactente de 4 meses em fórmula com diagnóstico de APLV; a mãe pergunta qual fórmula usar.
 Oriente a escolha. ~5 min.`,
     paciente: {
@@ -5053,6 +5216,7 @@ Oriente a escolha. ~5 min.`,
     especialidade: "Alergia / Gastropediatria",
     conteudos: ["APLV", "Lactente"],
     tempo: 300,
+    queixaPrincipal: "Lactente em AME com APLV (forma não IgE); a mãe precisa excluir leite da dieta.",
     resumo: `Lactente em AME com APLV (forma não IgE); a mãe precisa excluir leite da dieta.
 Oriente a exclusão materna com segurança nutricional. ~5 min.`,
     paciente: {
@@ -5082,6 +5246,7 @@ Oriente a exclusão materna com segurança nutricional. ~5 min.`,
     especialidade: "Alergia / Gastropediatria",
     conteudos: ["APLV", "Lactente"],
     tempo: 300,
+    queixaPrincipal: "Lactente de 2 meses com regurgitação, irritabilidade e algumas fezes com muco/sangue.",
     resumo: `Lactente de 2 meses com regurgitação, irritabilidade e algumas fezes com muco/sangue.
 Diferencie RGE fisiológico, DRGE e APLV. ~5 min.`,
     paciente: {

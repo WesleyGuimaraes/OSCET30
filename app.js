@@ -381,6 +381,7 @@
         ? "Conduza pelo chat: apresente-se, colha a história, levante hipóteses e oriente."
         : "Conduza pessoalmente com o avaliador: apresente-se, colha a história, levante hipóteses e oriente.";
       p.innerHTML = `<h3>Instruções ao estudante</h3>
+        <div class="block queixa-principal"><div class="label">Queixa principal</div>${escapeHtml(c.queixaPrincipal)}</div>
         <div class="block">${nl(c.resumo)}</div>
         <div class="block"><div class="label">Dica</div>${dica}</div>`;
     } else {
@@ -391,6 +392,7 @@
              <div id="checklist"></div></div>`
         : "";
       p.innerHTML = `<h3>Roteiro do paciente — confidencial</h3>
+        <div class="block queixa-principal"><div class="label">Queixa principal</div>${escapeHtml(c.queixaPrincipal)}</div>
         <div class="block"><div class="label">Personagem</div>${pac.personagem}<br>${nl(pac.contexto)}</div>
         <div class="block"><div class="label">O que revelar (conforme perguntado)</div>
           <ul>${pac.roteiro.map((r) => `<li>${escapeHtml(r)}</li>`).join("")}</ul></div>

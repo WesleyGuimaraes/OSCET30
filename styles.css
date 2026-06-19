@@ -128,6 +128,10 @@ input{width:100%;padding:11px 14px;border-radius:9px;border:1px solid var(--line
 .panel p{line-height:1.55}
 .achados{background:var(--panel2);border-left:3px solid var(--blue);padding:10px 12px;border-radius:6px;font-size:.9rem;line-height:1.5}
 
+.queixa-principal{background:var(--panel2);border-left:3px solid var(--accent);padding:10px 12px;border-radius:6px}
+.queixa-principal .label{margin-bottom:3px}
+.queixa-principal{font-size:1rem;font-weight:600;line-height:1.4}
+
 /* checklist */
 .chk{display:flex;gap:10px;align-items:flex-start;padding:7px 0;border-bottom:1px solid var(--line)}
 .chk input{width:auto;margin:3px 0 0}

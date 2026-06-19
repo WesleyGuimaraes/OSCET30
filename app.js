@@ -279,17 +279,23 @@
     return { id, n: s.index, total: s.queue.length };
   }
 
-  function hostStartNext() {
+  // roleMode: undefined/"auto" (segue o toggle "alternar a cada estação" do
+  // setup), "toggle" (força trocar quem é avaliador) ou "keep" (força manter)
+  function hostStartNext(roleMode) {
     const nx = nextStation();
     if (!nx) { hostEndSession(); return; }
+    const wasAvaliadorIsHost = isEvaluator(); // papel do host na estação que está terminando
     state.ready = { host: false, guest: false, self: false };
     state.caseObj = CASE(nx.id);
     state.session.lastId = nx.id;
     state.prog = { n: nx.n, total: nx.total };
     state.timer.remaining = state.caseObj.tempo;
     state.scores = {};
-    // papéis da estação: host começa como avaliador; se "alternar", troca a cada estação
-    const avaliadorIsHost = !(state.session.alternate && nx.n % 2 === 0);
+    let avaliadorIsHost;
+    if (roleMode === "toggle") avaliadorIsHost = !wasAvaliadorIsHost;
+    else if (roleMode === "keep") avaliadorIsHost = wasAvaliadorIsHost;
+    // automático: host começa como avaliador; se "alternar", troca a cada estação
+    else avaliadorIsHost = !(state.session.alternate && nx.n % 2 === 0);
     state.playRole = avaliadorIsHost ? "avaliador" : "estudante";
     sendMsg({ t: "case", id: nx.id, prog: state.prog, chatOn: state.chatOn, avaliadorIsHost });
     startStation();
@@ -347,7 +353,8 @@
       ? `Estação ${state.prog.n} de ${state.prog.total}`
       : `Estação ${state.prog.n}`;
     $("#stCaseTitle").textContent = c.titulo;
-    $("#stCaseSub").textContent = c.especialidade;
+    // a especialidade/conteúdo é uma dica do diagnóstico — só o avaliador vê
+    $("#stCaseSub").textContent = isEvaluator() ? c.especialidade : "";
     if (!state.timer.remaining) state.timer.remaining = c.tempo;
     renderTimer();
 
@@ -369,6 +376,8 @@
     }
     $("#timerCtrls").style.display = isEval ? "flex" : "none";
     $("#btnFinish").classList.toggle("hidden", !isEval);
+    // só quem criou a sala controla a fila de estações
+    $("#skipCtrls").classList.toggle("hidden", state.role !== "host");
     show("station");
   }
 
@@ -649,6 +658,16 @@
     const r = computeResult();
     sendMsg({ t: "finish", total: r.total, max: r.max, items: r.items });
     storeAndShow(r.total, r.max, r.items); // host guarda; guest só mostra
+  };
+
+  // host pula a estação atual sem aguardar avaliação/"prontos" dos dois lados
+  $("#btnSkipKeep").onclick = () => {
+    if (state.role !== "host") return;
+    hostStartNext("keep");
+  };
+  $("#btnSkipAlt").onclick = () => {
+    if (state.role !== "host") return;
+    hostStartNext("toggle");
   };
 
   // "pronto para a próxima"

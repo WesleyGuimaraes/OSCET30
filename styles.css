@@ -150,7 +150,8 @@ input{width:100%;padding:11px 14px;border-radius:9px;border:1px solid var(--line
 .chat-form{display:flex;gap:8px;margin-top:10px}
 .chat-form input{margin:0}
 
-.station-foot{margin-top:14px;text-align:right}
+.station-foot{margin-top:14px;display:flex;justify-content:flex-end;align-items:center;gap:10px;flex-wrap:wrap}
+#skipCtrls{display:inline-flex;gap:8px;flex-wrap:wrap}
 
 /* result */
 #resultBody{background:var(--panel);border:1px solid var(--line);border-radius:12px;padding:20px;margin:14px 0}

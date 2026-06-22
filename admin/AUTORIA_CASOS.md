@@ -100,12 +100,20 @@ de uma vez no SQL Editor.
 
 ### Slugs de conteúdo (Pediatria 6º)
 
-`aleitamento-materno, alergia-alimentar-aplv, anemias, asma, baixa-estatura,
+`aleitamento-materno, alergia-alimentar-aplv, alimentacao-infantil,
+alimentacao-primeiro-ano-vida, anemias, asma, baixa-estatura,
 bronquiolite-aguda, crescimento-infantil, dermatoses-na-infancia, diarreia-aguda,
 disturbios-funcionais, doencas-exantematicas, dores-do-crescimento,
-icutericia-neonatal, imunizacoes, itu, ivas, maus-tratos-na-infancia,
-obesidade-infantil, parasitoses-intestinais, pac, puberdade-normal-e-alterada,
+exame-fisico-recem-nascido, ictericia-neonatal, imunizacoes, itu, ivas,
+marcos-desenvolvimento-infantil, maus-tratos-na-infancia, obesidade-infantil,
+parasitoses-intestinais, pac, puberdade-normal-e-alterada,
 sindrome-nefritica-nefrotica, transtornos-neurodesenvolvimento, uso-abusivo-de-telas`
+
+> `exame-fisico-recem-nascido`, `marcos-desenvolvimento-infantil`,
+> `alimentacao-infantil` e `alimentacao-primeiro-ano-vida` foram criados em
+> `db/migracao_taxonomia_pediatria.sql` (não existiam no seed original); o
+> typo `icutericia-neonatal` foi corrigido para `ictericia-neonatal` no mesmo
+> arquivo.
 
 (Para Clínica Médica 5º ou Cirurgia 7º, trocar disciplina/período e usar os slugs
 do `seed_taxonomia.sql`.)

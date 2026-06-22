@@ -308,6 +308,16 @@ export async function fetchCasosEmRevisao() {
   return (await fetchCasos()).filter((c) => c.status === "em_revisao");
 }
 
+// apaga o caso e os registros dependentes. Restrito a owner pela RLS
+// (ver db/migrations.sql) — chamar só atrás de um gate de admin.role no front.
+export async function apagarCaso(casoId) {
+  await supabase.from("caso_checklist_itens").delete().eq("caso_id", casoId);
+  await supabase.from("caso_conteudo").delete().eq("caso_id", casoId);
+  await supabase.from("casos_historico").delete().eq("caso_id", casoId);
+  const { error } = await supabase.from("casos").delete().eq("id", casoId);
+  if (error) throw error;
+}
+
 // devolve pra rascunho registrando a observação do revisor (linha extra no
 // histórico, além da automática "devolvido_para_rascunho" que o trigger cria).
 // A inserção da observação é "best-effort": se a coluna obs / a policy ainda

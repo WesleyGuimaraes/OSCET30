@@ -8,6 +8,7 @@ import {
   novoCasoVazio,
   mudarStatus,
   salvarCaso,
+  apagarCaso,
 } from "../lib/data.js";
 
 const upBtnStyle = (can) => ({
@@ -241,6 +242,22 @@ export default function CaseEditor({ casoId, admin, taxonomia, onBack, onSalvo, 
     }
   }
 
+  async function apagar() {
+    if (admin.role !== "owner" || !draft.id) return;
+    if (!window.confirm(`Apagar definitivamente "${draft.titulo || "(sem título)"}"? Essa ação não pode ser desfeita.`)) {
+      return;
+    }
+    setSalvando(true);
+    try {
+      await apagarCaso(draft.id);
+      onSalvo?.();
+      onBack();
+    } catch (err) {
+      setMsg({ type: "warn", text: err.message || "Erro ao apagar caso." });
+      setSalvando(false);
+    }
+  }
+
   if (carregando) {
     return <div style={{ padding: 48, textAlign: "center", color: "var(--c-muted)" }}>Carregando caso…</div>;
   }
@@ -307,6 +324,11 @@ export default function CaseEditor({ casoId, admin, taxonomia, onBack, onSalvo, 
           {d.status === "arquivado" && isPriv && (
             <button className="btn btn-ghost" onClick={() => transicionar("rascunho", "Caso restaurado para rascunho.")} disabled={salvando}>
               ↩ Restaurar
+            </button>
+          )}
+          {d.id && admin.role === "owner" && (
+            <button className="btn btn-danger" onClick={apagar} disabled={salvando}>
+              🗑️ Apagar
             </button>
           )}
         </div>

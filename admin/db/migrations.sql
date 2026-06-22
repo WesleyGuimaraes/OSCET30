@@ -98,3 +98,20 @@ alter table casos_historico
   add constraint casos_historico_caso_id_fkey
     foreign key (caso_id) references casos(id) on delete cascade
     deferrable initially deferred;
+
+-- ---------------------------------------------------------------------
+-- 8. Apagar caso: só o owner pode apagar definitivamente (botão "Apagar"
+--    no editor, ver CaseEditor.jsx). casos_historico não tinha policy de
+--    delete nenhuma; casos também precisa de uma restrita ao owner.
+-- ---------------------------------------------------------------------
+drop policy if exists "owner apaga historico" on casos_historico;
+create policy "owner apaga historico" on casos_historico
+  for delete using (
+    (select role from usuarios_admin where id = auth.uid()) = 'owner'
+  );
+
+drop policy if exists "owner apaga casos" on casos;
+create policy "owner apaga casos" on casos
+  for delete using (
+    (select role from usuarios_admin where id = auth.uid()) = 'owner'
+  );

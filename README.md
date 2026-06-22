@@ -91,11 +91,15 @@ apenas como **referência de formato** (não é mais carregado pelo app).
 | `app.js` | conexão P2P, papéis, timer e avaliação |
 | `db.js` | carrega os casos publicados do Supabase |
 | `cases.js` | banco antigo (referência de formato; não é mais usado pelo app) |
-| `admin/` | painel administrativo (React + Supabase) para gerenciar o banco de casos — projeto separado, ver `admin/README.md` |
+| `admin/` | painel administrativo (React + Supabase) para gerenciar o banco de casos, ver `admin/README.md` |
+| `vercel.json` | builda o painel admin e publica em `/admin/` dentro do mesmo projeto Vercel do jogo |
 
 ## Painel administrativo
 
 A pasta [`admin/`](admin/) contém um painel web (React + Vite + Supabase) para
 criar, editar, revisar e publicar casos com múltiplos editores, checklist
-normalizado a 100 pontos e fluxo de revisão. É um **projeto Vercel separado**
-(Root Directory `admin`). Instruções completas em [`admin/README.md`](admin/README.md).
+normalizado a 100 pontos e fluxo de revisão. Vive no **mesmo projeto Vercel**
+do jogo: o `vercel.json` na raiz builda o admin e copia o resultado para
+`/admin/` ao lado dos arquivos estáticos do jogo. Acesse pelo ícone ⚙️ no
+canto superior do jogo, ou direto em `/admin/`. Instruções completas em
+[`admin/README.md`](admin/README.md).

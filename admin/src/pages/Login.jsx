@@ -72,7 +72,7 @@ export default function Login() {
     setOk("");
     setCarregando(true);
     const { error } = await supabase.auth.resetPasswordForEmail(email, {
-      redirectTo: window.location.origin,
+      redirectTo: `${window.location.origin}/admin/`,
     });
     setCarregando(false);
     if (error) {

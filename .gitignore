@@ -10,5 +10,8 @@ desktop.ini
 # dependências (não usadas neste projeto estático, mas por garantia)
 node_modules/
 
+# saída combinada do build (gerada pela Vercel, não versionar)
+public_combined/
+
 # configurações locais do Claude Code
 .claude/

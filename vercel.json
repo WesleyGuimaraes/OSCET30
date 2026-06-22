@@ -1,0 +1,6 @@
+{
+  "framework": null,
+  "installCommand": "cd admin && npm install",
+  "buildCommand": "mkdir -p public_combined && cp index.html app.js db.js cases.js styles.css public_combined/ && cd admin && npm run build && cd .. && cp -r admin/dist public_combined/admin",
+  "outputDirectory": "public_combined"
+}

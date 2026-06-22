@@ -48,16 +48,18 @@ npm run dev
 
 ## Deploy na Vercel
 
-Este projeto vive numa subpasta (`admin/`), então é um **segundo projeto Vercel**
-separado do site de treino:
+Este projeto vive numa subpasta (`admin/`), mas é publicado dentro do **mesmo
+projeto Vercel** do site de treino, em `/admin/`. O `vercel.json` na raiz do
+repositório cuida disso: instala as dependências daqui, roda `npm run build`
+e copia `admin/dist` para `/admin/` ao lado dos arquivos do jogo. Não crie um
+projeto Vercel separado para esta pasta — o **Root Directory** do projeto
+deve continuar sendo a raiz do repositório, não `admin`.
 
-1. Vercel → **Add New → Project** → repositório `OSCET30`.
-2. **Root Directory**: `admin`.
-3. Framework preset: **Vite** (auto-detectado).
-4. **Environment Variables**: `VITE_SUPABASE_URL` e `VITE_SUPABASE_ANON_KEY`.
-5. Deploy.
-6. No Supabase, em **Authentication → URL Configuration**, adicione a URL do deploy
-   em **Redirect URLs** (necessário para o fluxo de "esqueci minha senha").
+1. **Environment Variables** do projeto Vercel (raiz): `VITE_SUPABASE_URL` e
+   `VITE_SUPABASE_ANON_KEY` (o build do Vite as lê durante o `npm run build`).
+2. No Supabase, em **Authentication → URL Configuration**, adicione a URL do
+   deploy + `/admin/` (ex.: `https://seu-dominio.vercel.app/admin/`) em
+   **Redirect URLs** (necessário para o fluxo de "esqueci minha senha").
 
 ## Acesso
 

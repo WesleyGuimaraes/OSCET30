@@ -2,5 +2,23 @@
   "framework": null,
   "installCommand": "cd admin && npm install",
   "buildCommand": "mkdir -p public_combined && cp index.html app.js db.js cases.js styles.css public_combined/ && cd admin && npm run build && cd .. && cp -r admin/dist public_combined/admin",
-  "outputDirectory": "public_combined"
+  "outputDirectory": "public_combined",
+  "headers": [
+    {
+      "source": "/(.*)",
+      "headers": [
+        { "key": "X-Content-Type-Options", "value": "nosniff" },
+        { "key": "X-Frame-Options", "value": "DENY" },
+        { "key": "Referrer-Policy", "value": "strict-origin-when-cross-origin" },
+        { "key": "Strict-Transport-Security", "value": "max-age=63072000; includeSubDomains; preload" },
+        { "key": "Permissions-Policy", "value": "geolocation=(), microphone=(), camera=()" }
+      ]
+    },
+    {
+      "source": "/admin/assets/(.*)",
+      "headers": [
+        { "key": "Cache-Control", "value": "public, max-age=31536000, immutable" }
+      ]
+    }
+  ]
 }

@@ -40,9 +40,11 @@ create policy "autenticados leem usuarios_admin" on usuarios_admin
 -- ---------------------------------------------------------------------
 -- 3. Vínculo N:N caso<->conteúdo (leitura + escrita por admin autenticado)
 -- ---------------------------------------------------------------------
+-- leitura por admin ativo (o público lê só de casos publicados, via
+-- migrations_app_publico.sql — policy separada, OR-combinada)
 drop policy if exists "autenticados leem caso_conteudo" on caso_conteudo;
 create policy "autenticados leem caso_conteudo" on caso_conteudo
-  for select using (auth.role() = 'authenticated');
+  for select using (auth.uid() in (select id from usuarios_admin where ativo));
 
 drop policy if exists "autenticados escrevem caso_conteudo" on caso_conteudo;
 create policy "autenticados escrevem caso_conteudo" on caso_conteudo
@@ -114,4 +116,89 @@ drop policy if exists "owner apaga casos" on casos;
 create policy "owner apaga casos" on casos
   for delete using (
     (select role from usuarios_admin where id = auth.uid()) = 'owner'
+  );
+
+-- ---------------------------------------------------------------------
+-- 9. Endurecimento de segurança (auditoria de RLS):
+--
+--    9a. meu_role() é SECURITY DEFINER sem search_path travado — vetor
+--        clássico de escalonamento de privilégio no Postgres (um usuário
+--        podia manipular o search_path da sessão para a função resolver
+--        uma tabela 'usuarios_admin' forjada e mentir o próprio papel).
+--        Travamos search_path = '' e qualificamos a referência.
+--
+--    9b/9c. As tabelas-filhas (caso_conteudo, caso_checklist_itens) tinham
+--        escrita frouxa: caso_conteudo liberava QUALQUER autenticado, e
+--        nenhuma das duas protegia casos já publicados — então um 'editor'
+--        que (corretamente) não pode editar um caso publicado pela tabela
+--        casos conseguia alterar o checklist/conteúdos dele direto na filha,
+--        furando a regra de publicação. Agora espelham a regra do pai:
+--        owner/revisor mexem em qualquer status; editor só em rascunho/
+--        em_revisao.
+-- ---------------------------------------------------------------------
+
+-- 9a. meu_role() com search_path travado e referência qualificada.
+create or replace function public.meu_role()
+returns admin_role
+language sql
+stable security definer
+set search_path = ''
+as $function$
+  select role from public.usuarios_admin where id = auth.uid() and ativo;
+$function$;
+
+-- 9b. caso_conteudo: escrita só para quem pode editar o caso pai.
+drop policy if exists "autenticados escrevem caso_conteudo" on caso_conteudo;
+drop policy if exists "admin escreve caso_conteudo" on caso_conteudo;
+create policy "admin escreve caso_conteudo" on caso_conteudo
+  for all
+  using (
+    exists (
+      select 1 from casos c
+      where c.id = caso_conteudo.caso_id
+        and (
+          meu_role() = any (array['owner'::admin_role, 'revisor'::admin_role])
+          or (meu_role() = 'editor'::admin_role
+              and c.status = any (array['rascunho'::caso_status, 'em_revisao'::caso_status]))
+        )
+    )
+  )
+  with check (
+    exists (
+      select 1 from casos c
+      where c.id = caso_conteudo.caso_id
+        and (
+          meu_role() = any (array['owner'::admin_role, 'revisor'::admin_role])
+          or (meu_role() = 'editor'::admin_role
+              and c.status = any (array['rascunho'::caso_status, 'em_revisao'::caso_status]))
+        )
+    )
+  );
+
+-- 9c. caso_checklist_itens: mesma proteção de caso publicado.
+drop policy if exists "autenticados escrevem checklist" on caso_checklist_itens;
+drop policy if exists "admin escreve checklist" on caso_checklist_itens;
+create policy "admin escreve checklist" on caso_checklist_itens
+  for all
+  using (
+    exists (
+      select 1 from casos c
+      where c.id = caso_checklist_itens.caso_id
+        and (
+          meu_role() = any (array['owner'::admin_role, 'revisor'::admin_role])
+          or (meu_role() = 'editor'::admin_role
+              and c.status = any (array['rascunho'::caso_status, 'em_revisao'::caso_status]))
+        )
+    )
+  )
+  with check (
+    exists (
+      select 1 from casos c
+      where c.id = caso_checklist_itens.caso_id
+        and (
+          meu_role() = any (array['owner'::admin_role, 'revisor'::admin_role])
+          or (meu_role() = 'editor'::admin_role
+              and c.status = any (array['rascunho'::caso_status, 'em_revisao'::caso_status]))
+        )
+    )
   );

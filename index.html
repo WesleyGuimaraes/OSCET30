@@ -44,23 +44,10 @@
   <!-- ETAPA 2: HOST escolhe o modo e aguarda -->
   <section id="hostSetup" class="screen">
     <h1>Como você quer treinar?</h1>
-    <p class="lead">Escolha um modo. Você não vê o conteúdo das estações — só seleciona por área.</p>
+    <p class="lead">Escolha um modo. Você não vê o conteúdo das estações — só seleciona por área.
+       A conversa do atendimento é pessoalmente ou por chamada de voz à parte.</p>
 
-    <div class="prox-block">
-      <div class="label">Vocês estão juntos ou à distância?</div>
-      <div class="prox-grid">
-        <div class="prox-card sel" data-prox="remoto">
-          <div class="mode-ico">💬</div>
-          <div class="prox-title">À distância</div>
-          <div class="prox-sub">Usar o chat para conversar.</div>
-        </div>
-        <div class="prox-card" data-prox="presencial">
-          <div class="mode-ico">🤝</div>
-          <div class="prox-title">No mesmo local</div>
-          <div class="prox-sub">Sem chat — conversam pessoalmente; checklist ao lado do caso.</div>
-        </div>
-      </div>
-    </div>
+    <div id="setupNotice" class="setup-notice hidden"></div>
 
     <div class="prox-block">
       <label class="switch-row">
@@ -130,20 +117,10 @@
     </div>
 
     <div class="station-grid">
-      <!-- Coluna esquerda: painel do papel -->
+      <!-- Coluna esquerda: painel do papel (roteiro do avaliador / instruções do estudante) -->
       <div class="panel" id="rolePanel"></div>
 
-      <!-- Coluna direita (modo à distância): chat de atendimento -->
-      <div class="panel chat-panel" id="chatPanel">
-        <div class="chat-head">Atendimento (chat)</div>
-        <div id="chatLog" class="chat-log"></div>
-        <form id="chatForm" class="chat-form">
-          <input id="chatInput" type="text" placeholder="Escreva sua fala…" autocomplete="off" />
-          <button class="primary" type="submit">Enviar</button>
-        </form>
-      </div>
-
-      <!-- Coluna direita (modo presencial): checklist ao lado do caso -->
+      <!-- Coluna direita (avaliador): checklist ao lado do caso -->
       <div class="panel hidden" id="sideChecklistPanel">
         <h3>Checklist de avaliação</h3>
         <div id="sideChecklist"></div>
@@ -179,10 +156,11 @@
 
 </main>
 
-<footer class="foot">Conexão direta navegador-a-navegador via WebRTC (PeerJS). Nada é gravado em servidor.</footer>
+<footer class="foot">Sessão direta navegador-a-navegador via WebRTC (PeerJS). Casos servidos do Supabase; a sessão em si não é gravada.</footer>
 
 <script src="https://unpkg.com/peerjs@1.5.4/dist/peerjs.min.js"></script>
-<script src="cases.js"></script>
+<script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
+<script src="db.js"></script>
 <script src="app.js"></script>
 <!-- Vercel Web Analytics: conta visitantes/page views do site publicado na Vercel -->
 <script defer src="/_vercel/insights/script.js"></script>

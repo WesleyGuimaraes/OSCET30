@@ -13,20 +13,23 @@ navegadores via **WebRTC (PeerJS)**.
    Aparece um **código** (ex.: `K4M7P`).
 2. **Estudante** abre o mesmo site em outro computador → digita o código → **Entrar**.
 3. Cada estação começa para os dois:
-   - **Estudante** vê só as instruções e conduz o atendimento pelo chat.
-   - **Paciente/avaliador** vê o roteiro confidencial, controla o **timer** (5 min) e marca o **checklist**.
+   - **Estudante** vê só as instruções (queixa + resumo) e conduz o atendimento
+     **pessoalmente ou por chamada de voz à parte** (WhatsApp, Meet, etc.).
+   - **Paciente/avaliador** vê o roteiro confidencial **ao lado do checklist**,
+     controla o **timer** (5 min) e marca a avaliação.
 4. **Encerrar e avaliar** mostra a pontuação da estação para ambos.
 5. Os dois clicam em **"Estou pronto para a próxima"** — só então a próxima estação começa.
 6. Ao final da sessão, aparece o **resumo** com a nota de cada estação e o total.
 
-### Distância vs. presencial
+> A sessão **não tem chat de texto**: a comunicação do atendimento é por voz
+> (pessoalmente ou por chamada). A conexão P2P sincroniza o caso, o timer e a
+> avaliação entre os dois navegadores.
 
-Ao criar a sala, quem é paciente/avaliador escolhe:
+### De onde vêm os casos
 
-- **💬 À distância** — mantém o **chat** para a conversa do atendimento.
-- **🤝 No mesmo local** — **remove o chat** da tela (vocês conversam pessoalmente).
-  Nesse modo o **checklist** do avaliador fica **ao lado do caso clínico**, e o
-  estudante vê só as instruções em tela cheia. A escolha vale para os dois.
+As estações são carregadas em tempo real do **Supabase** (só as com status
+**publicado**), geridas pelo painel administrativo (ver `admin/`). Enquanto não
+houver casos publicados, os modos avisam que não há estações disponíveis.
 
 ### Alternar papéis
 
@@ -60,7 +63,7 @@ outra rede. (Conexão entre dispositivos exige o site servido por **HTTPS**.)
 ## Publicar no GitHub Pages
 
 1. Crie um repositório no GitHub e envie estes arquivos:
-   `index.html`, `styles.css`, `app.js`, `cases.js`, `README.md`.
+   `index.html`, `styles.css`, `app.js`, `db.js`, `README.md`.
    ```bash
    git init
    git add .
@@ -74,8 +77,10 @@ outra rede. (Conexão entre dispositivos exige o site servido por **HTTPS**.)
 
 ## Adicionar/editar casos
 
-Edite `cases.js`. Cada caso tem: `resumo` (o que o estudante vê), `paciente`
-(roteiro confidencial + achados de exame) e `checklist` (itens com peso em pontos).
+Os casos agora vivem no **Supabase** e são geridos pelo **painel administrativo**
+(pasta `admin/`) — criação, edição, revisão e publicação. O app de treino só
+exibe casos com status **publicado**. O antigo `cases.js` permanece no repositório
+apenas como **referência de formato** (não é mais carregado pelo app).
 
 ## Estrutura
 
@@ -83,8 +88,9 @@ Edite `cases.js`. Cada caso tem: `resumo` (o que o estudante vê), `paciente`
 |---|---|
 | `index.html` | telas (lobby, setup, estação, resultado) |
 | `styles.css` | estilo |
-| `app.js` | conexão P2P, papéis, timer, chat e avaliação |
-| `cases.js` | banco de estações de pediatria |
+| `app.js` | conexão P2P, papéis, timer e avaliação |
+| `db.js` | carrega os casos publicados do Supabase |
+| `cases.js` | banco antigo (referência de formato; não é mais usado pelo app) |
 | `admin/` | painel administrativo (React + Supabase) para gerenciar o banco de casos — projeto separado, ver `admin/README.md` |
 
 ## Painel administrativo

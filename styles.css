@@ -59,17 +59,15 @@ input{width:100%;padding:11px 14px;border-radius:9px;border:1px solid var(--line
 .mode-card h2{margin:6px 0 4px;font-size:1.1rem;line-height:1.25;font-weight:700;letter-spacing:-.01em}
 .mode-card p{color:var(--muted);font-size:.9rem;line-height:1.45;margin:0}
 
-/* proximidade (com/sem chat) */
+/* bloco de opções no setup (alternar papéis) */
 .prox-block{margin:18px 0 6px}
-.prox-grid{display:grid;grid-template-columns:1fr 1fr;gap:12px;margin-top:8px}
-.prox-card{background:var(--panel);border:1px solid var(--line);border-radius:12px;
-  padding:14px 16px;cursor:pointer;transition:border-color .15s}
-.prox-card:hover{border-color:var(--accent)}
-.prox-card.sel{border-color:var(--accent);box-shadow:0 0 0 1px var(--accent) inset}
-.prox-title{font-weight:600;margin-top:4px}
 .prox-sub{color:var(--muted);font-size:.85rem;margin-top:2px}
 .switch-row{display:flex;align-items:center;gap:10px;cursor:pointer;font-size:.95rem}
 .switch-row input{width:auto;margin:0}
+
+/* aviso no setup (carregando / sem casos publicados) */
+.setup-notice{margin:14px 0;padding:12px 14px;border-radius:10px;
+  border:1px solid var(--warn);background:#2a2418;color:var(--warn);font-size:.9rem;line-height:1.4}
 
 /* teste de conexão */
 .conn-test{margin-top:22px}
@@ -118,10 +116,6 @@ input{width:100%;padding:11px 14px;border-radius:9px;border:1px solid var(--line
 
 .station-grid{display:grid;grid-template-columns:1fr 1fr;gap:14px}
 .station-grid.single{grid-template-columns:1fr}
-.station-grid.triple{grid-template-columns:1.1fr 0.9fr 1.1fr}
-.station-grid.triple #rolePanel{order:1}
-.station-grid.triple #sideChecklistPanel{order:2}
-.station-grid.triple #chatPanel{order:3}
 #sideChecklistPanel{overflow-y:auto;max-height:520px}
 .panel{background:var(--panel);border:1px solid var(--line);border-radius:12px;padding:16px;min-height:420px}
 .panel h3{margin:0 0 12px;font-size:1.05rem;font-weight:700;letter-spacing:.01em;color:var(--accent)}
@@ -141,18 +135,6 @@ input{width:100%;padding:11px 14px;border-radius:9px;border:1px solid var(--line
 .chk input{width:auto;margin:3px 0 0}
 .chk label{font-size:.9rem;flex:1}
 .chk .pts{color:var(--muted);font-size:.8rem}
-
-/* chat */
-.chat-panel{display:flex;flex-direction:column}
-.chat-head{font-weight:600;color:var(--accent);margin-bottom:8px}
-.chat-log{flex:1;overflow-y:auto;display:flex;flex-direction:column;gap:8px;padding-right:4px;max-height:360px}
-.bubble{max-width:80%;padding:8px 12px;border-radius:12px;font-size:.92rem;line-height:1.35}
-.bubble.me{align-self:flex-end;background:var(--accent2);color:#fff;border-bottom-right-radius:3px}
-.bubble.them{align-self:flex-start;background:var(--panel2);border-bottom-left-radius:3px}
-.bubble .who{display:block;font-size:.7rem;opacity:.7;margin-bottom:2px}
-.sys{align-self:center;color:var(--muted);font-size:.8rem;font-style:italic}
-.chat-form{display:flex;gap:8px;margin-top:10px}
-.chat-form input{margin:0}
 
 .station-foot{margin-top:14px;display:flex;justify-content:flex-end;align-items:center;gap:10px;flex-wrap:wrap}
 #skipCtrls{display:inline-flex;gap:8px;flex-wrap:wrap}
@@ -179,9 +161,9 @@ input{width:100%;padding:11px 14px;border-radius:9px;border:1px solid var(--line
 
 /* Tablets em retrato e telas médias (≈ até 900px) */
 @media(max-width:900px){
-  .station-grid,.station-grid.triple{grid-template-columns:1fr}
+  .station-grid{grid-template-columns:1fr}
   .panel{min-height:auto}
-  #sideChecklistPanel,.chat-log{max-height:none}
+  #sideChecklistPanel{max-height:none}
   .station-head{flex-wrap:wrap;gap:10px}
   .timer-wrap{text-align:left}
   .timer-ctrls{justify-content:flex-start}
@@ -193,7 +175,7 @@ input{width:100%;padding:11px 14px;border-radius:9px;border:1px solid var(--line
 @media(max-width:760px){
   #app{padding:18px 14px}
   h1{font-size:1.5rem}
-  .cards,.mode-grid,.prox-grid{grid-template-columns:1fr}
+  .cards,.mode-grid{grid-template-columns:1fr}
   .topbar{padding:12px 14px}
 }
 

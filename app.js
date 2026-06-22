@@ -11,8 +11,52 @@
 (() => {
   const $ = (s) => document.querySelector(s);
   const $$ = (s) => document.querySelectorAll(s);
-  const CASES = window.OSCE_CASES;
+
+  // casos publicados, carregados do Supabase (ver db.js)
+  let CASES = [];
+  let casesReady = false;
+  let casesErrorMsg = "";
+  let _resolveCases;
+  const casesReadyPromise = new Promise((r) => (_resolveCases = r));
   const CASE = (id) => CASES.find((c) => c.id === id);
+
+  async function loadCases() {
+    try {
+      CASES = await window.loadOsceCases();
+    } catch (e) {
+      CASES = [];
+      casesErrorMsg = "Não foi possível carregar os casos do servidor. Tente recarregar a página.";
+      // eslint-disable-next-line no-console
+      console.error(e);
+    }
+    casesReady = true;
+    _resolveCases();
+  }
+  loadCases();
+
+  // mostra/limpa o aviso no setup (carregando / sem casos / erro)
+  function setSetupNotice(text) {
+    const el = $("#setupNotice");
+    if (!el) return;
+    el.textContent = text || "";
+    el.classList.toggle("hidden", !text);
+  }
+  // garante que há casos antes de iniciar um modo; senão avisa e bloqueia
+  function casesGuard() {
+    if (!casesReady) {
+      setSetupNotice("Carregando casos… aguarde um instante e tente de novo.");
+      return false;
+    }
+    if (!CASES.length) {
+      setSetupNotice(
+        casesErrorMsg ||
+          "Ainda não há casos publicados. Cadastre e publique casos no painel administrativo."
+      );
+      return false;
+    }
+    setSetupNotice("");
+    return true;
+  }
 
   const MODE_LABEL = {
     conteudos: "Conteúdos selecionados",
@@ -33,7 +77,6 @@
     scores: {},
     ready: { host: false, guest: false, self: false },
     pendingMode: null, // modo escolhido antes de confirmar conteúdos
-    chatOn: true,      // true = à distância (com chat); false = presencial
     session: null,     // { mode, queue, index, lastId, count, results }
   };
 
@@ -116,16 +159,20 @@
   function handleMsg(m) {
     switch (m.t) {
       case "case":
-        state.caseObj = CASE(m.id);
-        state.prog = m.prog || { n: 0, total: null };
-        state.chatOn = m.chatOn !== false;
-        // o host informa quem é o avaliador nesta estação; o guest é o oposto
-        state.playRole = m.avaliadorIsHost ? "estudante" : "avaliador";
-        state.scores = {};
-        startStation();
-        break;
-      case "chat":
-        addBubble(m.text, "them", m.who);
+        // o guest pode receber a estação antes de seus casos terminarem de
+        // carregar; espera o carregamento e então monta a tela
+        casesReadyPromise.then(() => {
+          state.caseObj = CASE(m.id);
+          if (!state.caseObj) {
+            setStatus("caso indisponível", "off");
+            return;
+          }
+          state.prog = m.prog || { n: 0, total: null };
+          // o host informa quem é o avaliador nesta estação; o guest é o oposto
+          state.playRole = m.avaliadorIsHost ? "estudante" : "avaliador";
+          state.scores = {};
+          startStation();
+        });
         break;
       case "timer":
         // o ESTUDANTE sincroniza o tempo e o estado (rodando/pausado) com o avaliador
@@ -169,19 +216,19 @@
   function startHost() {
     state.role = "host";
     show("hostSetup");
+    // avisa logo se ainda está carregando ou não há casos publicados
+    if (!casesReady) setSetupNotice("Carregando casos…");
+    else if (!CASES.length)
+      setSetupNotice(
+        casesErrorMsg ||
+          "Ainda não há casos publicados. Cadastre e publique casos no painel administrativo."
+      );
+    else setSetupNotice("");
   }
-
-  // escolha de proximidade (com/sem chat)
-  $$(".prox-card").forEach((card) => {
-    card.onclick = () => {
-      $$(".prox-card").forEach((c) => c.classList.remove("sel"));
-      card.classList.add("sel");
-      state.chatOn = card.dataset.prox === "remoto";
-    };
-  });
 
   $$(".mode-card").forEach((card) => {
     card.onclick = () => {
+      if (!casesGuard()) return;
       const mode = card.dataset.mode;
       $$(".mode-card").forEach((c) => c.classList.remove("sel"));
       card.classList.add("sel");
@@ -197,7 +244,7 @@
   });
 
   function renderTagPicker() {
-    const tags = [...new Set(CASES.map((c) => c.conteudos[0]))].sort();
+    const tags = [...new Set(CASES.map((c) => c.conteudos[0]).filter(Boolean))].sort();
     const box = $("#tagList");
     box.innerHTML = "";
     tags.forEach((t) => {
@@ -235,7 +282,6 @@
 
     // info exibida ao host
     $("#modeLabel").textContent = MODE_LABEL[mode]
-      + (state.chatOn ? " · com chat" : " · presencial")
       + (alternate ? " · alterna papéis" : "");
     let info;
     if (mode === "aleatoria") info = "estações ilimitadas";
@@ -297,7 +343,7 @@
     // automático: host começa como avaliador; se "alternar", troca a cada estação
     else avaliadorIsHost = !(state.session.alternate && nx.n % 2 === 0);
     state.playRole = avaliadorIsHost ? "avaliador" : "estudante";
-    sendMsg({ t: "case", id: nx.id, prog: state.prog, chatOn: state.chatOn, avaliadorIsHost });
+    sendMsg({ t: "case", id: nx.id, prog: state.prog, avaliadorIsHost });
     startStation();
   }
 
@@ -358,25 +404,13 @@
     if (!state.timer.remaining) state.timer.remaining = c.tempo;
     renderTimer();
 
-    // layout conforme proximidade (com/sem chat) e papel da estação
-    const chatOn = state.chatOn;
+    // layout conforme o papel: avaliador vê roteiro + checklist (2 colunas);
+    // estudante vê só as instruções em coluna única
     const isEval = isEvaluator();
-    // o checklist do avaliador sempre fica em coluna própria, ao lado do
-    // roteiro — com chat ativo, o chat vira uma 3ª coluna
-    const showSideChecklist = isEval;
-    $("#chatPanel").classList.toggle("hidden", !chatOn);
-    $("#sideChecklistPanel").classList.toggle("hidden", !showSideChecklist);
-    // estudante presencial fica sem coluna direita → grade em coluna única
-    $(".station-grid").classList.toggle("single", !chatOn && !isEval);
-    $(".station-grid").classList.toggle("triple", chatOn && isEval);
+    $("#sideChecklistPanel").classList.toggle("hidden", !isEval);
+    $(".station-grid").classList.toggle("single", !isEval);
 
     renderRolePanel();
-    if (chatOn) {
-      $("#chatLog").innerHTML = "";
-      addSys(isEval
-        ? "Você é o PACIENTE/AVALIADOR. Siga o roteiro e marque o checklist."
-        : "Você é o ESTUDANTE. Conduza a anamnese e a orientação pelo chat.");
-    }
     $("#timerCtrls").style.display = isEval ? "flex" : "none";
     $("#btnFinish").classList.toggle("hidden", !isEval);
     // só quem criou a sala controla a fila de estações
@@ -387,11 +421,8 @@
   function renderRolePanel() {
     const c = state.caseObj;
     const p = $("#rolePanel");
-    const chatOn = state.chatOn;
     if (!isEvaluator()) {
-      const dica = chatOn
-        ? "Conduza pelo chat: apresente-se, colha a história, levante hipóteses e oriente."
-        : "Conduza pessoalmente com o avaliador: apresente-se, colha a história, levante hipóteses e oriente.";
+      const dica = "Conduza pessoalmente ou por chamada de voz com o avaliador: apresente-se, colha a história, levante hipóteses e oriente.";
       p.innerHTML = `<h3>Instruções ao estudante</h3>
         <div class="block queixa-principal"><div class="label">Queixa principal</div>${escapeHtml(c.queixaPrincipal)}</div>
         <div class="block">${nl(c.resumo)}</div>
@@ -478,23 +509,6 @@
     renderTimer();
     broadcastTimer();
   }
-
-  // ---------- chat ----------
-  function addBubble(text, who, label) {
-    const div = document.createElement("div");
-    div.className = "bubble " + who;
-    div.innerHTML = `<span class="who">${escapeHtml(label)}</span>${escapeHtml(text)}`;
-    const log = $("#chatLog");
-    log.appendChild(div);
-    log.scrollTop = log.scrollHeight;
-  }
-  function addSys(text) {
-    const div = document.createElement("div");
-    div.className = "sys";
-    div.textContent = text;
-    $("#chatLog").appendChild(div);
-  }
-  function myLabel() { return isEvaluator() ? "Paciente" : "Estudante"; }
 
   // ---------- resultado da estação ----------
   function computeResult() {
@@ -641,15 +655,6 @@
   $("#btnStart").onclick = startTimer;
   $("#btnPause").onclick = pauseTimer;
   $("#btnReset").onclick = resetTimer;
-
-  $("#chatForm").addEventListener("submit", (e) => {
-    e.preventDefault();
-    const text = $("#chatInput").value.trim();
-    if (!text) return;
-    addBubble(text, "me", myLabel());
-    sendMsg({ t: "chat", text, who: myLabel() });
-    $("#chatInput").value = "";
-  });
 
   $("#btnFinish").onclick = () => {
     if (!isEvaluator()) return;

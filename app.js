@@ -361,11 +361,14 @@
     // layout conforme proximidade (com/sem chat) e papel da estação
     const chatOn = state.chatOn;
     const isEval = isEvaluator();
-    const showSideChecklist = !chatOn && isEval;
+    // o checklist do avaliador sempre fica em coluna própria, ao lado do
+    // roteiro — com chat ativo, o chat vira uma 3ª coluna
+    const showSideChecklist = isEval;
     $("#chatPanel").classList.toggle("hidden", !chatOn);
     $("#sideChecklistPanel").classList.toggle("hidden", !showSideChecklist);
     // estudante presencial fica sem coluna direita → grade em coluna única
     $(".station-grid").classList.toggle("single", !chatOn && !isEval);
+    $(".station-grid").classList.toggle("triple", chatOn && isEval);
 
     renderRolePanel();
     if (chatOn) {
@@ -395,20 +398,16 @@
         <div class="block"><div class="label">Dica</div>${dica}</div>`;
     } else {
       const pac = c.paciente;
-      // no modo presencial, o checklist vai para o painel ao lado (não inline)
-      const checklistInline = chatOn
-        ? `<div class="block"><div class="label">Checklist de avaliação</div>
-             <div id="checklist"></div></div>`
-        : "";
+      // o checklist agora sempre fica no painel ao lado (#sideChecklist),
+      // nunca embutido aqui — coluna própria em qualquer modo
       p.innerHTML = `<h3>Roteiro do paciente — confidencial</h3>
         <div class="block queixa-principal"><div class="label">Queixa principal</div>${escapeHtml(c.queixaPrincipal)}</div>
         <div class="block"><div class="label">Personagem</div>${pac.personagem}<br>${nl(pac.contexto)}</div>
         <div class="block"><div class="label">O que revelar (conforme perguntado)</div>
           <ul>${pac.roteiro.map((r) => `<li>${escapeHtml(r)}</li>`).join("")}</ul></div>
         <div class="block"><div class="label">Achados de exame (se solicitado)</div>
-          <div class="achados">${escapeHtml(pac.examesAchados)}</div></div>
-        ${checklistInline}`;
-      renderChecklist(chatOn ? "#checklist" : "#sideChecklist");
+          <div class="achados">${escapeHtml(pac.examesAchados)}</div></div>`;
+      renderChecklist("#sideChecklist");
     }
   }
 

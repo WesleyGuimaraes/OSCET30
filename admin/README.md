@@ -24,6 +24,8 @@ Rode, no SQL Editor, nesta ordem:
 2. `../<bundle>/seed_taxonomia.sql` — disciplinas, períodos e conteúdos.
 3. **`db/migrations.sql`** (neste projeto) — políticas RLS e ajustes adicionais
    que o painel precisa. É idempotente; pode rodar de novo sem erro.
+4. **`db/seed_checklist_base.sql`** (opcional, recomendado) — popula o banco de
+   itens de checklist reutilizáveis (botão "Banco de itens" no editor).
 
 Depois, crie seu usuário em **Authentication → Users** (marque *Auto Confirm*),
 e cadastre-o como owner:

@@ -29,10 +29,11 @@ export default function Lista({ casos, taxonomia, filtroConteudoId, onNovoCaso, 
   const [fStatus, setFStatus] = useState("");
   const [fAutor, setFAutor] = useState("");
 
-  // pré-filtro vindo do Dashboard (clicar num conteúdo abre a lista já filtrada)
+  // pré-filtro vindo do Dashboard (clicar num conteúdo abre a lista já filtrada).
+  // Quando volta vazio (ex.: clicou em "Casos" no topo), limpa o filtro.
   useEffect(() => {
+    setFConteudo(filtroConteudoId || "");
     if (filtroConteudoId) {
-      setFConteudo(filtroConteudoId);
       setFDisciplina("");
       setFPeriodo("");
     }

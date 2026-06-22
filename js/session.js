@@ -1,0 +1,166 @@
+/* Montagem da sessão: papel do host/guest, fila de estações, modos e avanço. */
+
+import {
+  state, isEvaluator, getCases, CASE,
+  isCasesReady, getCasesError, setSetupNotice,
+} from "./store.js";
+import { $, shuffle, makeCode, setStatus } from "./util.js";
+import { MODE_LABEL, PREFIX, PEER_OPTS } from "./config.js";
+import { sendMsg, wireConn } from "./connection.js";
+import { startStation, showSummary } from "./station.js";
+
+// ---------- HOST: escolha de modo ----------
+export function startHost() {
+  state.role = "host";
+  // avisa logo se ainda está carregando ou não há casos publicados
+  if (!isCasesReady()) setSetupNotice("Carregando casos…");
+  else if (!getCases().length)
+    setSetupNotice(
+      getCasesError() ||
+        "Ainda não há casos publicados. Cadastre e publique casos no painel administrativo."
+    );
+  else setSetupNotice("");
+}
+
+export function renderTagPicker() {
+  const tags = [...new Set(getCases().map((c) => c.conteudos[0]).filter(Boolean))].sort();
+  const box = $("#tagList");
+  box.innerHTML = "";
+  tags.forEach((t) => {
+    const el = document.createElement("label");
+    el.className = "tag";
+    el.innerHTML = `<input type="checkbox" value="${t}">${t}`;
+    el.querySelector("input").onchange = (e) =>
+      el.classList.toggle("sel", e.target.checked);
+    box.appendChild(el);
+  });
+}
+
+// ---------- HOST: montar sessão + criar sala ----------
+function buildQueue(mode, tags) {
+  const all = getCases().map((c) => c.id);
+  if (mode === "conteudos") {
+    return shuffle(getCases().filter((c) => c.conteudos.some((t) => tags.includes(t))).map((c) => c.id));
+  }
+  if (mode === "infinito") return shuffle(all);
+  if (mode === "osce") return shuffle(all).slice(0, 4);
+  return []; // aleatoria: sorteio a cada estação
+}
+
+export function startSession(mode, tags) {
+  const queue = buildQueue(mode, tags);
+  const alternate = $("#altRoles").checked;
+  state.session = { mode, queue, index: 0, lastId: null, count: 0, results: [], alternate };
+
+  // info exibida ao host
+  $("#modeLabel").textContent = MODE_LABEL[mode]
+    + (alternate ? " · alterna papéis" : "");
+  let info;
+  if (mode === "aleatoria") info = "estações ilimitadas";
+  else if (mode === "osce")
+    info = `${queue.length} estações` + (queue.length < 4 ? ` (só ${queue.length} disponíveis)` : "");
+  else info = `${queue.length} estaç${queue.length === 1 ? "ão" : "ões"}`;
+  $("#queueInfo").textContent = info;
+
+  // cria o Peer/sala
+  const code = makeCode();
+  state.roomCode = code;
+  state.peer = new Peer(PREFIX + code, PEER_OPTS);
+  state.peer.on("open", () => {
+    $("#roomCode").textContent = code;
+    const link = location.origin + location.pathname + "?sala=" + code;
+    const a = $("#inviteLink");
+    a.textContent = link;
+    a.href = link;
+    $("#tagPanel").classList.add("hidden");
+    $("#roomShare").classList.remove("hidden");
+    setStatus("aguardando estudante", "wait");
+  });
+  state.peer.on("connection", (conn) => wireConn(conn));
+  state.peer.on("error", (e) => {
+    $("#waitMsg").textContent = "Erro ao criar sala: " + e.type + ". Recarregue e tente de novo.";
+  });
+}
+
+// ---------- HOST: avançar na fila ----------
+function nextStation() {
+  const s = state.session;
+  if (s.mode === "aleatoria") {
+    let pool = getCases().map((c) => c.id);
+    if (pool.length > 1 && s.lastId) pool = pool.filter((id) => id !== s.lastId);
+    const id = pool[Math.floor(Math.random() * pool.length)];
+    s.count++;
+    return { id, n: s.count, total: null };
+  }
+  if (s.index >= s.queue.length) return null;
+  const id = s.queue[s.index];
+  s.index++;
+  return { id, n: s.index, total: s.queue.length };
+}
+
+// roleMode: undefined/"auto" (segue o toggle "alternar a cada estação" do
+// setup), "toggle" (força trocar quem é avaliador) ou "keep" (força manter)
+export function hostStartNext(roleMode) {
+  const nx = nextStation();
+  if (!nx) { hostEndSession(); return; }
+  const wasAvaliadorIsHost = isEvaluator(); // papel do host na estação que está terminando
+  state.ready = { host: false, guest: false, self: false };
+  state.caseObj = CASE(nx.id);
+  state.session.lastId = nx.id;
+  state.prog = { n: nx.n, total: nx.total };
+  state.timer.remaining = state.caseObj.tempo;
+  state.scores = {};
+  let avaliadorIsHost;
+  if (roleMode === "toggle") avaliadorIsHost = !wasAvaliadorIsHost;
+  else if (roleMode === "keep") avaliadorIsHost = wasAvaliadorIsHost;
+  // automático: host começa como avaliador; se "alternar", troca a cada estação
+  else avaliadorIsHost = !(state.session.alternate && nx.n % 2 === 0);
+  state.playRole = avaliadorIsHost ? "avaliador" : "estudante";
+  sendMsg({ t: "case", id: nx.id, prog: state.prog, avaliadorIsHost });
+  startStation();
+}
+
+export function checkAdvance() {
+  if (state.role === "host" && state.ready.host && state.ready.guest) {
+    hostStartNext();
+  }
+}
+
+export function hostEndSession() {
+  state.ended = true;
+  sendMsg({ t: "sessionEnd", summary: state.session.results });
+  showSummary(state.session.results);
+}
+
+// ---------- GUEST ----------
+export function startGuest(code) {
+  state.role = "guest";
+  state.roomCode = code;
+  setStatus("conectando…", "wait");
+  $("#lobbyMsg").textContent = "";
+  state.peer = new Peer(undefined, PEER_OPTS);
+
+  // se não conectar em ~25s, avisa (provável bloqueio de rede/firewall)
+  state.connectTimer = setTimeout(() => {
+    if (!(state.conn && state.conn.open)) {
+      setStatus("desconectado", "off");
+      $("#lobbyMsg").textContent =
+        "Não foi possível conectar. Verifique o código e a internet; " +
+        "redes corporativas/escolares podem bloquear a conexão.";
+    }
+  }, 25000);
+
+  state.peer.on("open", () => {
+    const conn = state.peer.connect(PREFIX + code, { reliable: true });
+    wireConn(conn);
+  });
+  state.peer.on("error", (e) => {
+    if (e.type === "peer-unavailable") {
+      clearTimeout(state.connectTimer);
+      setStatus("desconectado", "off");
+      $("#lobbyMsg").textContent = "Sala não encontrada. Confira o código com o avaliador.";
+    } else if (!(state.conn && state.conn.open)) {
+      $("#lobbyMsg").textContent = "Tentando conectar… (" + e.type + ")";
+    }
+  });
+}

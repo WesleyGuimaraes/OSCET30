@@ -88,9 +88,9 @@ apenas como **referência de formato** (não é mais carregado pelo app).
 |---|---|
 | `index.html` | telas (lobby, setup, estação, resultado) |
 | `styles.css` | estilo |
-| `app.js` | conexão P2P, papéis, timer e avaliação |
+| `js/` | jogo em módulos ES — `main` (entrada/UI), `session` (modos/fila), `station` (estação/timer/resultado), `connection` (P2P + reconexão), `store` (estado + casos), `config`, `util` |
 | `db.js` | carrega os casos publicados do Supabase |
-| `cases.js` | banco antigo (referência de formato; não é mais usado pelo app) |
+| `cases.js` | banco antigo — só referência de formato e fonte do gerador de migração (`admin/db/gen_migracao_pediatria.cjs`); **não vai para o deploy** nem é carregado pelo app |
 | `admin/` | painel administrativo (React + Supabase) para gerenciar o banco de casos, ver `admin/README.md` |
 | `vercel.json` | builda o painel admin e publica em `/admin/` dentro do mesmo projeto Vercel do jogo |
 

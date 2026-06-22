@@ -85,3 +85,11 @@ Edite `cases.js`. Cada caso tem: `resumo` (o que o estudante vê), `paciente`
 | `styles.css` | estilo |
 | `app.js` | conexão P2P, papéis, timer, chat e avaliação |
 | `cases.js` | banco de estações de pediatria |
+| `admin/` | painel administrativo (React + Supabase) para gerenciar o banco de casos — projeto separado, ver `admin/README.md` |
+
+## Painel administrativo
+
+A pasta [`admin/`](admin/) contém um painel web (React + Vite + Supabase) para
+criar, editar, revisar e publicar casos com múltiplos editores, checklist
+normalizado a 100 pontos e fluxo de revisão. É um **projeto Vercel separado**
+(Root Directory `admin`). Instruções completas em [`admin/README.md`](admin/README.md).

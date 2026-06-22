@@ -1,0 +1,103 @@
+/* ============================================================
+   OSCE T30 — Painel admin
+   Tokens portados do design system (mesma identidade do app de treino)
+   ============================================================ */
+:root {
+  /* ---- Base palette ---- */
+  --c-bg:        #0f1720;
+  --c-panel:     #17212b;
+  --c-panel-2:   #1e2b38;
+  --c-line:      #2a3a49;
+
+  --c-text:      #e6edf3;
+  --c-muted:     #93a4b3;
+
+  --c-teal:      #3fb6a8;
+  --c-teal-deep: #2d8d82;
+  --c-teal-ink:  #06231f;
+
+  --c-blue:      #4a8bdf;
+  --c-danger:    #e05a5a;
+  --c-good:      #48c78e;
+  --c-warn:      #e0a24a;
+
+  --c-ok-fill:   #16291f;
+  --c-warn-fill: #2a2418;
+  --c-bad-fill:  #2a1a1a;
+
+  /* ---- Typography ---- */
+  --font-sans: system-ui, -apple-system, "Segoe UI", Roboto, sans-serif;
+  --fs-h1: 1.6rem;
+  --fs-h2: 1.15rem;
+  --fs-base: 0.95rem;
+  --fs-sm: 0.9rem;
+  --fs-xs: 0.85rem;
+  --fs-label: 0.78rem;
+  --fs-micro: 0.7rem;
+
+  /* ---- Radii ---- */
+  --radius-pill: 20px;
+  --radius-card: 14px;
+  --radius-panel: 12px;
+  --radius-input: 9px;
+
+  --ease: cubic-bezier(0.4, 0, 0.2, 1);
+}
+
+* { box-sizing: border-box; }
+html, body { margin: 0; padding: 0; }
+body {
+  background: var(--c-bg);
+  color: var(--c-text);
+  font-family: var(--font-sans);
+  -webkit-font-smoothing: antialiased;
+}
+input, textarea, select, button { font-family: inherit; }
+textarea { resize: vertical; }
+::placeholder { color: #5d6e7d; }
+select option { background: #17212b; color: #e6edf3; }
+input:focus, textarea:focus, select:focus { outline: none; border-color: var(--c-teal) !important; }
+::-webkit-scrollbar { width: 10px; height: 10px; }
+::-webkit-scrollbar-thumb { background: #2a3a49; border-radius: 6px; }
+
+#root { min-height: 100vh; }
+
+.btn {
+  border: none;
+  border-radius: var(--radius-input);
+  padding: 9px 16px;
+  font-weight: 600;
+  font-size: var(--fs-base);
+  cursor: pointer;
+  transition: background var(--ease) 0.15s, color var(--ease) 0.15s, border-color var(--ease) 0.15s;
+}
+.btn-primary { background: var(--c-teal); color: var(--c-teal-ink); }
+.btn-primary:hover { background: var(--c-teal-deep); color: #fff; }
+.btn-ghost { background: transparent; border: 1px solid var(--c-line); color: var(--c-text); }
+.btn-ghost:hover { border-color: var(--c-teal); color: var(--c-teal); }
+.btn-danger { background: var(--c-danger); color: #fff; }
+
+.input {
+  width: 100%;
+  padding: 11px 14px;
+  border-radius: var(--radius-input);
+  border: 1px solid var(--c-line);
+  background: var(--c-panel-2);
+  color: var(--c-text);
+  font-size: var(--fs-body, 1rem);
+}
+
+.card {
+  background: var(--c-panel);
+  border: 1px solid var(--c-line);
+  border-radius: var(--radius-card);
+  padding: 22px;
+}
+
+.label {
+  font-size: var(--fs-label);
+  text-transform: uppercase;
+  letter-spacing: 0.5px;
+  color: var(--c-muted);
+  font-weight: 600;
+}

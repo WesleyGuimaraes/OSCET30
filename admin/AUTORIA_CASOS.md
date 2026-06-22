@@ -114,7 +114,25 @@ do `seed_taxonomia.sql`.)
 
 ## Esqueleto / preferências
 
-> **A preencher pelo Wesley.** Cole aqui o esqueleto/modelo de caso que você quer
-> que eu siga (estilo, tamanho do roteiro, tom, nº de itens de checklist, exemplos
-> de casos "bons", o que evitar, etc.). A partir daí eu sigo este padrão em todo
-> lote, sem você precisar repetir.
+Formato de referência (caso "Cefaleia súbita — HSA", validado em `db/casos_cefaleia_hsa.sql`):
+
+- **Tela do aluno** = queixa principal (1 linha) + um parágrafo de HDA já
+  resumido (sem revelar o diagnóstico) + a tarefa numerada (ex.: "Durante os
+  próximos N minutos: 1. anamnese dirigida... 2. exame físico... 3. sinais de
+  alarme... 4. hipótese diagnóstica... 5. exames... 6. conduta").
+- **Tela do avaliador** = a mesma HDA, mas completa e com nome do paciente
+  (mapeada para `personagem`/`contexto`/`roteiro`), mais um bloco de **Exame
+  Físico "fornecer apenas se solicitado"** (mapeado para `exames_achados`).
+- **Checklist** vem como lista de objetivos (frase + checkbox), sem peso
+  explícito — eu **atribuo a gravidade (1–5)** de acordo com a importância
+  clínica de cada item (achados de alarme e hipótese diagnóstica correta
+  pesam mais que abertura/empatia).
+- Tempo da estação: usar o que vier no enunciado do aluno (aqui, 7 min →
+  `tempo_segundos = 420`); se não for dito, manter o padrão de 300.
+- Quando o conteúdo já existir na taxonomia (confirmo via REST com a chave
+  publishable, só leitura), posso resolver `conteudo_id` direto pelo
+  `disciplina_periodo_id` em vez de por slug de disciplina/período — mais
+  simples quando não preciso ambiguar entre disciplinas.
+
+Pode mandar casos nesse mesmo formato (aluno + avaliador + lista de
+objetivos) que eu sigo este padrão sem precisar repetir as instruções.

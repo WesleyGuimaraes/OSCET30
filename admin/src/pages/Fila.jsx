@@ -1,59 +1,6 @@
 import { useState } from "react";
 import { fmtData, fmtTempo, mudarStatus, devolverCaso } from "../lib/data.js";
-
-function DevolverModal({ caso, onCancel, onConfirm }) {
-  const [obs, setObs] = useState("");
-  const [enviando, setEnviando] = useState(false);
-  return (
-    <div
-      onClick={onCancel}
-      style={{
-        position: "fixed",
-        inset: 0,
-        zIndex: 50,
-        background: "rgba(8,12,16,0.66)",
-        backdropFilter: "blur(3px)",
-        display: "grid",
-        placeItems: "center",
-        padding: 20,
-      }}
-    >
-      <div onClick={(e) => e.stopPropagation()} className="card" style={{ width: 480, maxWidth: "100%" }}>
-        <h2 style={{ margin: "0 0 6px", fontSize: "1.2rem", fontWeight: 800 }}>Devolver para rascunho</h2>
-        <p style={{ margin: "0 0 16px", fontSize: "0.88rem", color: "var(--c-muted)", lineHeight: 1.5 }}>
-          "{caso.titulo}" voltará para <strong style={{ color: "var(--c-text)" }}>rascunho</strong>. Deixe uma observação para o autor.
-        </p>
-        <textarea
-          className="input"
-          rows={4}
-          value={obs}
-          onChange={(e) => setObs(e.target.value)}
-          placeholder="O que precisa ser ajustado…"
-          style={{ marginBottom: 16, lineHeight: 1.5 }}
-        />
-        <div style={{ display: "flex", justifyContent: "flex-end", gap: 9 }}>
-          <button className="btn btn-ghost" onClick={onCancel} disabled={enviando}>
-            Cancelar
-          </button>
-          <button
-            className="btn btn-danger"
-            disabled={enviando}
-            onClick={async () => {
-              setEnviando(true);
-              try {
-                await onConfirm(obs);
-              } finally {
-                setEnviando(false);
-              }
-            }}
-          >
-            ↩ Devolver
-          </button>
-        </div>
-      </div>
-    </div>
-  );
-}
+import DevolverModal from "../components/DevolverModal.jsx";
 
 export default function Fila({ casosEmRevisao, admin, onPreview, onRecarregar }) {
   const isPriv = admin.role === "owner" || admin.role === "revisor";
@@ -133,20 +80,10 @@ export default function Fila({ casosEmRevisao, admin, onPreview, onRecarregar })
                   <button className="btn btn-ghost" onClick={() => onPreview(c.id)}>
                     ▶ Preview
                   </button>
-                  <button
-                    className="btn btn-ghost"
-                    disabled={!isPriv}
-                    style={!isPriv ? { color: "#5d6e7d", cursor: "not-allowed" } : undefined}
-                    onClick={() => isPriv && setDevolverAlvo(c)}
-                  >
+                  <button className="btn btn-ghost" disabled={!isPriv} onClick={() => isPriv && setDevolverAlvo(c)}>
                     ↩ Devolver
                   </button>
-                  <button
-                    className="btn btn-primary"
-                    disabled={!isPriv}
-                    style={!isPriv ? { background: "var(--c-panel-2)", color: "#5d6e7d", cursor: "not-allowed" } : undefined}
-                    onClick={() => isPriv && publicar(c.id)}
-                  >
+                  <button className="btn btn-primary" disabled={!isPriv} onClick={() => isPriv && publicar(c.id)}>
                     ✅ Publicar
                   </button>
                 </div>

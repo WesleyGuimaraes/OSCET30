@@ -72,10 +72,17 @@ input:focus, textarea:focus, select:focus { outline: none; border-color: var(--c
   transition: background var(--ease) 0.15s, color var(--ease) 0.15s, border-color var(--ease) 0.15s;
 }
 .btn-primary { background: var(--c-teal); color: var(--c-teal-ink); }
-.btn-primary:hover { background: var(--c-teal-deep); color: #fff; }
+.btn-primary:not(:disabled):hover { background: var(--c-teal-deep); color: #fff; }
 .btn-ghost { background: transparent; border: 1px solid var(--c-line); color: var(--c-text); }
-.btn-ghost:hover { border-color: var(--c-teal); color: var(--c-teal); }
+.btn-ghost:not(:disabled):hover { border-color: var(--c-teal); color: var(--c-teal); }
 .btn-danger { background: var(--c-danger); color: #fff; }
+.btn-danger:not(:disabled):hover { background: #c94f4f; }
+.btn:disabled { opacity: 0.5; cursor: not-allowed; }
+
+/* foco visível por teclado (acessibilidade) — não afeta clique do mouse */
+.btn:focus-visible,
+nav button:focus-visible,
+a:focus-visible { outline: 2px solid var(--c-teal); outline-offset: 2px; }
 
 .input {
   width: 100%;

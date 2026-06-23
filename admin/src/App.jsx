@@ -223,7 +223,12 @@ export default function App() {
           }}
         />
       ) : screen === "preview" ? (
-        <Preview casoId={previewCasoId} onBack={() => setScreen(previewFrom)} />
+        <Preview
+          casoId={previewCasoId}
+          admin={admin}
+          onBack={() => setScreen(previewFrom)}
+          onRecarregar={recarregarDados}
+        />
       ) : screen === "fila" ? (
         <Fila
           casosEmRevisao={casos.filter((c) => c.status === "em_revisao")}

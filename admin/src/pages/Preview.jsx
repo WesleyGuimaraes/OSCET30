@@ -1,5 +1,6 @@
 import { useEffect, useState } from "react";
-import { fetchCasoCompleto, fmtTempo, normalizar } from "../lib/data.js";
+import { fetchCasoCompleto, fmtTempo, normalizar, STATUS_META, mudarStatus, devolverCaso } from "../lib/data.js";
+import DevolverModal from "../components/DevolverModal.jsx";
 
 const segBtnStyle = (active) => ({
   border: "none",
@@ -12,11 +13,16 @@ const segBtnStyle = (active) => ({
   color: active ? "var(--c-teal-ink)" : "var(--c-muted)",
 });
 
-export default function Preview({ casoId, onBack }) {
+export default function Preview({ casoId, admin, onBack, onRecarregar }) {
   const [caso, setCaso] = useState(null);
   const [carregando, setCarregando] = useState(true);
   const [erro, setErro] = useState("");
   const [modo, setModo] = useState("split"); // split | estudante | avaliador
+  const [acaoErro, setAcaoErro] = useState("");
+  const [enviando, setEnviando] = useState(false);
+  const [devolverOpen, setDevolverOpen] = useState(false);
+
+  const isPriv = !!admin && (admin.role === "owner" || admin.role === "revisor");
 
   useEffect(() => {
     let ativo = true;
@@ -31,6 +37,31 @@ export default function Preview({ casoId, onBack }) {
     };
   }, [casoId]);
 
+  async function publicar() {
+    setAcaoErro("");
+    setEnviando(true);
+    try {
+      await mudarStatus(caso.id, "publicado");
+      onRecarregar?.();
+      onBack();
+    } catch (err) {
+      setAcaoErro(err.message || "Erro ao publicar.");
+      setEnviando(false);
+    }
+  }
+
+  async function confirmarDevolver(obs) {
+    setAcaoErro("");
+    try {
+      await devolverCaso(caso.id, obs, admin.id);
+      onRecarregar?.();
+      onBack();
+    } catch (err) {
+      setAcaoErro(err.message || "Erro ao devolver.");
+      setDevolverOpen(false);
+    }
+  }
+
   if (carregando) return <div style={{ padding: 48, textAlign: "center", color: "var(--c-muted)" }}>Carregando…</div>;
   if (erro) return <div style={{ padding: 48, textAlign: "center", color: "var(--c-danger)" }}>{erro}</div>;
   if (!caso) return null;
@@ -38,6 +69,8 @@ export default function Preview({ casoId, onBack }) {
   const pesos = normalizar(caso.checklist);
   const checklistTotal = pesos.reduce((a, b) => a + b, 0);
   const conteudosLabel = caso.conteudos.map((c) => c.nome).join(" · ") || "—";
+  const sm = STATUS_META[caso.status] || STATUS_META.rascunho;
+  const emRevisao = caso.status === "em_revisao";
   const showEstudante = modo === "split" || modo === "estudante";
   const showAvaliador = modo === "split" || modo === "avaliador";
   // avaliador agora é sempre 2 colunas próprias (roteiro | checklist)
@@ -49,10 +82,13 @@ export default function Preview({ casoId, onBack }) {
         <button className="btn btn-ghost" onClick={onBack}>
           ← Voltar
         </button>
-        <div style={{ flex: 1, minWidth: 0 }}>
+        <div style={{ flex: 1, minWidth: 0, display: "flex", alignItems: "center", gap: 10 }}>
           <h1 style={{ margin: 0, fontSize: "1.3rem", fontWeight: 800, whiteSpace: "nowrap", overflow: "hidden", textOverflow: "ellipsis" }}>
             Preview · {caso.titulo || "(sem título)"}
           </h1>
+          <span style={{ background: sm.bg, color: sm.fg, borderRadius: 20, padding: "3px 11px", fontSize: "0.72rem", fontWeight: 700, whiteSpace: "nowrap" }}>
+            {sm.label}
+          </span>
         </div>
         <div style={{ display: "flex", background: "var(--c-panel-2)", border: "1px solid var(--c-line)", borderRadius: 20, padding: 3, gap: 2 }}>
           <button style={segBtnStyle(modo === "split")} onClick={() => setModo("split")}>
@@ -161,6 +197,51 @@ export default function Preview({ casoId, onBack }) {
           </section>
         )}
       </div>
+
+      {emRevisao && (
+        <div
+          style={{
+            position: "sticky",
+            bottom: 16,
+            marginTop: 22,
+            display: "flex",
+            alignItems: "center",
+            gap: 12,
+            flexWrap: "wrap",
+            padding: "13px 18px",
+            background: "rgba(15,23,32,0.95)",
+            backdropFilter: "blur(8px)",
+            border: "1px solid var(--c-line)",
+            borderRadius: "var(--radius-card)",
+            boxShadow: "0 6px 24px rgba(0,0,0,0.35)",
+          }}
+        >
+          <div style={{ display: "flex", alignItems: "center", gap: 10, flex: 1, minWidth: 200 }}>
+            <span style={{ fontSize: "0.88rem", color: "var(--c-muted)" }}>
+              {isPriv ? "Revise as três visões e decida:" : "Este caso está em revisão."}
+            </span>
+            {acaoErro && <span style={{ fontSize: "0.85rem", color: "var(--c-danger)" }}>⚠️ {acaoErro}</span>}
+          </div>
+          {isPriv ? (
+            <div style={{ display: "flex", gap: 9 }}>
+              <button className="btn btn-ghost" disabled={enviando} onClick={() => setDevolverOpen(true)}>
+                ↩ Devolver
+              </button>
+              <button className="btn btn-primary" disabled={enviando} onClick={publicar}>
+                {enviando ? "Publicando…" : "✅ Publicar"}
+              </button>
+            </div>
+          ) : (
+            <span style={{ fontSize: "0.82rem", color: "var(--c-muted)" }}>
+              Apenas owner/revisor podem publicar ou devolver.
+            </span>
+          )}
+        </div>
+      )}
+
+      {devolverOpen && (
+        <DevolverModal caso={caso} onCancel={() => setDevolverOpen(false)} onConfirm={confirmarDevolver} />
+      )}
     </main>
   );
 }

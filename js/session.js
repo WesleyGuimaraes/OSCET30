@@ -5,8 +5,8 @@ import {
   isCasesReady, getCasesError, setSetupNotice,
 } from "./store.js";
 import { $, shuffle, makeCode, setStatus } from "./util.js";
-import { MODE_LABEL, PREFIX, PEER_OPTS } from "./config.js";
-import { sendMsg, wireConn } from "./connection.js";
+import { MODE_LABEL } from "./config.js";
+import { sendMsg, hostCreateRoom, guestJoinRoom } from "./connection.js";
 import { startStation, showSummary } from "./station.js";
 
 // ---------- HOST: escolha de modo ----------
@@ -62,11 +62,10 @@ export function startSession(mode, tags) {
   else info = `${queue.length} estaç${queue.length === 1 ? "ão" : "ões"}`;
   $("#queueInfo").textContent = info;
 
-  // cria o Peer/sala
+  // cria a sala (assina o canal Realtime) e mostra código/link quando pronto
   const code = makeCode();
   state.roomCode = code;
-  state.peer = new Peer(PREFIX + code, PEER_OPTS);
-  state.peer.on("open", () => {
+  hostCreateRoom(code, () => {
     $("#roomCode").textContent = code;
     const link = location.origin + location.pathname + "?sala=" + code;
     const a = $("#inviteLink");
@@ -75,10 +74,6 @@ export function startSession(mode, tags) {
     $("#tagPanel").classList.add("hidden");
     $("#roomShare").classList.remove("hidden");
     setStatus("aguardando estudante", "wait");
-  });
-  state.peer.on("connection", (conn) => wireConn(conn));
-  state.peer.on("error", (e) => {
-    $("#waitMsg").textContent = "Erro ao criar sala: " + e.type + ". Recarregue e tente de novo.";
   });
 }
 
@@ -136,31 +131,6 @@ export function hostEndSession() {
 export function startGuest(code) {
   state.role = "guest";
   state.roomCode = code;
-  setStatus("conectando…", "wait");
   $("#lobbyMsg").textContent = "";
-  state.peer = new Peer(undefined, PEER_OPTS);
-
-  // se não conectar em ~25s, avisa (provável bloqueio de rede/firewall)
-  state.connectTimer = setTimeout(() => {
-    if (!(state.conn && state.conn.open)) {
-      setStatus("desconectado", "off");
-      $("#lobbyMsg").textContent =
-        "Não foi possível conectar. Verifique o código e a internet; " +
-        "redes corporativas/escolares podem bloquear a conexão.";
-    }
-  }, 25000);
-
-  state.peer.on("open", () => {
-    const conn = state.peer.connect(PREFIX + code, { reliable: true });
-    wireConn(conn);
-  });
-  state.peer.on("error", (e) => {
-    if (e.type === "peer-unavailable") {
-      clearTimeout(state.connectTimer);
-      setStatus("desconectado", "off");
-      $("#lobbyMsg").textContent = "Sala não encontrada. Confira o código com o avaliador.";
-    } else if (!(state.conn && state.conn.open)) {
-      $("#lobbyMsg").textContent = "Tentando conectar… (" + e.type + ")";
-    }
-  });
+  guestJoinRoom(code);
 }

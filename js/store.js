@@ -6,9 +6,8 @@ import { $ } from "./util.js";
 export const state = {
   role: null,            // papel de CONEXÃO: 'host' (criou a sala) | 'guest'
   playRole: "avaliador", // papel NA ESTAÇÃO: 'avaliador' | 'estudante' (pode alternar)
-  peer: null,
-  conn: null,
-  connectTimer: null,
+  channel: null,         // canal de Supabase Realtime da sala
+  connectTimer: null,    // timeout de "sala não encontrada" (guest)
   caseObj: null,
   prog: { n: 0, total: null },
   timer: { remaining: 0, running: false, intervalId: null },
@@ -16,11 +15,10 @@ export const state = {
   ready: { host: false, guest: false, self: false },
   pendingMode: null,     // modo escolhido antes de confirmar conteúdos
   session: null,         // { mode, queue, index, lastId, count, results }
-  // --- robustez de conexão ---
-  roomCode: null,        // código da sala (host criou / guest entrou) — p/ reconectar
-  sessionStarted: false, // já começou a 1ª estação? (distingue conexão inicial de reconexão)
-  ended: false,          // sessão encerrada de propósito (não tentar reconectar)
-  reconnect: { tries: 0, timer: null },
+  // --- controle de sessão ---
+  roomCode: null,        // código da sala (host criou / guest entrou)
+  sessionStarted: false, // já começou a 1ª estação? (distingue entrada inicial de reconexão)
+  ended: false,          // sessão encerrada de propósito (não re-sincronizar)
 };
 
 // sou o avaliador (paciente) nesta estação?

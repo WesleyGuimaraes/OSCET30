@@ -108,3 +108,11 @@ a:focus-visible { outline: 2px solid var(--c-teal); outline-offset: 2px; }
   color: var(--c-muted);
   font-weight: 600;
 }
+
+/* ---- Dashboard ---- */
+.dash-stats { display: grid; grid-template-columns: repeat(5, 1fr); gap: 12px; }
+.dash-cols  { display: grid; grid-template-columns: 1fr 1fr; gap: 20px; align-items: start; }
+@media (max-width: 900px) {
+  .dash-stats { grid-template-columns: repeat(2, 1fr); }
+  .dash-cols  { grid-template-columns: 1fr; }
+}

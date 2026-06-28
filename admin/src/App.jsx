@@ -169,6 +169,10 @@ export default function App() {
             setFiltroConteudoId(ct.id);
             setScreen("lista");
           }}
+          onNovoCaso={() => {
+            setCasoSelecionado(null);
+            setScreen("editor");
+          }}
         />
       ) : screen === "lista" ? (
         <Lista

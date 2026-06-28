@@ -33,49 +33,32 @@ export default function Historico({ casoId, casoTitulo, onBack }) {
       {erro && <div style={{ padding: 24, textAlign: "center", color: "var(--c-danger)" }}>{erro}</div>}
 
       {!carregando && !erro && (
-        <div style={{ position: "relative", paddingLeft: 30 }}>
-          <div style={{ position: "absolute", left: 9, top: 6, bottom: 6, width: 2, background: "var(--c-line)" }} />
+        <div style={{ position: "relative", paddingLeft: 8 }}>
+          <div style={{ position: "absolute", left: 18, top: 8, bottom: 8, width: 2, background: "var(--c-line)" }} />
           {eventos.map((e) => {
             const m = ACAO_META[e.acao] || { label: e.acao, icon: "•", color: "#8aa0b3" };
             return (
-              <div key={e.id} style={{ position: "relative", paddingBottom: 22 }}>
+              <div key={e.id} style={{ display: "flex", gap: 16, paddingBottom: 22 }}>
                 <div
                   style={{
-                    position: "absolute",
-                    left: -30,
-                    top: 14,
-                    width: 14,
-                    height: 14,
-                    borderRadius: "50%",
-                    background: m.color,
-                    border: "3px solid var(--c-bg)",
-                    boxShadow: `0 0 0 1px ${m.color}`,
+                    width: 36, height: 36, flexShrink: 0, borderRadius: "50%",
+                    background: "var(--c-panel)", border: `2px solid ${m.color}`,
+                    display: "grid", placeItems: "center", fontSize: "1rem", zIndex: 1,
                   }}
-                />
-                <div className="card" style={{ padding: "14px 16px" }}>
-                  <div style={{ display: "flex", alignItems: "center", justifyContent: "space-between", gap: 10, marginBottom: 3, flexWrap: "wrap" }}>
-                    <div style={{ display: "flex", alignItems: "center", gap: 8 }}>
-                      <span style={{ fontSize: "0.95rem" }}>{m.icon}</span>
-                      <span style={{ fontWeight: 700, fontSize: "0.95rem" }}>{m.label}</span>
-                    </div>
-                    <span style={{ fontSize: "0.78rem", color: "var(--c-muted)" }}>{fmtData(e.quando)}</span>
+                >
+                  {m.icon}
+                </div>
+                <div style={{ flex: 1, paddingTop: 2, minWidth: 0 }}>
+                  <div style={{ display: "flex", justifyContent: "space-between", gap: 12, flexWrap: "wrap" }}>
+                    <span style={{ fontWeight: 700, fontSize: "0.95rem", color: m.color }}>{m.label}</span>
+                    <span style={{ fontSize: "0.78rem", color: "var(--c-muted)", whiteSpace: "nowrap" }}>{fmtData(e.quando)}</span>
                   </div>
-                  <div style={{ fontSize: "0.85rem", color: "var(--c-muted)" }}>
+                  <div style={{ fontSize: "0.83rem", color: "var(--c-muted)", marginTop: 3 }}>
                     por <span style={{ color: "var(--c-text)" }}>{e.quem}</span>
                   </div>
                   {e.obs && e.obs.trim() && (
-                    <div
-                      style={{
-                        marginTop: 9,
-                        padding: "9px 12px",
-                        background: "var(--c-panel-2)",
-                        borderLeft: "3px solid var(--c-warn)",
-                        borderRadius: 6,
-                        fontSize: "0.85rem",
-                        lineHeight: 1.45,
-                      }}
-                    >
-                      {e.obs}
+                    <div style={{ marginTop: 8, padding: "9px 12px", background: "var(--c-panel-2)", borderLeft: "3px solid var(--c-danger)", borderRadius: 6, fontSize: "0.85rem", lineHeight: 1.45, color: "#cbd6df" }}>
+                      "{e.obs}"
                     </div>
                   )}
                 </div>

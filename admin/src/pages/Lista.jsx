@@ -36,7 +36,7 @@ function IconBtn({ title, onClick, children }) {
   );
 }
 
-export default function Lista({ casos, taxonomia, filtroConteudoId, admin, onNovoCaso, onOpenCaso, onPreview, onHist, onDuplicar, onRecarregar }) {
+export default function Lista({ casos, taxonomia, filtroConteudoId, buscaInicial, admin, onNovoCaso, onOpenCaso, onPreview, onHist, onDuplicar, onRecarregar }) {
   const [busca, setBusca] = useState("");
   const [fDisciplina, setFDisciplina] = useState("");
   const [fPeriodo, setFPeriodo] = useState("");
@@ -56,6 +56,11 @@ export default function Lista({ casos, taxonomia, filtroConteudoId, admin, onNov
       setFPeriodo("");
     }
   }, [filtroConteudoId]);
+
+  // busca vinda da Topbar (atalho "/")
+  useEffect(() => {
+    setBusca(buscaInicial || "");
+  }, [buscaInicial]);
 
   const disciplinas = useMemo(() => [...new Set(taxonomia.map((c) => c.disciplina).filter(Boolean))], [taxonomia]);
   const periodos = useMemo(() => [...new Set(taxonomia.map((c) => c.periodo).filter(Boolean))].sort((a, b) => a - b), [taxonomia]);

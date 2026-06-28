@@ -20,6 +20,7 @@ export default function App() {
   const [screen, setScreen] = useState("dashboard");
   const [casoSelecionado, setCasoSelecionado] = useState(null); // id ou null (novo)
   const [filtroConteudoId, setFiltroConteudoId] = useState(""); // pré-filtro vindo do dashboard
+  const [buscaGlobal, setBuscaGlobal] = useState(""); // busca vinda da Topbar
   const [previewCasoId, setPreviewCasoId] = useState(null);
   const [previewFrom, setPreviewFrom] = useState("lista");
   const [histCasoId, setHistCasoId] = useState(null);
@@ -135,9 +136,15 @@ export default function App() {
         onGoDashboard={() => setScreen("dashboard")}
         onGoCasos={() => {
           setFiltroConteudoId("");
+          setBuscaGlobal("");
           setScreen("lista");
         }}
         onGoFila={() => setScreen("fila")}
+        onBuscar={(t) => {
+          setFiltroConteudoId("");
+          setBuscaGlobal(t);
+          setScreen("lista");
+        }}
         filaCount={filaCount}
         admin={admin}
       />
@@ -179,6 +186,7 @@ export default function App() {
           casos={casos}
           taxonomia={taxonomia}
           filtroConteudoId={filtroConteudoId}
+          buscaInicial={buscaGlobal}
           admin={admin}
           onRecarregar={recarregarDados}
           onNovoCaso={() => {

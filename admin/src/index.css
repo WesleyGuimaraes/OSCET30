@@ -150,6 +150,10 @@ a:focus-visible { outline: 2px solid var(--c-teal); outline-offset: 2px; }
 .bottom-nav { display: none; }
 @media (max-width: 760px) {
   .topbar-nav, .topbar-busca { display: none; }
+  .topbar-header { padding: 10px 14px !important; }
+}
+@media (max-width: 380px) {
+  .topbar-quem-nome { display: none; } /* sobra só o emoji do papel + Sair */
   .bottom-nav {
     display: flex;
     position: fixed; left: 0; right: 0; bottom: 0; z-index: 40;

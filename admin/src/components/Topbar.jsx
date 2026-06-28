@@ -43,6 +43,7 @@ export default function Topbar({ screen, onGoDashboard, onGoCasos, onGoFila, onB
 
   return (
     <header
+      className="topbar-header"
       style={{
         position: "sticky",
         top: 0,
@@ -102,8 +103,8 @@ export default function Topbar({ screen, onGoDashboard, onGoCasos, onGoFila, onB
         <span style={{ fontSize: "0.68rem", border: "1px solid var(--c-line)", borderRadius: 5, padding: "1px 5px", color: "var(--c-muted)" }}>/</span>
       </div>
       <div style={{ display: "flex", alignItems: "center", gap: 10 }}>
-        <span style={{ fontSize: "0.85rem", color: "var(--c-text)" }}>
-          {meta.emoji} {admin.nome} <span style={{ color: "var(--c-muted)" }}>· {meta.label}</span>
+        <span className="topbar-quem" style={{ fontSize: "0.85rem", color: "var(--c-text)", whiteSpace: "nowrap" }}>
+          {meta.emoji} <span className="topbar-quem-nome">{admin.nome} <span style={{ color: "var(--c-muted)" }}>· {meta.label}</span></span>
         </span>
         <button className="btn btn-ghost" style={{ padding: "6px 12px", fontSize: "0.8rem" }} onClick={() => supabase.auth.signOut()}>
           Sair

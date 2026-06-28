@@ -36,14 +36,13 @@ function IconBtn({ title, onClick, children }) {
   );
 }
 
-export default function Lista({ casos, taxonomia, filtroConteudoId, buscaInicial, admin, onNovoCaso, onOpenCaso, onPreview, onHist, onDuplicar, onRecarregar }) {
+export default function Lista({ casos, taxonomia, filtroConteudoId, buscaInicial, admin, sel, setSel, onNovoCaso, onOpenCaso, onPreview, onHist, onDuplicar, onRecarregar }) {
   const [busca, setBusca] = useState("");
   const [fDisciplina, setFDisciplina] = useState("");
   const [fPeriodo, setFPeriodo] = useState("");
   const [fConteudo, setFConteudo] = useState("");
   const [fStatus, setFStatus] = useState("");
   const [fAutor, setFAutor] = useState("");
-  const [sel, setSel] = useState(() => new Set());
   const [bulkMsg, setBulkMsg] = useState("");
   const [bulkBusy, setBulkBusy] = useState(false);
 

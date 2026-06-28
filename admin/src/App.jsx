@@ -21,6 +21,7 @@ export default function App() {
   const [casoSelecionado, setCasoSelecionado] = useState(null); // id ou null (novo)
   const [filtroConteudoId, setFiltroConteudoId] = useState(""); // pré-filtro vindo do dashboard
   const [buscaGlobal, setBuscaGlobal] = useState(""); // busca vinda da Topbar
+  const [selecao, setSelecao] = useState(() => new Set()); // seleção da Lista (persiste ao entrar/sair de um caso)
   const [previewCasoId, setPreviewCasoId] = useState(null);
   const [previewFrom, setPreviewFrom] = useState("lista");
   const [histCasoId, setHistCasoId] = useState(null);
@@ -188,6 +189,8 @@ export default function App() {
           filtroConteudoId={filtroConteudoId}
           buscaInicial={buscaGlobal}
           admin={admin}
+          sel={selecao}
+          setSel={setSelecao}
           onRecarregar={recarregarDados}
           onNovoCaso={() => {
             setCasoSelecionado(null);

@@ -102,14 +102,22 @@ export default function Topbar({ screen, onGoDashboard, onGoCasos, onGoFila, onB
         />
         <span style={{ fontSize: "0.68rem", border: "1px solid var(--c-line)", borderRadius: 5, padding: "1px 5px", color: "var(--c-muted)" }}>/</span>
       </div>
-      <div style={{ display: "flex", alignItems: "center", gap: 10 }}>
-        <span className="topbar-quem" style={{ fontSize: "0.85rem", color: "var(--c-text)", whiteSpace: "nowrap" }}>
-          {meta.emoji} <span className="topbar-quem-nome">{admin.nome} <span style={{ color: "var(--c-muted)" }}>· {meta.label}</span></span>
+      <div className="topbar-quem-full" style={{ display: "flex", alignItems: "center", gap: 10 }}>
+        <span style={{ fontSize: "0.85rem", color: "var(--c-text)", whiteSpace: "nowrap" }}>
+          {meta.emoji} {admin.nome} <span style={{ color: "var(--c-muted)" }}>· {meta.label}</span>
         </span>
         <button className="btn btn-ghost" style={{ padding: "6px 12px", fontSize: "0.8rem" }} onClick={() => supabase.auth.signOut()}>
           Sair
         </button>
       </div>
+      {/* mobile: avatar (emoji do papel) substitui nome/papel/Sair; toque para sair */}
+      <button
+        className="topbar-avatar-mobile"
+        title={`${admin.nome} · ${meta.label} — tocar para sair`}
+        onClick={() => supabase.auth.signOut()}
+      >
+        {meta.emoji}
+      </button>
     </header>
   );
 }

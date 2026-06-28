@@ -368,7 +368,7 @@ export default function CaseEditor({ casoId, admin, taxonomia, onBack, onSalvo, 
         </div>
       )}
 
-      <div style={{ display: "grid", gridTemplateColumns: "1.55fr 1fr", gap: 18, alignItems: "start" }}>
+      <div className="editor-grid" style={{ display: "grid", gridTemplateColumns: "1.55fr 1fr", gap: 18, alignItems: "start" }}>
         {/* COLUNA ESQUERDA */}
         <div style={{ display: "flex", flexDirection: "column", gap: 18 }}>
           <section id="sec-ident" className="card">
@@ -384,7 +384,7 @@ export default function CaseEditor({ casoId, admin, taxonomia, onBack, onSalvo, 
                 placeholder="Ex.: Lactente com tosse e febre há 3 dias"
               />
             </div>
-            <div style={{ display: "grid", gridTemplateColumns: "1fr 1fr", gap: 12, marginBottom: 14 }}>
+            <div className="form-grid-2" style={{ display: "grid", gridTemplateColumns: "1fr 1fr", gap: 12, marginBottom: 14 }}>
               <div style={{ display: "flex", flexDirection: "column", gap: 6 }}>
                 <label className="label">Especialidade</label>
                 <input className="input" value={d.especialidade || ""} onChange={setField("especialidade")} placeholder="Ex.: Pediatria" />
@@ -451,7 +451,7 @@ export default function CaseEditor({ casoId, admin, taxonomia, onBack, onSalvo, 
             <div style={{ fontSize: "0.78rem", textTransform: "uppercase", letterSpacing: "0.5px", color: "var(--c-teal)", fontWeight: 700, marginBottom: 14 }}>
               👤 Ator / paciente simulado
             </div>
-            <div style={{ display: "grid", gridTemplateColumns: "1fr 1fr", gap: 12 }}>
+            <div className="form-grid-2" style={{ display: "grid", gridTemplateColumns: "1fr 1fr", gap: 12 }}>
               <div style={{ display: "flex", flexDirection: "column", gap: 6 }}>
                 <label className="label">Personagem</label>
                 <textarea className="input" rows={3} value={d.personagem || ""} onChange={setField("personagem")} placeholder="Quem o ator interpreta…" style={{ lineHeight: 1.45 }} />
@@ -763,7 +763,7 @@ export default function CaseEditor({ casoId, admin, taxonomia, onBack, onSalvo, 
         <span style={{ fontSize: "0.85rem", color: dirty ? "var(--c-warn)" : "var(--c-muted)", whiteSpace: "nowrap" }}>
           {dirty ? "• Alterações não salvas" : "Tudo salvo"}
         </span>
-        <div style={{ flex: 1 }} />
+        <div className="editor-savebar-spacer" style={{ flex: 1 }} />
         {d.status === "publicado" && isPriv && (
           <button className="btn btn-danger" onClick={() => transicionar("arquivado", "Caso arquivado.")} disabled={salvando}>🗄️ Arquivar</button>
         )}

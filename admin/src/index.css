@@ -125,6 +125,26 @@ a:focus-visible { outline: 2px solid var(--c-teal); outline-offset: 2px; }
 @media (max-width: 1000px) {
   .lista-filtros { grid-template-columns: 1fr 1fr; }
 }
+@media (max-width: 760px) {
+  .lista-filtros { grid-template-columns: 1fr; }
+  .lt-head { display: none; }
+  .lt-row {
+    grid-template-columns: auto 1fr auto !important;
+    grid-template-areas:
+      "cb title status"
+      ".  chips  chips"
+      ".  autor  date"
+      ".  actions actions";
+    row-gap: 7px; padding: 14px 16px !important;
+  }
+  .lt-cb { grid-area: cb; align-self: start; }
+  .lt-title { grid-area: title; }
+  .lt-status { grid-area: status; justify-self: end; align-self: start; }
+  .lt-chips { grid-area: chips; }
+  .lt-autor { grid-area: autor; }
+  .lt-date { grid-area: date; justify-self: end; }
+  .lt-actions { grid-area: actions; justify-content: flex-start !important; margin-top: 4px; }
+}
 
 /* ---- Navegação mobile ---- */
 .bottom-nav { display: none; }

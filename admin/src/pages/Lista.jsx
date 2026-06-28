@@ -187,31 +187,31 @@ export default function Lista({ casos, taxonomia, filtroConteudoId, buscaInicial
               onClick={() => onOpenCaso(row.id)}
               style={{ display: "grid", gridTemplateColumns: COLS, gap: 14, padding: "13px 18px", borderBottom: "1px solid var(--c-line)", alignItems: "center", cursor: "pointer", background: marcado ? "var(--c-ok-fill)" : "transparent" }}
             >
-              <div onClick={(e) => e.stopPropagation()} style={{ display: "flex", alignItems: "center" }}>
+              <div className="lt-cb" onClick={(e) => e.stopPropagation()} style={{ display: "flex", alignItems: "center" }}>
                 <input type="checkbox" checked={marcado} onChange={() => toggle(row.id)} style={{ accentColor: "var(--c-teal)", cursor: "pointer" }} />
               </div>
-              <div style={{ minWidth: 0 }}>
+              <div className="lt-title" style={{ minWidth: 0 }}>
                 <div style={{ fontWeight: 600, fontSize: "0.93rem", whiteSpace: "nowrap", overflow: "hidden", textOverflow: "ellipsis" }}>{row.titulo || "(sem título)"}</div>
                 <div style={{ fontSize: "0.76rem", color: "var(--c-muted)", marginTop: 2 }}>{row.especialidade || "—"} · {per ? per + "° período" : "—"} · {fmtTempo(row.tempoSegundos)}</div>
               </div>
-              <div style={{ display: "flex", flexWrap: "wrap", gap: 5, minWidth: 0 }}>
+              <div className="lt-chips" style={{ display: "flex", flexWrap: "wrap", gap: 5, minWidth: 0 }}>
                 {row.conteudos.slice(0, 3).map((c, i) => (
                   <span key={i} style={{ background: "var(--c-panel-2)", border: `1px solid ${c.principal ? "var(--c-teal)" : "var(--c-line)"}`, color: c.principal ? "var(--c-teal)" : "var(--c-muted)", borderRadius: 14, padding: "2px 8px", fontSize: "0.72rem", whiteSpace: "nowrap", maxWidth: 150, overflow: "hidden", textOverflow: "ellipsis" }}>
                     {c.principal ? "⭐ " : ""}{c.nome}
                   </span>
                 ))}
               </div>
-              <div>
+              <div className="lt-status">
                 <span style={{ background: sm.bg, color: sm.fg, borderRadius: 20, padding: "3px 11px", fontSize: "0.74rem", fontWeight: 700, whiteSpace: "nowrap" }}>{sm.label}</span>
               </div>
-              <div style={{ display: "flex", alignItems: "center", gap: 7, minWidth: 0 }}>
+              <div className="lt-autor" style={{ display: "flex", alignItems: "center", gap: 7, minWidth: 0 }}>
                 <span style={{ width: 22, height: 22, flexShrink: 0, borderRadius: "50%", background: avatarCor(row.autor), color: "#fff", display: "grid", placeItems: "center", fontSize: "0.68rem", fontWeight: 700 }}>
                   {(row.autor || "?").charAt(0).toUpperCase()}
                 </span>
                 <span style={{ fontSize: "0.83rem", whiteSpace: "nowrap", overflow: "hidden", textOverflow: "ellipsis" }}>{row.autor}</span>
               </div>
-              <div style={{ fontSize: "0.8rem", color: "var(--c-muted)", whiteSpace: "nowrap" }}>{fmtData(row.atualizadoEm)}</div>
-              <div style={{ display: "flex", gap: 4, justifyContent: "flex-end" }}>
+              <div className="lt-date" style={{ fontSize: "0.8rem", color: "var(--c-muted)", whiteSpace: "nowrap" }}>{fmtData(row.atualizadoEm)}</div>
+              <div className="lt-actions" style={{ display: "flex", gap: 4, justifyContent: "flex-end" }}>
                 <IconBtn title="Preview" onClick={(e) => { e.stopPropagation(); onPreview(row.id); }}>▶</IconBtn>
                 <IconBtn title="Histórico" onClick={(e) => { e.stopPropagation(); onHist(row.id); }}>🕘</IconBtn>
                 <IconBtn title="Duplicar" onClick={(e) => { e.stopPropagation(); onDuplicar?.(row.id); }}>⧉</IconBtn>

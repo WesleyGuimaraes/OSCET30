@@ -116,3 +116,12 @@ a:focus-visible { outline: 2px solid var(--c-teal); outline-offset: 2px; }
   .dash-stats { grid-template-columns: repeat(2, 1fr); }
   .dash-cols  { grid-template-columns: 1fr; }
 }
+
+/* ---- Lista de casos ---- */
+.lista-filtros { display: grid; grid-template-columns: 1.7fr repeat(5, 1fr) auto; gap: 10px; align-items: end; }
+.linkact { background: transparent; border: none; color: #cfe0d8; font-size: 0.82rem; cursor: pointer; padding: 2px 4px; }
+.linkact:hover:not(:disabled) { color: var(--c-text); }
+.linkact:disabled { opacity: 0.5; cursor: not-allowed; }
+@media (max-width: 1000px) {
+  .lista-filtros { grid-template-columns: 1fr 1fr; }
+}

@@ -179,6 +179,8 @@ export default function App() {
           casos={casos}
           taxonomia={taxonomia}
           filtroConteudoId={filtroConteudoId}
+          admin={admin}
+          onRecarregar={recarregarDados}
           onNovoCaso={() => {
             setCasoSelecionado(null);
             setScreen("editor");

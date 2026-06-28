@@ -187,3 +187,9 @@ a:focus-visible { outline: 2px solid var(--c-teal); outline-offset: 2px; }
   .editor-savebar-spacer { flex: none !important; height: 0; }
   .editor-savebar button { width: 100%; }
 }
+
+/* ---- Preview ---- */
+@media (max-width: 760px) {
+  .preview-grid { grid-template-columns: 1fr !important; }
+  .preview-actionbar { bottom: 74px !important; }
+}

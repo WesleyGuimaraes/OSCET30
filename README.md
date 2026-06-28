@@ -4,8 +4,9 @@
 
 Versão web da skill de OSCE para treinar **em dupla**: uma pessoa é o
 **paciente/avaliador** e a outra é o **estudante**. As duas entram na **mesma sala**
-por um código, sem cadastro e sem servidor próprio — a conexão é direta entre os
-navegadores via **WebRTC (PeerJS)**.
+por um código, sem cadastro — a sessão é sincronizada em tempo real via
+**Supabase Realtime** (Broadcast + Presence), que passa pelo mesmo HTTPS/WebSocket
+que carrega os casos (funciona em redes restritas, sem STUN/TURN).
 
 ## Como jogar
 
@@ -22,8 +23,8 @@ navegadores via **WebRTC (PeerJS)**.
 6. Ao final da sessão, aparece o **resumo** com a nota de cada estação e o total.
 
 > A sessão **não tem chat de texto**: a comunicação do atendimento é por voz
-> (pessoalmente ou por chamada). A conexão P2P sincroniza o caso, o timer e a
-> avaliação entre os dois navegadores.
+> (pessoalmente ou por chamada). O canal de Realtime sincroniza o caso, o timer
+> e a avaliação entre os dois navegadores.
 
 ### De onde vêm os casos
 
@@ -54,8 +55,9 @@ outra rede. (Conexão entre dispositivos exige o site servido por **HTTPS**.)
 | 🏥 **Modo OSCE** | 4 estações aleatórias seguidas (como uma prova). |
 
 > **Funciona entre dispositivos e redes diferentes** (celular + PC, Wi-Fi + dados móveis):
-> usa servidores STUN + TURN públicos para atravessar o NAT. Em redes muito
-> restritas (corporativas/escolares) o WebRTC ainda pode ser bloqueado.
+> a sincronização viaja pelo Supabase Realtime (HTTPS/WebSocket na 443), o mesmo
+> canal que já carrega os casos — então passa até em redes restritas
+> (corporativas/escolares), sem depender de STUN/TURN.
 >
 > **Dica:** em vez de ditar o código, o avaliador pode enviar o **link de convite**
 > (com o código embutido) — o estudante abre no celular e o código já vem preenchido.
@@ -88,7 +90,7 @@ apenas como **referência de formato** (não é mais carregado pelo app).
 |---|---|
 | `index.html` | telas (lobby, setup, estação, resultado) |
 | `styles.css` | estilo |
-| `js/` | jogo em módulos ES — `main` (entrada/UI), `session` (modos/fila), `station` (estação/timer/resultado), `connection` (P2P + reconexão), `store` (estado + casos), `config`, `util` |
+| `js/` | jogo em módulos ES — `main` (entrada/UI), `session` (modos/fila), `station` (estação/timer/resultado), `connection` (Supabase Realtime: Broadcast + Presence), `store` (estado + casos), `config`, `util` |
 | `db.js` | carrega os casos publicados do Supabase |
 | `cases.js` | banco antigo — só referência de formato e fonte do gerador de migração (`admin/db/gen_migracao_pediatria.cjs`); **não vai para o deploy** nem é carregado pelo app |
 | `admin/` | painel administrativo (React + Supabase) para gerenciar o banco de casos, ver `admin/README.md` |

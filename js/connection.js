@@ -1,14 +1,27 @@
-/* Camada P2P (PeerJS): envio/recepção de mensagens, fiação da conexão e
-   reconexão automática quando a sessão já começou e a conexão cai. */
+/* Transporte da sessão via Supabase Realtime (Broadcast + Presence).
+   Substitui o WebRTC/PeerJS: as mensagens do jogo viajam pelo mesmo
+   WebSocket/HTTPS que já carrega os casos, então funcionam em redes
+   restritas (faculdade) sem STUN/TURN. A reconexão é automática (o cliente
+   Realtime reconecta o socket; a Presence re-sincroniza os participantes). */
 
 import { state, isEvaluator, CASE, casesReadyPromise } from "./store.js";
 import { $, setStatus } from "./util.js";
-import { PREFIX, PEER_OPTS } from "./config.js";
+import { SALA_PREFIX, SUPABASE_URL, SUPABASE_ANON_KEY } from "./config.js";
 import { startStation, broadcastTimer, renderTimer, studentTimerSync, storeAndShow, showSummary } from "./station.js";
 import { hostStartNext, checkAdvance } from "./session.js";
 
+// cliente Realtime dedicado (separado do client de leitura em db.js)
+let sb = null;
+function client() {
+  if (!sb) sb = window.supabase.createClient(SUPABASE_URL, SUPABASE_ANON_KEY);
+  return sb;
+}
+
+// envia uma mensagem do jogo para o outro lado (broadcast no canal da sala)
 export function sendMsg(obj) {
-  if (state.conn && state.conn.open) state.conn.send(obj);
+  if (state.channel) {
+    state.channel.send({ type: "broadcast", event: "msg", payload: obj });
+  }
 }
 
 function handleMsg(m) {
@@ -22,8 +35,7 @@ function handleMsg(m) {
           setStatus("caso indisponível", "off");
           return;
         }
-        state.sessionStarted = true;       // a partir daqui, quedas tentam reconectar
-        state.reconnect.tries = 0;
+        state.sessionStarted = true;
         state.prog = m.prog || { n: 0, total: null };
         // o host informa quem é o avaliador nesta estação; o guest é o oposto
         state.playRole = m.avaliadorIsHost ? "estudante" : "avaliador";
@@ -47,90 +59,116 @@ function handleMsg(m) {
       checkAdvance();
       break;
     case "sessionEnd":
-      state.ended = true; // encerramento intencional — não reconectar
+      state.ended = true; // encerramento intencional
       showSummary(m.summary);
       break;
   }
 }
 
-export function wireConn(conn) {
-  state.conn = conn;
-  conn.on("open", () => {
-    clearTimeout(state.connectTimer);
-    clearTimeout(state.reconnect.timer);
-    state.reconnect.tries = 0;
-    $("#lobbyMsg").textContent = "";
-    setStatus("conectado", "on");
-    if (state.role === "host") {
-      if (!state.sessionStarted) {
-        state.sessionStarted = true;
-        $("#waitMsg").textContent = "Estudante conectado! Iniciando…";
-        hostStartNext();
-      } else {
-        // reconexão do estudante: re-sincroniza a estação atual sem avançar
-        resendCurrentStation();
-      }
+// ---------- HOST: cria a sala (assina o canal) ----------
+// onReady() é chamado quando o canal está pronto (mostra código/link).
+export function hostCreateRoom(code, onReady) {
+  const channel = client().channel(SALA_PREFIX + code, {
+    config: { broadcast: { self: false }, presence: { key: "host" } },
+  });
+  state.channel = channel;
+
+  channel.on("broadcast", { event: "msg" }, ({ payload }) => handleMsg(payload));
+
+  // edge-triggered: detecta o estudante entrar/sair via 'sync' (robusto à
+  // ordem — funciona mesmo se o estudante entrar antes do avaliador criar)
+  let guestHere = false;
+  channel.on("presence", { event: "sync" }, () => {
+    const pres = channel.presenceState();
+    const present = !!(pres.guest && pres.guest.length);
+    if (present && !guestHere) {
+      guestHere = true;
+      onGuestPresent();
+    } else if (!present && guestHere) {
+      guestHere = false;
+      if (!state.ended) setStatus("estudante caiu — aguardando reconexão…", "wait");
     }
   });
-  conn.on("data", handleMsg);
-  conn.on("close", onConnClose);
-  conn.on("error", () => setStatus("erro de conexão", "off"));
-}
 
-// queda de conexão: se a sessão já estava em andamento e não foi encerrada de
-// propósito, tenta reconectar (guest) ou aguarda o estudante voltar (host).
-function onConnClose() {
-  if (state.ended || !state.sessionStarted) {
-    setStatus("desconectado", "off");
-    return;
-  }
-  if (state.role === "guest") {
-    scheduleGuestReconnect();
-  } else {
-    setStatus("estudante caiu — aguardando reconexão…", "wait");
-  }
-}
-
-// HOST: ao estudante reconectar, reenvia a estação atual + estado do timer,
-// para o guest remontar a tela exatamente onde parou (sem avançar a fila).
-function resendCurrentStation() {
-  setStatus("conectado", "on");
-  if (!state.caseObj) return;
-  sendMsg({ t: "case", id: state.caseObj.id, prog: state.prog, avaliadorIsHost: isEvaluator() });
-  broadcastTimer();
-}
-
-// GUEST: tenta reconectar à mesma sala, recriando o Peer se necessário.
-function scheduleGuestReconnect() {
-  if (state.ended) return;
-  if (state.reconnect.tries >= 6) {
-    setStatus("desconectado", "off");
-    $("#lobbyMsg").textContent = "Conexão perdida. Recarregue a página e entre de novo com o código.";
-    return;
-  }
-  state.reconnect.tries++;
-  setStatus("reconectando… (" + state.reconnect.tries + ")", "wait");
-  clearTimeout(state.reconnect.timer);
-  state.reconnect.timer = setTimeout(() => {
-    try {
-      if (!state.peer || state.peer.destroyed) {
-        state.peer = new Peer(undefined, PEER_OPTS);
-        state.peer.on("open", () => connectGuest());
-        state.peer.on("error", () => scheduleGuestReconnect());
-      } else {
-        connectGuest();
-      }
-    } catch (e) {
-      scheduleGuestReconnect();
+  channel.subscribe((status) => {
+    if (status === "SUBSCRIBED") {
+      channel.track({ role: "host" });
+      onReady();
+    } else if (status === "CHANNEL_ERROR" || status === "TIMED_OUT") {
+      $("#waitMsg").textContent =
+        "Não foi possível criar a sala (conexão de tempo real). Recarregue e tente de novo.";
     }
-  }, 3000);
+  });
 }
 
-function connectGuest() {
-  const conn = state.peer.connect(PREFIX + state.roomCode, { reliable: true });
-  wireConn(conn);
-  // watchdog: se esta tentativa não abrir, agenda a próxima
-  setTimeout(() => {
-    if (!(state.conn && state.conn.open) && !state.ended) scheduleGuestReconnect();
-  }, 8000);
+// estudante apareceu na sala (presence join): inicia ou re-sincroniza.
+function onGuestPresent() {
+  clearTimeout(state.connectTimer);
+  setStatus("conectado", "on");
+  $("#waitMsg").textContent = "Estudante conectado! Iniciando…";
+  if (!state.sessionStarted) {
+    state.sessionStarted = true;
+    hostStartNext();
+  } else if (state.caseObj) {
+    // reconexão do estudante: reenvia a estação atual + timer, sem avançar
+    sendMsg({ t: "case", id: state.caseObj.id, prog: state.prog, avaliadorIsHost: isEvaluator() });
+    broadcastTimer();
+  }
+}
+
+// ---------- GUEST: entra na sala (assina o canal) ----------
+export function guestJoinRoom(code) {
+  const channel = client().channel(SALA_PREFIX + code, {
+    config: { broadcast: { self: false }, presence: { key: "guest" } },
+  });
+  state.channel = channel;
+  setStatus("conectando…", "wait");
+
+  channel.on("broadcast", { event: "msg" }, ({ payload }) => handleMsg(payload));
+
+  let hostSeen = false;
+  channel.on("presence", { event: "sync" }, () => {
+    const pres = channel.presenceState();
+    if (pres.host && pres.host.length && !hostSeen) {
+      hostSeen = true;
+      clearTimeout(state.connectTimer);
+      setStatus("conectado", "on");
+      $("#lobbyMsg").textContent = "";
+    }
+  });
+
+  channel.subscribe((status) => {
+    if (status === "SUBSCRIBED") {
+      channel.track({ role: "guest" });
+      // se em ~12s nenhum avaliador aparecer, o código provavelmente está errado
+      state.connectTimer = setTimeout(() => {
+        if (!hostSeen) {
+          setStatus("desconectado", "off");
+          $("#lobbyMsg").textContent =
+            "Sala não encontrada (ou o avaliador ainda não criou). Confira o código com ele.";
+        }
+      }, 12000);
+    } else if (status === "CHANNEL_ERROR" || status === "TIMED_OUT") {
+      $("#lobbyMsg").textContent =
+        "Falha na conexão de tempo real. Verifique a internet e tente de novo.";
+    }
+  });
+}
+
+// teste de diagnóstico: o Realtime do Supabase está acessível nesta rede?
+export function testRealtime(onResult) {
+  const ch = client().channel("teste-" + Math.random().toString(36).slice(2));
+  let done = false;
+  const finish = (ok) => {
+    if (done) return;
+    done = true;
+    clearTimeout(t);
+    try { client().removeChannel(ch); } catch (e) {}
+    onResult(ok);
+  };
+  const t = setTimeout(() => finish(false), 10000);
+  ch.subscribe((status) => {
+    if (status === "SUBSCRIBED") finish(true);
+    else if (status === "CHANNEL_ERROR" || status === "TIMED_OUT") finish(false);
+  });
 }

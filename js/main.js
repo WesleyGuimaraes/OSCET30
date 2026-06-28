@@ -3,13 +3,12 @@
 
 import { state, loadCases, casesGuard, isEvaluator } from "./store.js";
 import { $, $$, show } from "./util.js";
-import { PEER_OPTS } from "./config.js";
 import {
   startHost, renderTagPicker, startSession, startGuest,
   hostStartNext, hostEndSession, checkAdvance,
 } from "./session.js";
 import { startTimer, pauseTimer, resetTimer, computeResult, storeAndShow } from "./station.js";
-import { sendMsg } from "./connection.js";
+import { sendMsg, testRealtime } from "./connection.js";
 
 // começa a carregar os casos publicados do Supabase logo de cara
 loadCases();
@@ -114,61 +113,17 @@ $("#btnRestart").onclick = () => hostEndSession();
 $("#btnNewSession").onclick = () => location.reload();
 
 // ---------- diagnóstico de conexão ----------
-// Verifica (1) se o servidor de sinalização do PeerJS é alcançável e
-// (2) se a rede permite obter um candidato TURN (relay) — necessário em
-// redes restritas como Wi-Fi/5G de faculdade.
+// Verifica se o Realtime do Supabase (o transporte da sessão) está acessível
+// nesta rede — é o que precisa funcionar na faculdade.
 function testConnection() {
   const out = $("#connResult");
   out.className = "conn-result show";
-  out.innerHTML = "⏳ Testando… (uns 10 segundos)";
-
-  let signalingOk = false, gotRelay = false, gotSrflx = false, doneSig = false;
-
-  // (1) sinalização PeerJS
-  const p = new Peer(undefined, PEER_OPTS);
-  const sigTimer = setTimeout(() => finishSig(), 9000);
-  p.on("open", () => { signalingOk = true; finishSig(); });
-  p.on("error", () => finishSig());
-  function finishSig() {
-    if (doneSig) return;
-    doneSig = true;
-    clearTimeout(sigTimer);
-    try { p.destroy(); } catch (e) {}
-  }
-
-  // (2) ICE/TURN
-  const pc = new RTCPeerConnection(PEER_OPTS.config);
-  pc.createDataChannel("t");
-  pc.onicecandidate = (e) => {
-    if (!e.candidate) return;
-    const c = e.candidate.candidate || "";
-    if (c.includes(" typ relay")) gotRelay = true;
-    if (c.includes(" typ srflx")) gotSrflx = true;
-  };
-  pc.createOffer().then((o) => pc.setLocalDescription(o)).catch(() => {});
-
-  setTimeout(() => {
-    try { pc.close(); } catch (e) {}
-    render();
-  }, 10000);
-
-  function render() {
-    let cls, msg;
-    if (signalingOk && gotRelay) {
-      cls = "ok";
-      msg = "✅ <b>Conexão OK</b> — funciona mesmo em redes restritas (TURN disponível).";
-    } else if (signalingOk && gotSrflx) {
-      cls = "warn";
-      msg = "⚠️ <b>Conexão limitada</b> — deve funcionar em redes comuns, mas pode falhar em redes muito restritas (não obtive TURN). Se não conectar, tente o 4G/5G do celular.";
-    } else if (signalingOk) {
-      cls = "warn";
-      msg = "⚠️ <b>Servidor acessível, mas a rede bloqueia o vídeo/áudio P2P</b> (sem STUN/TURN). Provável bloqueio de firewall — use outra rede (ex.: dados móveis do celular).";
-    } else {
-      cls = "bad";
-      msg = "❌ <b>Esta rede bloqueia a conexão</b> (servidor de sinalização inacessível). Redes de faculdade/empresa costumam bloquear. Use o 4G/5G do celular ou outra rede.";
-    }
-    out.className = "conn-result show " + cls;
-    out.innerHTML = msg;
-  }
+  out.innerHTML = "⏳ Testando conexão… (uns segundos)";
+  testRealtime((ok) => {
+    out.className = "conn-result show " + (ok ? "ok" : "bad");
+    out.innerHTML = ok
+      ? "✅ <b>Conexão OK</b> — o servidor de tempo real está acessível nesta rede. O jogo deve funcionar normalmente."
+      : "❌ <b>Esta rede está bloqueando a conexão</b> com o servidor. Tente os dados móveis (4G/5G) do celular ou outra rede.";
+  });
 }
 $("#btnTestConn").onclick = testConnection;

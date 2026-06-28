@@ -137,9 +137,20 @@ input{width:100%;padding:11px 14px;border-radius:9px;border:1px solid var(--line
 
 /* checklist */
 .chk{display:flex;gap:10px;align-items:flex-start;padding:7px 0;border-bottom:1px solid var(--line)}
-.chk input{width:auto;margin:3px 0 0}
+.chk input{width:auto;margin:3px 0 0;accent-color:var(--accent)}
 .chk label{font-size:.9rem;flex:1}
 .chk .pts{color:var(--muted);font-size:.8rem}
+
+/* abas da estação (só aparecem no celular, p/ o avaliador — ver media query) */
+.station-tabs{display:none}
+.st-tab{flex:1;background:var(--panel);border:none;border-top:2px solid transparent;border-radius:0;
+  display:flex;flex-direction:column;align-items:center;gap:3px;padding:9px 0 11px;
+  color:var(--muted);font-weight:500;font-size:.7rem;text-transform:uppercase;letter-spacing:.5px}
+.st-tab .st-ico{font-size:1.25rem;line-height:1;opacity:.65}
+.st-tab.active{color:var(--accent);border-top-color:var(--accent)}
+.st-tab.active .st-ico{opacity:1}
+.st-count{color:var(--warn);font-weight:700}
+.st-tab.active .st-count{color:var(--good)}
 
 .station-foot{margin-top:14px;display:flex;justify-content:flex-end;align-items:center;gap:10px;flex-wrap:wrap}
 #skipCtrls{display:inline-flex;gap:8px;flex-wrap:wrap}
@@ -180,8 +191,32 @@ input{width:100%;padding:11px 14px;border-radius:9px;border:1px solid var(--line
 @media(max-width:760px){
   #app{padding:18px 14px}
   h1{font-size:1.5rem}
-  .cards,.mode-grid{grid-template-columns:1fr}
+  .cards{grid-template-columns:1fr}      /* cards de papel empilham */
+  .mode-grid{gap:10px}                   /* modos seguem em 2 colunas (compacto) */
   .topbar{padding:12px 14px}
+
+  /* timer mais compacto no cabeçalho da estação */
+  .timer{font-size:1.5rem}
+  .station-head{padding:12px 14px}
+
+  /* ----- Estação com ABAS (avaliador: roteiro + checklist) -----
+     Mostra um painel por vez; a barra de abas fica fixa no rodapé.
+     O aluno (.single) não tem abas — vê só as instruções. */
+  .station-tabs{display:flex;position:sticky;bottom:0;z-index:10;
+    margin:14px -14px 0;border-top:1px solid var(--line)}
+  #stationTabs.hidden{display:none}      /* aluno: sem abas */
+  #station{padding-bottom:6px}
+
+  .station-grid:not(.single) #rolePanel,
+  .station-grid:not(.single) #sideChecklistPanel{display:none}
+  .station-grid.show-roteiro #rolePanel{display:block}
+  .station-grid.show-checklist #sideChecklistPanel{display:block}
+  #sideChecklistPanel{max-height:none}
+
+  /* com a barra de abas fixa, a ação de encerrar fica acima dela */
+  .station-foot{justify-content:stretch;flex-direction:column-reverse}
+  .station-foot button,.station-foot #skipCtrls{width:100%}
+  #skipCtrls{justify-content:center}
 }
 
 /* Alvos de toque maiores em telas sensíveis ao toque (tablets) */

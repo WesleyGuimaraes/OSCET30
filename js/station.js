@@ -29,7 +29,33 @@ export function startStation() {
   $("#btnFinish").classList.toggle("hidden", !isEval);
   // só quem criou a sala controla a fila de estações
   $("#skipCtrls").classList.toggle("hidden", state.role !== "host");
+
+  // abas (celular): só o avaliador (roteiro + checklist) tem; começa no Roteiro
+  $("#stationTabs").classList.toggle("hidden", !isEval);
+  if (isEval) {
+    setStationTab("roteiro");
+    updateChecklistTabCount();
+  } else {
+    $(".station-grid").classList.remove("show-roteiro", "show-checklist");
+  }
   show("station");
+}
+
+// alterna qual painel aparece no celular (Roteiro ⇄ Checklist) + estado das abas
+export function setStationTab(which) {
+  const grid = $(".station-grid");
+  grid.classList.toggle("show-roteiro", which === "roteiro");
+  grid.classList.toggle("show-checklist", which === "checklist");
+  $("#tabRoteiro").classList.toggle("active", which === "roteiro");
+  $("#tabChecklist").classList.toggle("active", which === "checklist");
+}
+
+// atualiza o contador "marcados/total" no rótulo da aba Checklist
+export function updateChecklistTabCount() {
+  const total = (state.caseObj && state.caseObj.checklist.length) || 0;
+  const done = Object.values(state.scores).filter(Boolean).length;
+  const el = $("#tabChkCount");
+  if (el) el.textContent = total ? `${done}/${total}` : "";
 }
 
 function renderRolePanel() {
@@ -66,7 +92,7 @@ function renderChecklist(targetSel) {
     row.innerHTML = `<input type="checkbox" id="chk${i}">
       <label for="chk${i}">${escapeHtml(item.item)}</label>
       <span class="pts">${item.peso} pt</span>`;
-    row.querySelector("input").onchange = (e) => { state.scores[i] = e.target.checked; };
+    row.querySelector("input").onchange = (e) => { state.scores[i] = e.target.checked; updateChecklistTabCount(); };
     box.appendChild(row);
   });
 }

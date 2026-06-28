@@ -7,7 +7,7 @@ import {
   startHost, renderTagPicker, startSession, startGuest,
   hostStartNext, hostEndSession, checkAdvance,
 } from "./session.js";
-import { startTimer, pauseTimer, resetTimer, computeResult, storeAndShow } from "./station.js";
+import { startTimer, pauseTimer, resetTimer, computeResult, storeAndShow, setStationTab } from "./station.js";
 import { sendMsg, testRealtime } from "./connection.js";
 
 // começa a carregar os casos publicados do Supabase logo de cara
@@ -68,6 +68,10 @@ $("#btnCopyLink").onclick = () => {
     $("#joinCode").scrollIntoView({ behavior: "smooth", block: "center" });
   }
 })();
+
+// ---------- abas da estação no celular (avaliador) ----------
+$("#tabRoteiro").onclick = () => setStationTab("roteiro");
+$("#tabChecklist").onclick = () => setStationTab("checklist");
 
 // ---------- timer (avaliador) ----------
 $("#btnStart").onclick = startTimer;

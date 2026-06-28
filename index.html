@@ -130,6 +130,19 @@
       </div>
     </div>
 
+    <!-- Abas (só no celular, só para o avaliador que tem roteiro + checklist):
+         alterna entre os dois painéis em vez de empilhá-los numa rolagem longa -->
+    <nav class="station-tabs hidden" id="stationTabs" role="tablist" aria-label="Roteiro e checklist">
+      <button class="st-tab active" id="tabRoteiro" data-tab="roteiro" type="button" role="tab">
+        <span class="st-ico" aria-hidden="true">📋</span>
+        <span class="st-lbl">Roteiro</span>
+      </button>
+      <button class="st-tab" id="tabChecklist" data-tab="checklist" type="button" role="tab">
+        <span class="st-ico" aria-hidden="true">☑️</span>
+        <span class="st-lbl">Checklist <span id="tabChkCount" class="st-count"></span></span>
+      </button>
+    </nav>
+
     <div class="station-foot">
       <button id="btnFinish" class="danger hidden">Encerrar e avaliar</button>
       <span id="skipCtrls" class="hidden">

@@ -110,10 +110,9 @@ parasitoses-intestinais, pac, puberdade-normal-e-alterada,
 sindrome-nefritica-nefrotica, transtornos-neurodesenvolvimento, uso-abusivo-de-telas`
 
 > `exame-fisico-recem-nascido`, `marcos-desenvolvimento-infantil`,
-> `alimentacao-infantil` e `alimentacao-primeiro-ano-vida` foram criados em
-> `db/migracao_taxonomia_pediatria.sql` (não existiam no seed original); o
-> typo `icutericia-neonatal` foi corrigido para `ictericia-neonatal` no mesmo
-> arquivo.
+> `alimentacao-infantil` e `alimentacao-primeiro-ano-vida` foram adicionados à
+> taxonomia durante a migração inicial (não existiam no seed original), e o typo
+> `icutericia-neonatal` foi corrigido para `ictericia-neonatal`.
 
 (Para Clínica Médica 5º ou Cirurgia 7º, trocar disciplina/período e usar os slugs
 do `seed_taxonomia.sql`.)
@@ -122,7 +121,7 @@ do `seed_taxonomia.sql`.)
 
 ## Esqueleto / preferências
 
-Formato de referência (caso "Cefaleia súbita — HSA", validado em `db/casos_cefaleia_hsa.sql`):
+Formato de referência (validado com o caso "Cefaleia súbita — HSA"):
 
 - **Tela do aluno** = queixa principal (1 linha) + um parágrafo de HDA já
   resumido (sem revelar o diagnóstico) + a tarefa numerada (ex.: "Durante os

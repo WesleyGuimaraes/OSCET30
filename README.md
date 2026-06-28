@@ -81,8 +81,7 @@ outra rede. (Conexão entre dispositivos exige o site servido por **HTTPS**.)
 
 Os casos agora vivem no **Supabase** e são geridos pelo **painel administrativo**
 (pasta `admin/`) — criação, edição, revisão e publicação. O app de treino só
-exibe casos com status **publicado**. O antigo `cases.js` permanece no repositório
-apenas como **referência de formato** (não é mais carregado pelo app).
+exibe casos com status **publicado**.
 
 ## Estrutura
 
@@ -92,7 +91,6 @@ apenas como **referência de formato** (não é mais carregado pelo app).
 | `styles.css` | estilo |
 | `js/` | jogo em módulos ES — `main` (entrada/UI), `session` (modos/fila), `station` (estação/timer/resultado), `connection` (Supabase Realtime: Broadcast + Presence), `store` (estado + casos), `config`, `util` |
 | `db.js` | carrega os casos publicados do Supabase |
-| `cases.js` | banco antigo — só referência de formato e fonte do gerador de migração (`admin/db/gen_migracao_pediatria.cjs`); **não vai para o deploy** nem é carregado pelo app |
 | `admin/` | painel administrativo (React + Supabase) para gerenciar o banco de casos, ver `admin/README.md` |
 | `vercel.json` | builda o painel admin e publica em `/admin/` dentro do mesmo projeto Vercel do jogo |
 

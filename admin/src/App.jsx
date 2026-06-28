@@ -10,6 +10,7 @@ import Fila from "./pages/Fila.jsx";
 import Historico from "./pages/Historico.jsx";
 import Dashboard from "./pages/Dashboard.jsx";
 import Topbar from "./components/Topbar.jsx";
+import BottomNav from "./components/BottomNav.jsx";
 
 export default function App() {
   const [session, setSession] = useState(undefined); // undefined = ainda checando
@@ -129,18 +130,21 @@ export default function App() {
   }
 
   const filaCount = casos.filter((c) => c.status === "em_revisao").length;
+  const irDashboard = () => setScreen("dashboard");
+  const irCasos = () => {
+    setFiltroConteudoId("");
+    setBuscaGlobal("");
+    setScreen("lista");
+  };
+  const irFila = () => setScreen("fila");
 
   return (
     <div style={{ minHeight: "100vh" }}>
       <Topbar
         screen={screen}
-        onGoDashboard={() => setScreen("dashboard")}
-        onGoCasos={() => {
-          setFiltroConteudoId("");
-          setBuscaGlobal("");
-          setScreen("lista");
-        }}
-        onGoFila={() => setScreen("fila")}
+        onGoDashboard={irDashboard}
+        onGoCasos={irCasos}
+        onGoFila={irFila}
         onBuscar={(t) => {
           setFiltroConteudoId("");
           setBuscaGlobal(t);
@@ -149,6 +153,7 @@ export default function App() {
         filaCount={filaCount}
         admin={admin}
       />
+      <BottomNav screen={screen} onGoDashboard={irDashboard} onGoCasos={irCasos} onGoFila={irFila} filaCount={filaCount} />
 
       {erroDados && (
         <div style={{ maxWidth: 1180, margin: "16px auto 0", padding: "0 28px" }}>

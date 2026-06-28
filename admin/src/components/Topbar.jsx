@@ -61,7 +61,7 @@ export default function Topbar({ screen, onGoDashboard, onGoCasos, onGoFila, onB
         <span>OSCE T30</span>
         <span style={{ color: "var(--c-teal)", fontWeight: 500 }}>Painel</span>
       </div>
-      <nav style={{ display: "flex", gap: 4, marginLeft: 14 }}>
+      <nav className="topbar-nav" style={{ display: "flex", gap: 4, marginLeft: 14 }}>
         <button onClick={onGoDashboard} style={navBtnStyle(screen === "dashboard")}>
           Visão geral
         </button>

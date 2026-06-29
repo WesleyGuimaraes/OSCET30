@@ -1,8 +1,11 @@
 {
   "framework": null,
   "installCommand": "cd admin && npm install",
-  "buildCommand": "mkdir -p public_combined && cp index.html db.js styles.css public_combined/ && cp -r js public_combined/js && cd admin && npm run build && cd .. && cp -r admin/dist public_combined/admin",
+  "buildCommand": "mkdir -p public_combined && cp index.html app.html db.js styles.css public_combined/ && cp -r js public_combined/js && cd admin && npm run build && cd .. && cp -r admin/dist public_combined/admin",
   "outputDirectory": "public_combined",
+  "routes": [
+    { "src": "/app", "dest": "/app.html" }
+  ],
   "headers": [
     {
       "source": "/(.*)",

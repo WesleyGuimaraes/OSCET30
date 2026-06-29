@@ -3,168 +3,669 @@
 <head>
 <meta charset="UTF-8" />
 <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-<title>OSCE Online</title>
-<link rel="stylesheet" href="styles.css" />
+<title>Próxima Estação — Treine para o OSCE como na prova real</title>
+<style>
+  *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+
+  :root {
+    --c-bg:        #0f1720;
+    --c-bg-dark:   #0c131b;
+    --c-panel:     #17212b;
+    --c-panel-2:   #1e2b38;
+    --c-line:      #2a3a49;
+    --c-text:      #e6edf3;
+    --c-muted:     #93a4b3;
+    --c-teal:      #3fb6a8;
+    --c-teal-deep: #2d8d82;
+    --c-teal-ink:  #06231f;
+    --c-good:      #48c78e;
+    --c-on-bg:     #1e3a2e;
+    --c-num:       #243341;
+  }
+
+  html { scroll-behavior: smooth; }
+
+  body {
+    background: #070b10;
+    color: var(--c-text);
+    font-family: system-ui, -apple-system, sans-serif;
+    -webkit-font-smoothing: antialiased;
+  }
+
+  .page {
+    width: 100%;
+    max-width: 1280px;
+    margin: 0 auto;
+    background: var(--c-bg);
+  }
+
+  /* ─── NAV ─── */
+  .nav {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    padding: 22px 48px;
+    border-bottom: 1px solid var(--c-line);
+  }
+
+  .nav-brand {
+    display: flex;
+    align-items: center;
+    gap: 11px;
+    text-decoration: none;
+    color: inherit;
+  }
+
+  .nav-logo {
+    width: 30px;
+    height: 30px;
+    border-radius: 9px;
+    background: var(--c-teal);
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    flex-shrink: 0;
+  }
+
+  .nav-name {
+    font-size: 18px;
+    font-weight: 700;
+    letter-spacing: -0.3px;
+  }
+
+  .nav-links {
+    display: flex;
+    align-items: center;
+    gap: 14px;
+  }
+
+  .nav-link {
+    font-size: 14px;
+    font-weight: 500;
+    color: var(--c-muted);
+    text-decoration: none;
+    transition: color .15s;
+  }
+  .nav-link:hover { color: var(--c-text); }
+
+  .btn {
+    display: inline-flex;
+    align-items: center;
+    gap: 7px;
+    border-radius: 8px;
+    font-weight: 600;
+    cursor: pointer;
+    text-decoration: none;
+    border: none;
+    transition: background .15s, color .15s, opacity .15s;
+    white-space: nowrap;
+  }
+
+  .btn-sm  { font-size: 13.5px; padding: 8px 16px; height: 38px; }
+  .btn-lg  { font-size: 16px;   padding: 15px 26px; }
+
+  .btn-primary {
+    background: var(--c-teal);
+    color: var(--c-teal-ink);
+  }
+  .btn-primary:hover { background: var(--c-teal-deep); }
+
+  .btn-ghost {
+    background: transparent;
+    color: var(--c-text);
+    border: 1.5px solid var(--c-line);
+  }
+  .btn-ghost:hover { border-color: var(--c-muted); }
+
+  /* ─── HERO ─── */
+  .hero {
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    gap: 56px;
+    align-items: center;
+    padding: 72px 48px 80px;
+    min-height: calc(100vh - 75px);
+  }
+
+  .hero-badge {
+    display: inline-flex;
+    align-items: center;
+    gap: 8px;
+    padding: 6px 13px;
+    border: 1px solid var(--c-line);
+    border-radius: 20px;
+    background: var(--c-panel);
+    margin-bottom: 24px;
+  }
+  .hero-badge-dot {
+    width: 7px;
+    height: 7px;
+    border-radius: 50%;
+    background: var(--c-good);
+    flex-shrink: 0;
+  }
+  .hero-badge span {
+    font-size: 12.5px;
+    font-weight: 600;
+    color: var(--c-muted);
+    letter-spacing: 0.3px;
+  }
+
+  .hero-title {
+    font-size: 50px;
+    font-weight: 800;
+    line-height: 1.06;
+    letter-spacing: -1.4px;
+    margin-bottom: 22px;
+  }
+  .hero-title .accent { color: var(--c-teal); }
+
+  .hero-desc {
+    font-size: 18px;
+    line-height: 1.6;
+    color: var(--c-muted);
+    margin-bottom: 34px;
+    max-width: 480px;
+  }
+
+  .hero-ctas {
+    display: flex;
+    gap: 14px;
+    align-items: center;
+  }
+
+  /* ─── PRODUCT CARD ─── */
+  .card-wrap {
+    position: relative;
+  }
+
+  .product-card {
+    background: var(--c-panel);
+    border: 1px solid var(--c-line);
+    border-radius: 16px;
+    padding: 20px;
+    box-shadow: 0 24px 60px rgba(0,0,0,.45);
+  }
+
+  .card-header {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    margin-bottom: 16px;
+  }
+  .card-header-left {
+    display: flex;
+    align-items: center;
+    gap: 9px;
+  }
+  .card-title { font-size: 14px; font-weight: 700; }
+  .badge-live {
+    font-size: 11px;
+    font-weight: 600;
+    color: var(--c-good);
+    background: var(--c-on-bg);
+    padding: 3px 9px;
+    border-radius: 20px;
+  }
+  .card-timer {
+    font-size: 26px;
+    font-weight: 800;
+    font-variant-numeric: tabular-nums;
+    letter-spacing: -0.5px;
+  }
+
+  .progress-bar {
+    height: 5px;
+    border-radius: 4px;
+    background: var(--c-bg);
+    overflow: hidden;
+    margin-bottom: 18px;
+  }
+  .progress-fill {
+    width: 64%;
+    height: 100%;
+    background: var(--c-teal);
+    border-radius: 4px;
+  }
+
+  .checklist-label {
+    font-size: 11px;
+    font-weight: 700;
+    letter-spacing: 0.8px;
+    color: var(--c-muted);
+    margin-bottom: 10px;
+  }
+
+  .checklist {
+    display: flex;
+    flex-direction: column;
+    gap: 8px;
+  }
+
+  .checklist-item {
+    display: flex;
+    align-items: center;
+    gap: 11px;
+    background: var(--c-bg);
+    border: 1px solid var(--c-line);
+    border-radius: 9px;
+    padding: 11px 13px;
+  }
+  .checklist-item.pending {
+    border-style: dashed;
+    opacity: 0.7;
+  }
+  .checklist-item .item-label {
+    font-size: 13.5px;
+    font-weight: 500;
+    flex: 1;
+  }
+  .checklist-item .item-pts {
+    font-size: 12px;
+    font-weight: 600;
+    color: var(--c-muted);
+  }
+
+  .check-box-empty {
+    width: 16px;
+    height: 16px;
+    border: 2px solid var(--c-muted);
+    border-radius: 5px;
+    flex-shrink: 0;
+  }
+
+  .card-footer {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    margin-top: 16px;
+    padding-top: 15px;
+    border-top: 1px solid var(--c-line);
+  }
+  .card-connected {
+    display: flex;
+    align-items: center;
+    gap: 8px;
+    font-size: 12.5px;
+    font-weight: 500;
+    color: var(--c-muted);
+  }
+  .dot-connected {
+    width: 7px;
+    height: 7px;
+    border-radius: 50%;
+    background: var(--c-good);
+    flex-shrink: 0;
+  }
+  .card-score {
+    font-size: 14px;
+    font-weight: 800;
+    color: var(--c-teal);
+  }
+
+  /* floating badge */
+  .badge-float {
+    position: absolute;
+    bottom: -22px;
+    left: -22px;
+    background: var(--c-panel-2);
+    border: 1px solid var(--c-line);
+    border-radius: 12px;
+    padding: 12px 16px;
+    box-shadow: 0 16px 40px rgba(0,0,0,.5);
+  }
+  .badge-float-label {
+    font-size: 10.5px;
+    font-weight: 700;
+    letter-spacing: 0.6px;
+    color: var(--c-muted);
+    margin-bottom: 5px;
+  }
+  .badge-float-content {
+    display: flex;
+    align-items: center;
+    gap: 8px;
+    font-size: 13px;
+    font-weight: 600;
+  }
+
+  /* ─── COMO FUNCIONA ─── */
+  .how {
+    padding: 64px 48px 80px;
+    border-top: 1px solid var(--c-line);
+    background: var(--c-bg-dark);
+  }
+
+  .how-header {
+    text-align: center;
+    margin-bottom: 48px;
+  }
+  .how-eyebrow {
+    font-size: 12px;
+    font-weight: 700;
+    letter-spacing: 1px;
+    color: var(--c-teal);
+    margin-bottom: 12px;
+  }
+  .how-title {
+    font-size: 36px;
+    font-weight: 800;
+    letter-spacing: -0.8px;
+    line-height: 1.1;
+  }
+
+  .steps {
+    display: grid;
+    grid-template-columns: repeat(3, 1fr);
+    gap: 22px;
+  }
+
+  .step {
+    background: var(--c-panel);
+    border: 1px solid var(--c-line);
+    border-radius: 14px;
+    padding: 30px 26px;
+  }
+
+  .step-top {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    margin-bottom: 22px;
+  }
+
+  .step-icon {
+    width: 46px;
+    height: 46px;
+    border-radius: 12px;
+    background: var(--c-panel-2);
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    flex-shrink: 0;
+  }
+
+  .step-num {
+    font-size: 30px;
+    font-weight: 800;
+    color: var(--c-num);
+  }
+
+  .step h3 {
+    font-size: 19px;
+    font-weight: 700;
+    margin-bottom: 9px;
+  }
+
+  .step p {
+    font-size: 14.5px;
+    line-height: 1.6;
+    color: var(--c-muted);
+  }
+
+  /* ═══════════════════════════════════════════════
+     TABLET  ≤ 1024px
+     Reduz gaps e fontes; hero ainda 2 colunas mas comprimido
+  ═══════════════════════════════════════════════ */
+  @media (max-width: 1024px) {
+    .nav { padding: 18px 32px; }
+
+    .hero {
+      gap: 36px;
+      padding: 56px 32px 72px;
+      min-height: auto;
+    }
+
+    .hero-title { font-size: 40px; letter-spacing: -1px; }
+    .hero-desc  { font-size: 16px; }
+
+    .how { padding: 56px 32px 72px; }
+    .how-title { font-size: 30px; }
+
+    .step { padding: 24px 20px; }
+    .step h3 { font-size: 17px; }
+  }
+
+  /* ═══════════════════════════════════════════════
+     CELULAR GRANDE  ≤ 640px  (ex: iPhone 14 Pro Max, Pixel 7)
+     Hero vira coluna única; card do produto abaixo do copy
+  ═══════════════════════════════════════════════ */
+  @media (max-width: 640px) {
+    /* nav */
+    .nav { padding: 16px 20px; }
+    .nav-link { display: none; }
+    .btn-ghost.btn-sm { display: none; }
+
+    /* hero */
+    .hero {
+      grid-template-columns: 1fr;
+      gap: 40px;
+      padding: 40px 20px 60px;
+    }
+
+    .hero-title { font-size: 36px; letter-spacing: -.8px; }
+    .hero-desc  { font-size: 15.5px; max-width: 100%; }
+
+    /* product card: reserva espaço embaixo para o badge flutuante */
+    .card-wrap { padding-bottom: 36px; }
+
+    .badge-float {
+      bottom: 6px;
+      left: 12px;
+    }
+
+    /* steps */
+    .steps { grid-template-columns: 1fr; gap: 14px; }
+    .how   { padding: 48px 20px 60px; }
+    .how-title { font-size: 26px; }
+  }
+
+  /* ═══════════════════════════════════════════════
+     CELULAR PEQUENO  ≤ 390px  (ex: Samsung S23, iPhone SE)
+     Comprime ainda mais — fontes, padding, card
+  ═══════════════════════════════════════════════ */
+  @media (max-width: 390px) {
+    .nav { padding: 14px 16px; }
+    .nav-name { font-size: 15px; }
+    .btn-primary.btn-sm { font-size: 12.5px; padding: 7px 13px; height: 34px; }
+
+    .hero { padding: 32px 16px 52px; gap: 32px; }
+    .hero-badge span { font-size: 11px; }
+    .hero-title { font-size: 30px; letter-spacing: -.6px; }
+    .hero-desc  { font-size: 14.5px; margin-bottom: 28px; }
+
+    .btn-lg { font-size: 14.5px; padding: 13px 20px; }
+    .hero-ctas { gap: 10px; }
+
+    /* product card */
+    .product-card { padding: 16px; }
+    .card-title   { font-size: 13px; }
+    .card-timer   { font-size: 22px; }
+    .checklist-item { padding: 9px 11px; }
+    .checklist-item .item-label { font-size: 12.5px; }
+
+    /* badge flutuante menor */
+    .badge-float { padding: 9px 13px; left: 8px; }
+    .badge-float-label  { font-size: 9.5px; }
+    .badge-float-content { font-size: 12px; }
+
+    /* como funciona */
+    .how { padding: 40px 16px 52px; }
+    .how-title { font-size: 23px; }
+    .step { padding: 20px 16px; }
+    .step h3 { font-size: 16px; }
+    .step p  { font-size: 13.5px; }
+    .step-num { font-size: 24px; }
+    .step-icon { width: 40px; height: 40px; border-radius: 10px; }
+  }
+</style>
 </head>
 <body>
-<header class="topbar">
-  <div class="brand">🩺 OSCE Online</div>
-  <div class="topbar-right">
-    <div id="status" class="status off">desconectado</div>
-    <a href="/admin/" target="_blank" rel="noopener" class="admin-link" title="Área do administrador">⚙️</a>
-  </div>
-</header>
+<div class="page">
 
-<main id="app">
-
-  <!-- ETAPA 1: LOBBY -->
-  <section id="lobby" class="screen active">
-    <h1>Treine OSCE em dupla</h1>
-    <p class="lead">Uma pessoa é o <b>paciente/avaliador</b> e a outra é o <b>estudante</b>.
-       Conectam-se por um código de sala — sem cadastro.</p>
-
-    <div class="cards">
-      <div class="card">
-        <h2>👤 Sou paciente / avaliador</h2>
-        <p>Crie a sala, escolha o caso e gere um código para o estudante.</p>
-        <button id="btnHost" class="primary">Criar sala</button>
+  <!-- NAV -->
+  <nav class="nav">
+    <a href="/" class="nav-brand">
+      <div class="nav-logo">
+        <svg width="17" height="17" viewBox="0 0 24 24" fill="none" stroke="#06231f" stroke-width="2.4" stroke-linecap="round" stroke-linejoin="round">
+          <path d="M5 4v6a7 7 0 0 0 14 0V4"/>
+          <line x1="5" y1="4" x2="5" y2="2"/>
+          <line x1="19" y1="4" x2="19" y2="2"/>
+        </svg>
       </div>
-      <div class="card">
-        <h2>🎓 Sou estudante</h2>
-        <p>Digite o código que o avaliador te passou para entrar na mesma sala.</p>
-        <input id="joinCode" type="text" placeholder="CÓDIGO DA SALA" maxlength="8" autocomplete="off" />
-        <button id="btnJoin" class="primary">Entrar</button>
-      </div>
+      <span class="nav-name">Próxima Estação</span>
+    </a>
+    <div class="nav-links">
+      <a href="#como-funciona" class="nav-link">Como funciona</a>
+      <a href="/app" class="btn btn-ghost btn-sm">Ver demonstração</a>
+      <a href="/app" class="btn btn-primary btn-sm">Começar agora</a>
     </div>
-    <p id="lobbyMsg" class="msg"></p>
+  </nav>
 
-    <div class="conn-test">
-      <button id="btnTestConn" class="ghost">📶 Testar conexão nesta rede</button>
-      <div id="connResult" class="conn-result"></div>
-    </div>
-  </section>
-
-  <!-- ETAPA 2: HOST escolhe o modo e aguarda -->
-  <section id="hostSetup" class="screen">
-    <h1>Como você quer treinar?</h1>
-    <p class="lead">Escolha um modo. Você não vê o conteúdo das estações — só seleciona por área.
-       A conversa do atendimento é pessoalmente ou por chamada de voz à parte.</p>
-
-    <div id="setupNotice" class="setup-notice hidden"></div>
-
-    <div class="prox-block">
-      <label class="switch-row">
-        <input type="checkbox" id="altRoles" />
-        <span><b>Alternar papéis a cada estação</b> (avaliador ⇄ estudante)</span>
-      </label>
-      <div class="prox-sub">Ótimo no modo infinito: a cada estação vocês trocam de lado.</div>
-    </div>
-
-    <div class="mode-grid">
-      <div class="mode-card" data-mode="conteudos">
-        <div class="mode-ico">🎯</div>
-        <h2>Selecionar conteúdos</h2>
-        <p>Treine só estações das áreas que escolher.</p>
+  <!-- HERO -->
+  <section class="hero">
+    <div class="hero-copy">
+      <div class="hero-badge">
+        <span class="hero-badge-dot"></span>
+        <span>Treinamento prático de habilidades clínicas</span>
       </div>
-      <div class="mode-card" data-mode="aleatoria">
-        <div class="mode-ico">🎲</div>
-        <h2>Aleatória</h2>
-        <p>Uma estação sorteada por vez, sem fim.</p>
-      </div>
-      <div class="mode-card" data-mode="infinito">
-        <div class="mode-ico">♾️</div>
-        <h2>Modo infinito</h2>
-        <p>Todas as estações, sem repetir, até acabarem.</p>
-      </div>
-      <div class="mode-card" data-mode="osce">
-        <div class="mode-ico">🏥</div>
-        <h2>Modo OSCE</h2>
-        <p>4 estações aleatórias, uma após a outra.</p>
+      <h1 class="hero-title">
+        Treine para o OSCE<br>
+        como se estivesse na<br>
+        <span class="accent">prova real.</span>
+      </h1>
+      <p class="hero-desc">
+        Você e um colega entram na mesma sala, treinam uma estação clínica
+        estruturada em dupla e recebem uma avaliação padronizada — direto no
+        navegador, sem instalação.
+      </p>
+      <div class="hero-ctas">
+        <a href="/app" class="btn btn-primary btn-lg">Começar agora</a>
+        <a href="/app" class="btn btn-ghost btn-lg">&#9658; Ver demonstração</a>
       </div>
     </div>
 
-    <!-- sub-painel: seleção de conteúdos -->
-    <div id="tagPanel" class="tag-panel hidden">
-      <div class="label">Conteúdos disponíveis</div>
-      <div id="tagList" class="tag-list"></div>
-      <button id="btnTagStart" class="primary">Criar sala com esses conteúdos</button>
-      <p id="tagMsg" class="msg"></p>
-    </div>
+    <!-- Product visual -->
+    <div class="card-wrap">
+      <div class="product-card">
+        <div class="card-header">
+          <div class="card-header-left">
+            <span class="card-title">Asma — crise leve</span>
+            <span class="badge-live">ao vivo</span>
+          </div>
+          <span class="card-timer">04:32</span>
+        </div>
 
-    <div class="room-share hidden" id="roomShare">
-      <p>Modo: <b id="modeLabel"></b> · <span id="queueInfo"></span></p>
-      <p>Compartilhe este código com o estudante:</p>
-      <div class="code-box"><span id="roomCode">----</span><button id="btnCopy" class="ghost">copiar</button></div>
-      <p class="invite-line">ou envie o link de convite:</p>
-      <div class="code-box"><a id="inviteLink" href="#" target="_blank" rel="noopener">—</a><button id="btnCopyLink" class="ghost">copiar link</button></div>
-      <p id="waitMsg" class="msg">Aguardando o estudante entrar…</p>
-    </div>
-  </section>
+        <div class="progress-bar">
+          <div class="progress-fill"></div>
+        </div>
 
-  <!-- ETAPA 3: ESTAÇÃO EM ANDAMENTO -->
-  <section id="station" class="screen">
-    <div class="station-head">
-      <div>
-        <div class="case-progress" id="stProgress"></div>
-        <div class="case-title" id="stCaseTitle"></div>
-        <div class="case-sub" id="stCaseSub"></div>
+        <div class="checklist-label">CHECKLIST DE AVALIAÇÃO</div>
+
+        <div class="checklist">
+          <div class="checklist-item">
+            <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="#48c78e" stroke-width="2.6" stroke-linecap="round" stroke-linejoin="round">
+              <polyline points="20 6 9 17 4 12"/>
+            </svg>
+            <span class="item-label">Apresentou-se e identificou o paciente</span>
+            <span class="item-pts">+2</span>
+          </div>
+          <div class="checklist-item">
+            <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="#48c78e" stroke-width="2.6" stroke-linecap="round" stroke-linejoin="round">
+              <polyline points="20 6 9 17 4 12"/>
+            </svg>
+            <span class="item-label">Investigou início e fatores de piora</span>
+            <span class="item-pts">+3</span>
+          </div>
+          <div class="checklist-item pending">
+            <span class="check-box-empty"></span>
+            <span class="item-label">Orientou plano terapêutico</span>
+            <span class="item-pts">+3</span>
+          </div>
+        </div>
+
+        <div class="card-footer">
+          <div class="card-connected">
+            <span class="dot-connected"></span>
+            2 conectados · sala T30-9F
+          </div>
+          <span class="card-score">5 / 8 pts</span>
+        </div>
       </div>
-      <div class="timer-wrap">
-        <div id="timer" class="timer">--:--</div>
-        <div class="timer-ctrls" id="timerCtrls">
-          <button id="btnStart" class="ghost">▶ iniciar</button>
-          <button id="btnPause" class="ghost">⏸</button>
-          <button id="btnReset" class="ghost">⟲</button>
+
+      <!-- Floating badge -->
+      <div class="badge-float">
+        <div class="badge-float-label">TROCA DE PAPÉIS</div>
+        <div class="badge-float-content">
+          <svg width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="#3fb6a8" stroke-width="2.4" stroke-linecap="round" stroke-linejoin="round">
+            <polyline points="17 1 21 5 17 9"/>
+            <path d="M3 11V9a4 4 0 0 1 4-4h14"/>
+            <polyline points="7 23 3 19 7 15"/>
+            <path d="M21 13v2a4 4 0 0 1-4 4H3"/>
+          </svg>
+          Avaliador ⇄ Estudante
         </div>
       </div>
     </div>
+  </section>
 
-    <div class="station-grid">
-      <!-- Coluna esquerda: painel do papel (roteiro do avaliador / instruções do estudante) -->
-      <div class="panel" id="rolePanel"></div>
+  <!-- COMO FUNCIONA -->
+  <section id="como-funciona" class="how">
+    <div class="how-header">
+      <div class="how-eyebrow">COMO FUNCIONA</div>
+      <h2 class="how-title">Três passos até a sua estação</h2>
+    </div>
 
-      <!-- Coluna direita (avaliador): checklist ao lado do caso -->
-      <div class="panel hidden" id="sideChecklistPanel">
-        <h3>Checklist de avaliação</h3>
-        <div id="sideChecklist"></div>
+    <div class="steps">
+      <div class="step">
+        <div class="step-top">
+          <div class="step-icon">
+            <svg width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="#3fb6a8" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+              <path d="M14 3h6v18H4V3h6"/>
+              <rect x="9" y="2" width="6" height="4" rx="1"/>
+              <path d="M16 11h.01"/>
+            </svg>
+          </div>
+          <span class="step-num">01</span>
+        </div>
+        <h3>Crie ou entre em uma sala</h3>
+        <p>O avaliador gera um código curto. O estudante digita o código e entra na mesma sala — sem cadastro.</p>
+      </div>
+
+      <div class="step">
+        <div class="step-top">
+          <div class="step-icon">
+            <svg width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="#3fb6a8" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+              <path d="M17 21v-2a4 4 0 0 0-4-4H5a4 4 0 0 0-4 4v2"/>
+              <circle cx="9" cy="7" r="4"/>
+              <path d="M23 21v-2a4 4 0 0 0-3-3.87"/>
+              <path d="M16 3.13a4 4 0 0 1 0 7.75"/>
+            </svg>
+          </div>
+          <span class="step-num">02</span>
+        </div>
+        <h3>Treine uma estação em dupla</h3>
+        <p>Caso clínico estruturado, timer sincronizado de 5 minutos e troca automática de papéis a cada rodada.</p>
+      </div>
+
+      <div class="step">
+        <div class="step-top">
+          <div class="step-icon">
+            <svg width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="#3fb6a8" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+              <path d="M3 3v18h18"/>
+              <path d="M18 17V9"/>
+              <path d="M13 17V5"/>
+              <path d="M8 17v-3"/>
+            </svg>
+          </div>
+          <span class="step-num">03</span>
+        </div>
+        <h3>Receba sua avaliação</h3>
+        <p>Pontuação padronizada pelo checklist, com veredito por estação. Continue evoluindo a cada repetição.</p>
       </div>
     </div>
-
-    <div class="station-foot">
-      <button id="btnFinish" class="danger hidden">Encerrar e avaliar</button>
-      <span id="skipCtrls" class="hidden">
-        <button id="btnSkipKeep" class="ghost" title="Vai para a próxima estação sem trocar quem é avaliador/estudante">⏭ Pular (manter papéis)</button>
-        <button id="btnSkipAlt" class="ghost" title="Vai para a próxima estação trocando quem é avaliador/estudante">⏭ Pular (alternar papéis)</button>
-      </span>
-    </div>
   </section>
 
-  <!-- ETAPA 4: RESULTADO DA ESTAÇÃO -->
-  <section id="result" class="screen">
-    <h1>Desempenho da estação</h1>
-    <div id="resultBody"></div>
-    <div class="ready-box">
-      <button id="btnReady" class="primary">✓ Estou pronto para a próxima</button>
-      <span id="readyMsg" class="msg"></span>
-    </div>
-    <button id="btnRestart" class="ghost hidden">Encerrar sessão</button>
-  </section>
-
-  <!-- ETAPA 5: RESUMO DA SESSÃO -->
-  <section id="summary" class="screen">
-    <h1>Resumo da sessão</h1>
-    <div id="summaryBody"></div>
-    <button id="btnNewSession" class="primary">Nova sessão</button>
-  </section>
-
-</main>
-
-<footer class="foot">Sessão em tempo real via Supabase Realtime. Casos servidos do Supabase; a sessão em si não é gravada.</footer>
-
-<script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
-<script src="db.js"></script>
-<script type="module" src="js/main.js"></script>
-<!-- Vercel Web Analytics: conta visitantes/page views do site publicado na Vercel -->
-<script defer src="/_vercel/insights/script.js"></script>
+</div>
 </body>
 </html>

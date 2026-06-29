@@ -213,7 +213,7 @@ export default function Lista({ casos, taxonomia, filtroConteudoId, buscaInicial
                 ))}
               </div>
               <div className="lt-status">
-                <span style={{ background: sm.bg, color: sm.fg, borderRadius: 20, padding: "3px 11px", fontSize: "0.74rem", fontWeight: 700, whiteSpace: "nowrap" }}>{sm.label}</span>
+                <span className="status-badge" style={{ background: sm.bg, color: sm.fg }}>{sm.label}</span>
               </div>
               <div className="lt-meta">
                 <div className="lt-autor" style={{ display: "flex", alignItems: "center", gap: 7, minWidth: 0 }}>

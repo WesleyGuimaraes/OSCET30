@@ -60,7 +60,7 @@ export default function Fila({ casosEmRevisao, admin, onPreview, onRecarregar })
                 <div className="fila-main" style={{ flex: 1, minWidth: 240 }}>
                   <div style={{ display: "flex", alignItems: "center", gap: 9, marginBottom: 5 }}>
                     <span style={{ fontSize: "1.05rem", fontWeight: 700 }}>{c.titulo}</span>
-                    <span style={{ background: "var(--c-warn-fill)", color: "var(--c-warn)", borderRadius: 20, padding: "2px 9px", fontSize: "0.72rem", fontWeight: 700 }}>
+                    <span className="status-badge" style={{ background: "var(--c-warn-fill)", color: "var(--c-warn)" }}>
                       Em revisão
                     </span>
                   </div>

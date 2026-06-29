@@ -92,7 +92,7 @@ export default function Dashboard({ casos, taxonomia, onIrParaConteudo, onNovoCa
         {/* casos por disciplina */}
         <div>
           <h2 style={{ margin: "0 0 12px", fontSize: "1.05rem", fontWeight: 700 }}>Casos por disciplina</h2>
-          <div className="card" style={{ display: "flex", flexDirection: "column", gap: 13 }}>
+          <div className="card" style={{ display: "flex", flexDirection: "column", gap: 13, minWidth: 0, overflow: "hidden" }}>
             {grupos.map((g) => (
               <div key={g.disciplina} className="disc-row">
                 <div className="disc-name" style={{ fontSize: "0.85rem", fontWeight: 600, whiteSpace: "nowrap", overflow: "hidden", textOverflow: "ellipsis" }}>

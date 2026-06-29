@@ -86,7 +86,7 @@ export default function Preview({ casoId, admin, onBack, onRecarregar }) {
           <h1 style={{ margin: 0, fontSize: "1.3rem", fontWeight: 800, whiteSpace: "nowrap", overflow: "hidden", textOverflow: "ellipsis" }}>
             Preview · {caso.titulo || "(sem título)"}
           </h1>
-          <span style={{ background: sm.bg, color: sm.fg, borderRadius: 20, padding: "3px 11px", fontSize: "0.72rem", fontWeight: 700, whiteSpace: "nowrap" }}>
+          <span className="status-badge" style={{ background: sm.bg, color: sm.fg }}>
             {sm.label}
           </span>
         </div>

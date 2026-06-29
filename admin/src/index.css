@@ -120,9 +120,23 @@ a:focus-visible { outline: 2px solid var(--c-teal); outline-offset: 2px; }
   font-weight: 600;
 }
 
+/* selo de status (Rascunho / Em revisão / Publicado…) — geometria única em todo lugar */
+.status-badge {
+  display: inline-block;
+  border-radius: 20px;
+  padding: 3px 11px;
+  font-size: 0.74rem;
+  font-weight: 700;
+  line-height: 1.45;
+  white-space: nowrap;
+}
+
 /* ---- Dashboard ---- */
 .dash-stats { display: grid; grid-template-columns: repeat(5, 1fr); gap: 12px; }
 .dash-cols  { display: grid; grid-template-columns: 1fr 1fr; gap: 20px; align-items: start; }
+/* itens de grid não podem exceder a trilha — evita estouro horizontal quando
+   um conteúdo interno (ex.: dropdown aberto) é mais largo que a coluna */
+.dash-cols > *, .dash-stats > * { min-width: 0; }
 @media (max-width: 900px) {
   .dash-stats { grid-template-columns: repeat(2, 1fr); }
   .dash-cols  { grid-template-columns: 1fr; }
@@ -305,7 +319,7 @@ a:focus-visible { outline: 2px solid var(--c-teal); outline-offset: 2px; }
   .editor-titles-m { flex: 1; min-width: 0; }
   .editor-title-m { font-weight: 700; font-size: 0.95rem; white-space: nowrap; overflow: hidden; text-overflow: ellipsis; }
   .editor-subtitle-m { font-size: 0.72rem; margin-top: 1px; }
-  .editor-badge-m { flex: none; border-radius: 20px; padding: 3px 10px; font-size: 0.7rem; font-weight: 700; white-space: nowrap; }
+  .editor-badge-m { flex: none; }
 
   /* barra de progresso (img 4) — substitui a navegação por seções no mobile */
   .editor-progress-mobile { display: block; margin: 14px 0 6px; }
@@ -328,7 +342,7 @@ a:focus-visible { outline: 2px solid var(--c-teal); outline-offset: 2px; }
   .editor-savebar-status, .editor-savebar-spacer { display: none; }
   .savebar-primary, .savebar-secondary { display: flex; gap: 8px; }
   .savebar-primary:empty, .savebar-secondary:empty { display: none; }
-  .editor-savebar .btn { flex: 1; width: auto; min-height: 48px; }
+  .editor-savebar .btn { flex: 1; width: auto; min-height: 40px; padding-top: 7px; padding-bottom: 7px; }
 }
 
 /* ---- Preview ---- */

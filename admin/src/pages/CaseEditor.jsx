@@ -297,7 +297,7 @@ export default function CaseEditor({ casoId, admin, taxonomia, onBack, onSalvo, 
             <h1 style={{ margin: 0, fontSize: "1.4rem", fontWeight: 800, whiteSpace: "nowrap", overflow: "hidden", textOverflow: "ellipsis" }}>
               {titulo}
             </h1>
-            <span style={{ background: sm.bg, color: sm.fg, borderRadius: 20, padding: "3px 11px", fontSize: "0.74rem", fontWeight: 700 }}>
+            <span className="status-badge" style={{ background: sm.bg, color: sm.fg }}>
               {sm.label}
             </span>
             {dirty && (
@@ -327,7 +327,7 @@ export default function CaseEditor({ casoId, admin, taxonomia, onBack, onSalvo, 
         {d.id && (
           <button className="editor-back-m" onClick={() => onPreview(d.id)} aria-label="Preview" style={{ fontSize: "1rem" }}>▶</button>
         )}
-        <span className="editor-badge-m" style={{ background: sm.bg, color: sm.fg }}>{sm.label}</span>
+        <span className="editor-badge-m status-badge" style={{ background: sm.bg, color: sm.fg }}>{sm.label}</span>
       </div>
 
       {/* barra de progresso (img 4) — substitui a navegação por seções no mobile */}

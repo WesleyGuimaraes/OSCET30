@@ -136,7 +136,7 @@ export default function Lista({ casos, taxonomia, filtroConteudoId, buscaInicial
             {casos.length} casos · <span style={{ color: "var(--c-good)" }}>{publicados} publicados</span> · <span style={{ color: "var(--c-warn)" }}>{emRevisao} em revisão</span> · <span style={{ color: STATUS_META.rascunho.fg }}>{rascunhos} rascunhos</span>
           </p>
         </div>
-        <button className="btn btn-primary" onClick={onNovoCaso}>+ Novo caso</button>
+        <button className="btn btn-primary lista-new-top" onClick={onNovoCaso}>+ Novo caso</button>
       </div>
 
       {/* filtros */}
@@ -224,6 +224,9 @@ export default function Lista({ casos, taxonomia, filtroConteudoId, buscaInicial
           <div style={{ padding: 48, textAlign: "center", color: "var(--c-muted)", fontSize: "0.95rem" }}>Nenhum caso encontrado com esses filtros.</div>
         )}
       </div>
+
+      {/* botão flutuante de novo caso — só no celular (ver .lista-fab no CSS) */}
+      <button className="lista-fab" onClick={onNovoCaso} aria-label="Novo caso">+ Novo caso</button>
     </main>
   );
 }

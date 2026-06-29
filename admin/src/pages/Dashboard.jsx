@@ -94,12 +94,12 @@ export default function Dashboard({ casos, taxonomia, onIrParaConteudo, onNovoCa
           <h2 style={{ margin: "0 0 12px", fontSize: "1.05rem", fontWeight: 700 }}>Casos por disciplina</h2>
           <div className="card" style={{ display: "flex", flexDirection: "column", gap: 13 }}>
             {grupos.map((g) => (
-              <div key={g.disciplina} style={{ display: "flex", alignItems: "center", gap: 14 }}>
-                <div style={{ width: 150, fontSize: "0.85rem", fontWeight: 600, whiteSpace: "nowrap", overflow: "hidden", textOverflow: "ellipsis" }}>
+              <div key={g.disciplina} className="disc-row">
+                <div className="disc-name" style={{ fontSize: "0.85rem", fontWeight: 600, whiteSpace: "nowrap", overflow: "hidden", textOverflow: "ellipsis" }}>
                   {g.disciplina}
                 </div>
-                <Barra valor={g.total} max={maxDisc} cor="var(--c-teal)" />
-                <div style={{ width: 56, textAlign: "right", fontSize: "0.82rem", color: "var(--c-muted)", fontVariantNumeric: "tabular-nums", fontWeight: 600 }}>
+                <div className="disc-bar"><Barra valor={g.total} max={maxDisc} cor="var(--c-teal)" /></div>
+                <div className="disc-count" style={{ fontSize: "0.82rem", color: "var(--c-muted)", fontVariantNumeric: "tabular-nums", fontWeight: 600 }}>
                   {g.total}
                 </div>
               </div>

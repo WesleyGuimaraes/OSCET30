@@ -117,6 +117,17 @@ a:focus-visible { outline: 2px solid var(--c-teal); outline-offset: 2px; }
   .dash-cols  { grid-template-columns: 1fr; }
 }
 
+/* barra "Casos por disciplina": rótulo + barra + total em linha (desktop) */
+.disc-row { display: grid; grid-template-columns: 150px 1fr 56px; gap: 14px; align-items: center; }
+.disc-count { text-align: right; }
+@media (max-width: 760px) {
+  /* no celular o rótulo e o total ficam acima de uma barra de largura total */
+  .disc-row { grid-template-columns: 1fr auto; grid-template-areas: "name count" "bar bar"; row-gap: 5px; column-gap: 10px; }
+  .disc-name  { grid-area: name; }
+  .disc-count { grid-area: count; }
+  .disc-bar   { grid-area: bar; }
+}
+
 /* ---- Lista de casos ---- */
 .lista-filtros { display: grid; grid-template-columns: 1.7fr repeat(5, 1fr) auto; gap: 10px; align-items: end; }
 .linkact { background: transparent; border: none; color: #cfe0d8; font-size: 0.82rem; cursor: pointer; padding: 2px 4px; }
@@ -149,6 +160,9 @@ a:focus-visible { outline: 2px solid var(--c-teal); outline-offset: 2px; }
 /* ---- Navegação mobile ---- */
 .bottom-nav { display: none; }
 .topbar-avatar-mobile { display: none; }
+
+/* botão flutuante "Novo caso" (FAB) — escondido no desktop, onde existe o botão do topo */
+.lista-fab { display: none; }
 @media (max-width: 760px) {
   .topbar-nav, .topbar-busca, .topbar-quem-full { display: none; }
   .topbar-header { padding: 10px 14px !important; }
@@ -176,6 +190,17 @@ a:focus-visible { outline: 2px solid var(--c-teal); outline-offset: 2px; }
   .bn-count { color: var(--c-warn); }
   /* espaço para a barra inferior não cobrir conteúdo */
   body { padding-bottom: 58px; }
+
+  /* no celular o "+ Novo caso" vira botão flutuante (FAB) acima da nav inferior */
+  .lista-new-top { display: none; }
+  .lista-fab {
+    display: inline-flex; align-items: center; gap: 6px;
+    position: fixed; right: 16px; bottom: 70px; z-index: 45;
+    background: var(--c-teal); color: var(--c-teal-ink);
+    border: none; border-radius: 30px; padding: 13px 19px;
+    font-weight: 700; font-size: 0.95rem; cursor: pointer;
+    box-shadow: 0 8px 20px rgba(63, 182, 168, 0.4);
+  }
 }
 
 /* ---- Editor de caso ---- */

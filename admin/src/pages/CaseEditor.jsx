@@ -271,18 +271,33 @@ export default function CaseEditor({ casoId, admin, taxonomia, onBack, onSalvo, 
   const soma = pesos.reduce((a, b) => a + b, 0);
   const availConteudos = taxonomia.filter((c) => c.disciplina === edDisc && String(c.periodo) === edPer);
 
+  // navegação de seções + preenchimento (mostra na faixa de navegação e na barra de salvar)
+  const secList = [
+    { id: "sec-ident", label: "Identificação", ok: !!(d.titulo?.trim() && d.resumo?.trim()) },
+    { id: "sec-cont", label: "Conteúdos", ok: d.conteudos.length > 0 },
+    { id: "sec-rot", label: "Roteiro do paciente", ok: !!(d.personagem?.trim() && d.roteiro.length > 0) },
+    { id: "sec-ach", label: "Achados de exame", ok: !!d.exames_achados?.trim() },
+    { id: "sec-chk", label: "Checklist", ok: d.checklist.length > 0 },
+  ];
+  const secDone = secList.filter((s) => s.ok).length;
+  const irPara = (id) => document.getElementById(id)?.scrollIntoView({ behavior: "smooth", block: "start" });
+
+  const titulo = d.titulo?.trim() || (d.id ? "(sem título)" : "Novo caso");
+  const pctPreenchido = Math.round((secDone / secList.length) * 100);
+
   return (
-    <main style={{ maxWidth: 1180, margin: "0 auto", padding: "22px 28px 100px" }}>
-      <div style={{ display: "flex", alignItems: "center", gap: 12, marginBottom: 20, flexWrap: "wrap" }}>
+    <main className="editor-main" style={{ maxWidth: 1180, margin: "0 auto", padding: "22px 28px 100px" }}>
+      {/* header desktop */}
+      <div className="editor-head-desktop" style={{ display: "flex", alignItems: "center", gap: 12, marginBottom: 20, flexWrap: "wrap" }}>
         <button className="btn btn-ghost" onClick={sair}>
           ← Casos
         </button>
         <div style={{ flex: 1, minWidth: 0 }}>
           <div style={{ display: "flex", alignItems: "center", gap: 10 }}>
             <h1 style={{ margin: 0, fontSize: "1.4rem", fontWeight: 800, whiteSpace: "nowrap", overflow: "hidden", textOverflow: "ellipsis" }}>
-              {d.titulo?.trim() || (d.id ? "(sem título)" : "Novo caso")}
+              {titulo}
             </h1>
-            <span style={{ background: sm.bg, color: sm.fg, borderRadius: 20, padding: "3px 11px", fontSize: "0.74rem", fontWeight: 700 }}>
+            <span className="status-badge" style={{ background: sm.bg, color: sm.fg }}>
               {sm.label}
             </span>
             {dirty && (
@@ -292,45 +307,60 @@ export default function CaseEditor({ casoId, admin, taxonomia, onBack, onSalvo, 
             )}
           </div>
         </div>
-        <div style={{ display: "flex", gap: 8, flexWrap: "wrap" }}>
-          {d.id && (
-            <>
-              <button className="btn btn-ghost" onClick={() => onHist(d.id)}>
-                🕘 Histórico
-              </button>
-              <button className="btn btn-ghost" onClick={() => onPreview(d.id)}>
-                ▶ Preview
-              </button>
-            </>
-          )}
-          <button className="btn btn-ghost" style={{ borderColor: "var(--c-teal)", color: "var(--c-teal)" }} onClick={salvar} disabled={salvando}>
-            Salvar rascunho
+        {d.id && (
+          <div style={{ display: "flex", gap: 8, flexWrap: "wrap" }}>
+            <button className="btn btn-ghost" onClick={() => onHist(d.id)}>🕘 Histórico</button>
+            <button className="btn btn-ghost" onClick={() => onPreview(d.id)}>▶ Preview</button>
+          </div>
+        )}
+      </div>
+
+      {/* header mobile — modo foco: voltar + título/estado + status */}
+      <div className="editor-head-mobile">
+        <button className="editor-back-m" onClick={sair} aria-label="Voltar">←</button>
+        <div className="editor-titles-m">
+          <div className="editor-title-m">{titulo}</div>
+          <div className="editor-subtitle-m" style={{ color: dirty ? "var(--c-warn)" : "var(--c-muted)" }}>
+            {dirty ? "• Não salvo" : "Salvo"}
+          </div>
+        </div>
+        {d.id && (
+          <button className="editor-back-m" onClick={() => onPreview(d.id)} aria-label="Preview" style={{ fontSize: "1rem" }}>▶</button>
+        )}
+        <span className="editor-badge-m status-badge" style={{ background: sm.bg, color: sm.fg }}>{sm.label}</span>
+      </div>
+
+      {/* barra de progresso — substitui a navegação por seções no mobile */}
+      <div className="editor-progress-mobile">
+        <div className="editor-progress-top">
+          <span>{secDone} de {secList.length} seções preenchidas</span>
+          <span className="editor-progress-pct">{pctPreenchido}%</span>
+        </div>
+        <div className="editor-progress-track"><div style={{ width: `${pctPreenchido}%` }} /></div>
+      </div>
+
+      {/* navegação de seções + preenchimento */}
+      <div className="card editor-secnav" style={{ display: "flex", alignItems: "center", gap: 8, flexWrap: "wrap", padding: "10px 14px", marginBottom: 16 }}>
+        {secList.map((s) => (
+          <button
+            key={s.id}
+            onClick={() => irPara(s.id)}
+            style={{
+              display: "inline-flex", alignItems: "center", gap: 6, padding: "6px 11px", borderRadius: 9,
+              background: "transparent", border: `1px solid ${s.ok ? "var(--c-line)" : "#4a4024"}`,
+              color: "var(--c-text)", cursor: "pointer", fontSize: "0.82rem", fontWeight: 600,
+            }}
+          >
+            <span style={{ color: s.ok ? "var(--c-good)" : "var(--c-warn)" }}>{s.ok ? "✓" : "○"}</span>
+            {s.label}
           </button>
-          {d.status === "rascunho" && (
-            <button className="btn btn-primary" onClick={enviarRevisao} disabled={salvando}>
-              📤 Enviar para revisão
-            </button>
-          )}
-          {d.status === "em_revisao" && isPriv && (
-            <button className="btn btn-primary" onClick={() => transicionar("publicado", "Caso publicado.")} disabled={salvando}>
-              ✅ Publicar
-            </button>
-          )}
-          {d.status === "publicado" && isPriv && (
-            <button className="btn btn-danger" onClick={() => transicionar("arquivado", "Caso arquivado.")} disabled={salvando}>
-              🗄️ Arquivar
-            </button>
-          )}
-          {d.status === "arquivado" && isPriv && (
-            <button className="btn btn-ghost" onClick={() => transicionar("rascunho", "Caso restaurado para rascunho.")} disabled={salvando}>
-              ↩ Restaurar
-            </button>
-          )}
-          {d.id && admin.role === "owner" && (
-            <button className="btn btn-danger" onClick={apagar} disabled={salvando}>
-              🗑️ Apagar
-            </button>
-          )}
+        ))}
+        <div style={{ flex: 1 }} />
+        <div style={{ display: "flex", alignItems: "center", gap: 9, minWidth: 150 }}>
+          <span style={{ fontSize: "0.78rem", color: "var(--c-muted)", whiteSpace: "nowrap" }}>{secDone}/{secList.length} preenchidas</span>
+          <div style={{ width: 80, height: 7, borderRadius: 5, background: "var(--c-panel-2)", overflow: "hidden" }}>
+            <div style={{ width: `${(secDone / secList.length) * 100}%`, height: "100%", background: "var(--c-teal)", transition: "width 0.2s var(--ease)" }} />
+          </div>
         </div>
       </div>
 
@@ -366,10 +396,10 @@ export default function CaseEditor({ casoId, admin, taxonomia, onBack, onSalvo, 
         </div>
       )}
 
-      <div style={{ display: "grid", gridTemplateColumns: "1.55fr 1fr", gap: 18, alignItems: "start" }}>
+      <div className="editor-grid" style={{ display: "grid", gridTemplateColumns: "1.55fr 1fr", gap: 18, alignItems: "start" }}>
         {/* COLUNA ESQUERDA */}
         <div style={{ display: "flex", flexDirection: "column", gap: 18 }}>
-          <section className="card">
+          <section id="sec-ident" className="card">
             <div style={{ fontSize: "0.78rem", textTransform: "uppercase", letterSpacing: "0.5px", color: "var(--c-teal)", fontWeight: 700, marginBottom: 16 }}>
               Identificação
             </div>
@@ -382,7 +412,7 @@ export default function CaseEditor({ casoId, admin, taxonomia, onBack, onSalvo, 
                 placeholder="Ex.: Lactente com tosse e febre há 3 dias"
               />
             </div>
-            <div style={{ display: "grid", gridTemplateColumns: "1fr 1fr", gap: 12, marginBottom: 14 }}>
+            <div className="form-grid-2" style={{ display: "grid", gridTemplateColumns: "1fr 1fr", gap: 12, marginBottom: 14 }}>
               <div style={{ display: "flex", flexDirection: "column", gap: 6 }}>
                 <label className="label">Especialidade</label>
                 <input className="input" value={d.especialidade || ""} onChange={setField("especialidade")} placeholder="Ex.: Pediatria" />
@@ -404,7 +434,7 @@ export default function CaseEditor({ casoId, admin, taxonomia, onBack, onSalvo, 
                 <label className="label">Tempo da estação</label>
                 <div style={{ display: "flex", alignItems: "center", gap: 7 }}>
                   <input
-                    className="input"
+                    className="input ed-num"
                     style={{ width: 64, textAlign: "center", fontWeight: 700 }}
                     value={Math.floor(d.tempo_segundos / 60)}
                     onChange={setTempoMin}
@@ -412,7 +442,7 @@ export default function CaseEditor({ casoId, admin, taxonomia, onBack, onSalvo, 
                   />
                   <span style={{ color: "var(--c-muted)", fontWeight: 700 }}>min</span>
                   <input
-                    className="input"
+                    className="input ed-num"
                     style={{ width: 64, textAlign: "center", fontWeight: 700 }}
                     value={d.tempo_segundos % 60}
                     onChange={setTempoSeg}
@@ -449,7 +479,7 @@ export default function CaseEditor({ casoId, admin, taxonomia, onBack, onSalvo, 
             <div style={{ fontSize: "0.78rem", textTransform: "uppercase", letterSpacing: "0.5px", color: "var(--c-teal)", fontWeight: 700, marginBottom: 14 }}>
               👤 Ator / paciente simulado
             </div>
-            <div style={{ display: "grid", gridTemplateColumns: "1fr 1fr", gap: 12 }}>
+            <div className="form-grid-2" style={{ display: "grid", gridTemplateColumns: "1fr 1fr", gap: 12 }}>
               <div style={{ display: "flex", flexDirection: "column", gap: 6 }}>
                 <label className="label">Personagem</label>
                 <textarea className="input" rows={3} value={d.personagem || ""} onChange={setField("personagem")} placeholder="Quem o ator interpreta…" style={{ lineHeight: 1.45 }} />
@@ -461,7 +491,7 @@ export default function CaseEditor({ casoId, admin, taxonomia, onBack, onSalvo, 
             </div>
           </section>
 
-          <section className="card">
+          <section id="sec-rot" className="card">
             <div style={{ display: "flex", alignItems: "center", justifyContent: "space-between", marginBottom: 14 }}>
               <div>
                 <span style={{ fontSize: "0.78rem", textTransform: "uppercase", letterSpacing: "0.5px", color: "var(--c-teal)", fontWeight: 700 }}>
@@ -512,7 +542,7 @@ export default function CaseEditor({ casoId, admin, taxonomia, onBack, onSalvo, 
             </div>
           </section>
 
-          <section className="card">
+          <section id="sec-ach" className="card">
             <div style={{ display: "flex", alignItems: "center", gap: 8, marginBottom: 12 }}>
               <span style={{ display: "inline-block", width: 3, height: 16, background: "var(--c-blue)", borderRadius: 2 }} />
               <span style={{ fontSize: "0.78rem", textTransform: "uppercase", letterSpacing: "0.5px", color: "var(--c-blue)", fontWeight: 700 }}>
@@ -532,7 +562,7 @@ export default function CaseEditor({ casoId, admin, taxonomia, onBack, onSalvo, 
 
         {/* COLUNA DIREITA */}
         <div style={{ display: "flex", flexDirection: "column", gap: 18, position: "sticky", top: 78 }}>
-          <section className="card" style={{ padding: 20 }}>
+          <section id="sec-cont" className="card" style={{ padding: 20 }}>
             <div style={{ fontSize: "0.78rem", textTransform: "uppercase", letterSpacing: "0.5px", color: "var(--c-teal)", fontWeight: 700, marginBottom: 6 }}>
               🎯 Conteúdos
             </div>
@@ -610,7 +640,7 @@ export default function CaseEditor({ casoId, admin, taxonomia, onBack, onSalvo, 
             </div>
           </section>
 
-          <section className="card" style={{ padding: 20 }}>
+          <section id="sec-chk" className="card" style={{ padding: 20 }}>
             <div style={{ display: "flex", alignItems: "center", justifyContent: "space-between", marginBottom: 4 }}>
               <span style={{ fontSize: "0.78rem", textTransform: "uppercase", letterSpacing: "0.5px", color: "var(--c-teal)", fontWeight: 700 }}>✓ Checklist de avaliação</span>
               <div style={{ display: "flex", alignItems: "baseline", gap: 5 }}>
@@ -753,6 +783,36 @@ export default function CaseEditor({ casoId, admin, taxonomia, onBack, onSalvo, 
               </div>
             )}
           </section>
+        </div>
+      </div>
+
+      {/* barra de salvar fixa no rodapé: ação principal em cima, Salvar/Apagar embaixo */}
+      <div className="editor-savebar">
+        <span className="editor-savebar-status" style={{ fontSize: "0.85rem", color: dirty ? "var(--c-warn)" : "var(--c-muted)", whiteSpace: "nowrap" }}>
+          {dirty ? "• Alterações não salvas" : "Tudo salvo"}
+        </span>
+        <div className="editor-savebar-spacer" style={{ flex: 1 }} />
+        {/* ação principal (Enviar/Publicar) — no mobile fica em cima, largura total */}
+        <div className="savebar-primary">
+          {d.status === "rascunho" && (
+            <button className="btn btn-primary" onClick={enviarRevisao} disabled={salvando}>📤 Enviar</button>
+          )}
+          {d.status === "em_revisao" && isPriv && (
+            <button className="btn btn-primary" onClick={() => transicionar("publicado", "Caso publicado.")} disabled={salvando}>✅ Publicar</button>
+          )}
+        </div>
+        {/* salvar + ações destrutivas — no mobile ficam embaixo, lado a lado */}
+        <div className="savebar-secondary">
+          <button className="btn btn-ghost" style={{ borderColor: "var(--c-teal)", color: "var(--c-teal)" }} onClick={salvar} disabled={salvando}>Salvar rascunho</button>
+          {d.status === "publicado" && isPriv && (
+            <button className="btn btn-danger" onClick={() => transicionar("arquivado", "Caso arquivado.")} disabled={salvando}>🗄️ Arquivar</button>
+          )}
+          {d.status === "arquivado" && isPriv && (
+            <button className="btn btn-ghost" onClick={() => transicionar("rascunho", "Caso restaurado para rascunho.")} disabled={salvando}>↩ Restaurar</button>
+          )}
+          {d.id && admin.role === "owner" && (
+            <button className="btn btn-danger" onClick={apagar} disabled={salvando}>🗑️ Apagar</button>
+          )}
         </div>
       </div>
     </main>

@@ -42,10 +42,16 @@
   --radius-input: 9px;
 
   --ease: cubic-bezier(0.4, 0, 0.2, 1);
+
+  /* altura da barra de navegação inferior no celular (1 só fonte de verdade) */
+  --bottomnav-h: 54px;
 }
 
 * { box-sizing: border-box; }
 html, body { margin: 0; padding: 0; }
+/* trava qualquer estouro horizontal sem quebrar position: sticky/fixed
+   (clip não cria contexto de rolagem, ao contrário de overflow:hidden) */
+html, body { overflow-x: clip; }
 body {
   background: var(--c-bg);
   color: var(--c-text);
@@ -61,6 +67,19 @@ input:focus, textarea:focus, select:focus { outline: none; border-color: var(--c
 ::-webkit-scrollbar-thumb { background: #2a3a49; border-radius: 6px; }
 
 #root { min-height: 100vh; }
+
+/* no celular as páginas usam menos padding lateral: conteúdo mais largo e centralizado */
+@media (max-width: 760px) {
+  main { padding-left: 16px !important; padding-right: 16px !important; }
+  .input { padding: 9px 12px; }          /* inputs um pouco menores */
+  .ed-num { width: 52px !important; }    /* campos de min/seg do tempo */
+}
+/* celulares bem estreitos: encolhe mais um pouco pra tudo caber centralizado */
+@media (max-width: 380px) {
+  main { padding-left: 12px !important; padding-right: 12px !important; }
+  .editor-main .card { padding: 14px !important; }
+  .ed-num { width: 46px !important; }
+}
 
 .btn {
   border: none;
@@ -94,6 +113,10 @@ a:focus-visible { outline: 2px solid var(--c-teal); outline-offset: 2px; }
   font-size: var(--fs-body, 1rem);
 }
 
+/* controles de formulário precisam poder encolher: o tamanho intrínseco do
+   input (~170px) estoura a tela em celulares pequenos dentro de grid/flex */
+input, select, textarea, .input { min-width: 0; }
+
 .card {
   background: var(--c-panel);
   border: 1px solid var(--c-line);
@@ -107,4 +130,254 @@ a:focus-visible { outline: 2px solid var(--c-teal); outline-offset: 2px; }
   letter-spacing: 0.5px;
   color: var(--c-muted);
   font-weight: 600;
+}
+
+/* selo de status (Rascunho / Em revisão / Publicado…) — geometria única em todo lugar */
+.status-badge {
+  display: inline-block;
+  border-radius: 20px;
+  padding: 3px 11px;
+  font-size: 0.74rem;
+  font-weight: 700;
+  line-height: 1.45;
+  white-space: nowrap;
+}
+
+/* ---- Dashboard ---- */
+.dash-stats { display: grid; grid-template-columns: repeat(5, 1fr); gap: 12px; }
+.dash-cols  { display: grid; grid-template-columns: 1fr 1fr; gap: 20px; align-items: start; }
+/* itens de grid não podem exceder a trilha — evita estouro horizontal quando
+   um conteúdo interno (ex.: dropdown aberto) é mais largo que a coluna */
+.dash-cols > *, .dash-stats > * { min-width: 0; }
+@media (max-width: 900px) {
+  .dash-stats { grid-template-columns: repeat(2, 1fr); }
+  .dash-cols  { grid-template-columns: 1fr; }
+}
+
+/* barra "Casos por disciplina": rótulo + barra + total em linha (desktop) */
+.disc-row { display: grid; grid-template-columns: 150px 1fr 56px; gap: 14px; align-items: center; }
+.disc-count { text-align: right; }
+@media (max-width: 760px) {
+  /* no celular o rótulo e o total ficam acima de uma barra de largura total */
+  .disc-row { grid-template-columns: 1fr auto; grid-template-areas: "name count" "bar bar"; row-gap: 5px; column-gap: 10px; }
+  .disc-name  { grid-area: name; }
+  .disc-count { grid-area: count; }
+  .disc-bar   { grid-area: bar; }
+
+  /* "Progresso por conteúdo": linhas mais enxutas pra não estourar a direita */
+  .dcont-row { gap: 8px !important; }
+  .dcont-bar { width: 56px !important; }
+}
+
+/* ---- Lista de casos ---- */
+.lista-busca-row { display: flex; gap: 10px; margin-bottom: 12px; }
+.lista-busca-input { flex: 1; padding: 10px 14px; }
+.lista-filtros-toggle { display: none; align-items: center; gap: 7px; white-space: nowrap; }
+.lista-filtros-badge {
+  display: inline-grid; place-items: center; min-width: 18px; height: 18px; padding: 0 5px;
+  background: var(--c-teal); color: var(--c-teal-ink); border-radius: 9px; font-size: 0.7rem; font-weight: 800;
+}
+.lista-filtros { display: grid; grid-template-columns: repeat(5, 1fr) auto; gap: 10px; align-items: end; }
+.linkact { background: transparent; border: none; color: #cfe0d8; font-size: 0.82rem; cursor: pointer; padding: 2px 4px; }
+.linkact:hover:not(:disabled) { color: var(--c-text); }
+.linkact:disabled { opacity: 0.5; cursor: not-allowed; }
+
+/* autor + data são um só bloco no card mobile; no desktop seguem como colunas da tabela */
+.lt-meta { display: contents; }
+
+@media (max-width: 1000px) {
+  .lista-filtros { grid-template-columns: 1fr 1fr; }
+}
+@media (max-width: 760px) {
+  /* filtros viram um painel que abre pelo botão "Filtros" */
+  .lista-filtros-toggle { display: inline-flex; }
+  .lista-filtros { grid-template-columns: 1fr; display: none; }
+  .lista-filtros.aberto { display: grid; }
+
+  /* !important pq .lt-head tem display:grid inline (inline vence classe) */
+  .lt-head { display: none !important; }
+  .lt-row {
+    grid-template-columns: auto 1fr auto !important;
+    grid-template-areas:
+      "cb title status"
+      ".  title chips"
+      ".  meta  actions";
+    row-gap: 8px; padding: 14px 16px !important;
+  }
+  .lt-cb { grid-area: cb; align-self: start; }
+  .lt-title { grid-area: title; }
+  /* especialidade/período/tempo somem no card — o chip com ⭐ já basta */
+  .lt-title-sub { display: none; }
+  /* no card mobile o título usa até 2 linhas (na tabela desktop fica em 1) */
+  .lt-title-text {
+    white-space: normal !important;
+    display: -webkit-box;
+    -webkit-line-clamp: 2;
+    -webkit-box-orient: vertical;
+    overflow: hidden;
+    line-height: 1.3;
+  }
+  .lt-status { grid-area: status; justify-self: end; align-self: start; }
+  /* chip de matéria (⭐) fica embaixo do selo de status, alinhado à direita */
+  .lt-chips { grid-area: chips; justify-content: flex-end; justify-self: end; align-self: start; margin-top: 4px; }
+  /* "Autor · data" à esquerda (sem avatar — nome completo, sem truncar); ações à direita */
+  .lt-meta { grid-area: meta; display: flex; align-items: center; gap: 7px; min-width: 0; flex-wrap: wrap; }
+  .lt-avatar { display: none; }
+  .lt-autor { gap: 6px !important; min-width: 0; flex: none; }
+  .lt-autor-nome { font-size: 0.8rem; white-space: nowrap; }
+  .lt-date { font-size: 0.78rem !important; color: var(--c-muted); white-space: nowrap; }
+  .lt-date::before { content: "·"; margin-right: 7px; color: var(--c-muted); }
+  .lt-actions { grid-area: actions; justify-self: end; align-self: center; }
+}
+
+/* ---- Navegação mobile ---- */
+.bottom-nav { display: none; }
+.topbar-avatar-mobile { display: none; }
+
+/* botão flutuante "Novo caso" (FAB) — escondido no desktop, onde existe o botão do topo */
+.lista-fab { display: none; }
+@media (max-width: 760px) {
+  /* ---- Header enxuto no mobile: só logo + avatar ----
+     !important porque esses elementos têm display:flex inline (inline vence classe) */
+  .topbar-nav, .topbar-busca, .topbar-quem-full { display: none !important; }
+  .topbar-header {
+    padding: 9px 16px !important; gap: 10px !important;
+    background: var(--c-panel) !important; backdrop-filter: none !important;
+  }
+  /* o logo encolhe e nunca empurra a largura da tela */
+  .topbar-logo { font-size: 1rem !important; min-width: 0; overflow: hidden; }
+  .topbar-logo > span { white-space: nowrap; }
+
+  /* avatar (emoji do papel) no lugar de nome/papel/Sair */
+  .topbar-avatar-mobile {
+    display: grid; place-items: center;
+    width: 32px; height: 32px; flex-shrink: 0;
+    border-radius: 50%; background: var(--c-panel-2); border: 1px solid var(--c-line);
+    font-size: 0.95rem; cursor: pointer;
+  }
+
+  /* ---- Footer fixo no fundo da tela, respeitando a área segura do iPhone ---- */
+  .bottom-nav {
+    display: flex;
+    position: fixed; left: 0; right: 0; bottom: 0; z-index: 40;
+    height: calc(var(--bottomnav-h) + env(safe-area-inset-bottom, 0px));
+    padding-bottom: env(safe-area-inset-bottom, 0px);
+    background: var(--c-panel); border-top: 1px solid var(--c-line);
+  }
+  .bn-item {
+    flex: 1; display: flex; flex-direction: column; align-items: center; justify-content: center; gap: 2px;
+    background: transparent; border: none; border-top: 2px solid transparent;
+    padding: 0; cursor: pointer;
+  }
+  .bn-ico { font-size: 1.1rem; line-height: 1.1; }
+  .bn-lbl { font-size: 0.68rem; }
+  .bn-count { color: var(--c-warn); }
+  /* espaço para a barra inferior não cobrir o conteúdo */
+  .app { padding-bottom: calc(var(--bottomnav-h) + env(safe-area-inset-bottom, 0px)); }
+
+  /* no celular o "+ Novo caso" vira botão flutuante (FAB) acima da nav inferior */
+  .lista-new-top { display: none; }
+  .lista-fab {
+    display: inline-flex; align-items: center; gap: 6px;
+    position: fixed; right: 16px; z-index: 45;
+    bottom: calc(var(--bottomnav-h) + env(safe-area-inset-bottom, 0px) + 12px);
+    background: var(--c-teal); color: var(--c-teal-ink);
+    border: none; border-radius: 30px; padding: 13px 19px;
+    font-weight: 700; font-size: 0.95rem; cursor: pointer;
+    box-shadow: 0 8px 20px rgba(63, 182, 168, 0.4);
+  }
+}
+
+/* ---- Editor de caso ---- */
+.editor-savebar {
+  position: sticky; bottom: 0; z-index: 20;
+  display: flex; align-items: center; gap: 10px; flex-wrap: wrap;
+  margin: 18px -28px 0; padding: 12px 28px;
+  background: rgba(15, 23, 32, 0.95); backdrop-filter: blur(8px);
+  border-top: 1px solid var(--c-line);
+}
+/* colunas do editor podem encolher (senão um input interno estoura a tela) */
+.editor-grid > * { min-width: 0; }
+/* grupos de botões: no desktop fluem inline; no mobile viram 2 linhas */
+.savebar-secondary, .savebar-primary { display: contents; }
+/* header/progresso mobile do editor só aparecem no celular */
+.editor-head-mobile, .editor-progress-mobile { display: none; }
+
+@media (max-width: 900px) {
+  .editor-grid { grid-template-columns: 1fr !important; }
+}
+@media (max-width: 600px) {
+  .form-grid-2 { grid-template-columns: 1fr !important; }
+}
+@media (max-width: 760px) {
+  /* modo foco: sem topbar global nem nav inferior durante a edição
+     (!important porque header e secnav têm display:flex inline) */
+  .app-editor .topbar-header { display: none !important; }
+  .app-editor .bottom-nav { display: none !important; }
+  .app-editor { padding-bottom: 0; }
+
+  .editor-head-desktop { display: none !important; }
+  .editor-secnav { display: none !important; }
+
+  /* cards do editor com um pouco menos de padding interno (mais ar pro conteúdo) */
+  .editor-main .card { padding: 16px !important; }
+
+  /* header do editor no mobile: voltar + título/estado + status, colado no topo */
+  .editor-head-mobile {
+    display: flex; align-items: center; gap: 10px;
+    position: sticky; top: 0; z-index: 30;
+    margin: -22px -16px 0;
+    padding: calc(10px + env(safe-area-inset-top, 0px)) 16px 12px;
+    background: var(--c-panel); border-bottom: 1px solid var(--c-line);
+  }
+  .editor-back-m {
+    flex: none; background: transparent; border: none; color: var(--c-muted);
+    font-size: 1.3rem; line-height: 1; padding: 2px 4px; cursor: pointer;
+  }
+  .editor-titles-m { flex: 1; min-width: 0; }
+  .editor-title-m { font-weight: 700; font-size: 0.95rem; white-space: nowrap; overflow: hidden; text-overflow: ellipsis; }
+  .editor-subtitle-m { font-size: 0.72rem; margin-top: 1px; }
+  .editor-badge-m { flex: none; }
+
+  /* barra de progresso — substitui a navegação por seções no mobile */
+  .editor-progress-mobile { display: block; margin: 14px 0 6px; }
+  .editor-progress-top { display: flex; justify-content: space-between; font-size: 0.74rem; color: var(--c-muted); margin-bottom: 6px; }
+  .editor-progress-pct { color: var(--c-text); font-weight: 700; }
+  .editor-progress-track { height: 7px; border-radius: 5px; background: var(--c-panel-2); overflow: hidden; }
+  .editor-progress-track > div { height: 100%; background: var(--c-teal); transition: width 0.2s var(--ease); }
+
+  /* espaço para o conteúdo não ficar atrás da barra fixa */
+  .editor-main { padding-bottom: 140px !important; }
+
+  /* footer fixo no fundo: ação principal (Publicar/Enviar) em cima, largura
+     total; Salvar + Apagar embaixo lado a lado; os 3 com a mesma altura */
+  .editor-savebar {
+    position: fixed; left: 0; right: 0; bottom: 0; z-index: 41;
+    margin: 0; padding: 10px 14px calc(10px + env(safe-area-inset-bottom, 0px));
+    background: var(--c-panel); backdrop-filter: none;
+    flex-direction: column; align-items: stretch; gap: 8px;
+  }
+  .editor-savebar-status, .editor-savebar-spacer { display: none; }
+  .savebar-primary, .savebar-secondary { display: flex; gap: 8px; }
+  .savebar-primary:empty, .savebar-secondary:empty { display: none; }
+  .editor-savebar .btn { flex: 1; width: auto; min-height: 40px; padding-top: 7px; padding-bottom: 7px; }
+}
+
+/* ---- Preview ---- */
+@media (max-width: 760px) {
+  .preview-grid { grid-template-columns: 1fr !important; }
+  .preview-actionbar {
+    bottom: calc(var(--bottomnav-h) + env(safe-area-inset-bottom, 0px) + 16px) !important;
+    flex-direction: column; align-items: stretch; gap: 10px;
+  }
+  .preview-actions { display: flex; gap: 9px; }
+  .preview-actions .btn { flex: 1; }
+}
+
+/* ---- Fila de revisão: ações não cabem em linha no celular ---- */
+@media (max-width: 760px) {
+  /* o bloco de texto ocupa a linha inteira e empurra os botões para baixo */
+  .fila-main { min-width: 100% !important; }
+  .fila-actions { width: 100%; }
+  .fila-actions .btn { flex: 1; }
 }

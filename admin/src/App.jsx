@@ -10,6 +10,7 @@ import Fila from "./pages/Fila.jsx";
 import Historico from "./pages/Historico.jsx";
 import Dashboard from "./pages/Dashboard.jsx";
 import Topbar from "./components/Topbar.jsx";
+import BottomNav from "./components/BottomNav.jsx";
 
 export default function App() {
   const [session, setSession] = useState(undefined); // undefined = ainda checando
@@ -20,6 +21,8 @@ export default function App() {
   const [screen, setScreen] = useState("dashboard");
   const [casoSelecionado, setCasoSelecionado] = useState(null); // id ou null (novo)
   const [filtroConteudoId, setFiltroConteudoId] = useState(""); // pré-filtro vindo do dashboard
+  const [buscaGlobal, setBuscaGlobal] = useState(""); // busca vinda da Topbar
+  const [selecao, setSelecao] = useState(() => new Set()); // seleção da Lista (persiste ao entrar/sair de um caso)
   const [previewCasoId, setPreviewCasoId] = useState(null);
   const [previewFrom, setPreviewFrom] = useState("lista");
   const [histCasoId, setHistCasoId] = useState(null);
@@ -127,20 +130,30 @@ export default function App() {
   }
 
   const filaCount = casos.filter((c) => c.status === "em_revisao").length;
+  const irDashboard = () => setScreen("dashboard");
+  const irCasos = () => {
+    setFiltroConteudoId("");
+    setBuscaGlobal("");
+    setScreen("lista");
+  };
+  const irFila = () => setScreen("fila");
 
   return (
-    <div style={{ minHeight: "100vh" }}>
+    <div className={"app" + (screen === "editor" ? " app-editor" : "")} style={{ minHeight: "100vh" }}>
       <Topbar
         screen={screen}
-        onGoDashboard={() => setScreen("dashboard")}
-        onGoCasos={() => {
+        onGoDashboard={irDashboard}
+        onGoCasos={irCasos}
+        onGoFila={irFila}
+        onBuscar={(t) => {
           setFiltroConteudoId("");
+          setBuscaGlobal(t);
           setScreen("lista");
         }}
-        onGoFila={() => setScreen("fila")}
         filaCount={filaCount}
         admin={admin}
       />
+      <BottomNav screen={screen} onGoDashboard={irDashboard} onGoCasos={irCasos} onGoFila={irFila} filaCount={filaCount} />
 
       {erroDados && (
         <div style={{ maxWidth: 1180, margin: "16px auto 0", padding: "0 28px" }}>
@@ -169,12 +182,21 @@ export default function App() {
             setFiltroConteudoId(ct.id);
             setScreen("lista");
           }}
+          onNovoCaso={() => {
+            setCasoSelecionado(null);
+            setScreen("editor");
+          }}
         />
       ) : screen === "lista" ? (
         <Lista
           casos={casos}
           taxonomia={taxonomia}
           filtroConteudoId={filtroConteudoId}
+          buscaInicial={buscaGlobal}
+          admin={admin}
+          sel={selecao}
+          setSel={setSelecao}
+          onRecarregar={recarregarDados}
           onNovoCaso={() => {
             setCasoSelecionado(null);
             setScreen("editor");

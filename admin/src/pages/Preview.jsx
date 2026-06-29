@@ -86,7 +86,7 @@ export default function Preview({ casoId, admin, onBack, onRecarregar }) {
           <h1 style={{ margin: 0, fontSize: "1.3rem", fontWeight: 800, whiteSpace: "nowrap", overflow: "hidden", textOverflow: "ellipsis" }}>
             Preview · {caso.titulo || "(sem título)"}
           </h1>
-          <span style={{ background: sm.bg, color: sm.fg, borderRadius: 20, padding: "3px 11px", fontSize: "0.72rem", fontWeight: 700, whiteSpace: "nowrap" }}>
+          <span className="status-badge" style={{ background: sm.bg, color: sm.fg }}>
             {sm.label}
           </span>
         </div>
@@ -103,7 +103,7 @@ export default function Preview({ casoId, admin, onBack, onRecarregar }) {
         </div>
       </div>
 
-      <div style={{ display: "grid", gridTemplateColumns: `repeat(${numColunas}, 1fr)`, gap: 18, alignItems: "start" }}>
+      <div className="preview-grid" style={{ display: "grid", gridTemplateColumns: `repeat(${numColunas}, 1fr)`, gap: 18, alignItems: "start" }}>
         {showEstudante && (
           <section className="card" style={{ padding: 0, overflow: "hidden" }}>
             <div style={{ display: "flex", alignItems: "center", justifyContent: "space-between", padding: "14px 20px", borderBottom: "1px solid var(--c-line)", background: "rgba(63,182,168,0.06)" }}>
@@ -138,7 +138,7 @@ export default function Preview({ casoId, admin, onBack, onRecarregar }) {
               <span style={{ fontSize: "0.7rem", textTransform: "uppercase", letterSpacing: "0.5px", color: "var(--c-warn)" }}>confidencial</span>
             </div>
             <div style={{ padding: 22 }}>
-              <div style={{ display: "grid", gridTemplateColumns: "1fr 1fr", gap: 14, marginBottom: 18 }}>
+              <div className="form-grid-2" style={{ display: "grid", gridTemplateColumns: "1fr 1fr", gap: 14, marginBottom: 18 }}>
                 <div>
                   <div style={{ fontSize: "0.7rem", textTransform: "uppercase", letterSpacing: "0.5px", color: "var(--c-muted)", fontWeight: 700, marginBottom: 5 }}>
                     Personagem
@@ -200,6 +200,7 @@ export default function Preview({ casoId, admin, onBack, onRecarregar }) {
 
       {emRevisao && (
         <div
+          className="preview-actionbar"
           style={{
             position: "sticky",
             bottom: 16,
@@ -223,7 +224,7 @@ export default function Preview({ casoId, admin, onBack, onRecarregar }) {
             {acaoErro && <span style={{ fontSize: "0.85rem", color: "var(--c-danger)" }}>⚠️ {acaoErro}</span>}
           </div>
           {isPriv ? (
-            <div style={{ display: "flex", gap: 9 }}>
+            <div className="preview-actions" style={{ display: "flex", gap: 9 }}>
               <button className="btn btn-ghost" disabled={enviando} onClick={() => setDevolverOpen(true)}>
                 ↩ Devolver
               </button>

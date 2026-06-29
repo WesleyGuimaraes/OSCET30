@@ -45,6 +45,7 @@ export default function Lista({ casos, taxonomia, filtroConteudoId, buscaInicial
   const [fAutor, setFAutor] = useState("");
   const [bulkMsg, setBulkMsg] = useState("");
   const [bulkBusy, setBulkBusy] = useState(false);
+  const [mFiltros, setMFiltros] = useState(false); // painel de filtros aberto (mobile)
 
   const isPriv = admin && (admin.role === "owner" || admin.role === "revisor");
 
@@ -87,6 +88,7 @@ export default function Lista({ casos, taxonomia, filtroConteudoId, buscaInicial
   const emRevisao = casos.filter((c) => c.status === "em_revisao").length;
   const rascunhos = casos.filter((c) => c.status === "rascunho").length;
   const temFiltro = busca || fDisciplina || fPeriodo || fConteudo || fStatus || fAutor;
+  const nFiltrosAtivos = [fDisciplina, fPeriodo, fConteudo, fStatus, fAutor].filter(Boolean).length;
 
   function limparFiltros() {
     setBusca(""); setFDisciplina(""); setFPeriodo(""); setFConteudo(""); setFStatus(""); setFAutor("");
@@ -139,12 +141,21 @@ export default function Lista({ casos, taxonomia, filtroConteudoId, buscaInicial
         <button className="btn btn-primary lista-new-top" onClick={onNovoCaso}>+ Novo caso</button>
       </div>
 
-      {/* filtros */}
-      <div className="card lista-filtros" style={{ padding: "14px 16px", marginBottom: 14 }}>
-        <div style={{ display: "flex", flexDirection: "column", gap: 5 }}>
-          <label className="label">Buscar por título</label>
-          <input className="input" style={{ padding: "9px 12px" }} value={busca} onChange={(e) => setBusca(e.target.value)} placeholder="Digite um título…" />
-        </div>
+      {/* busca (sempre visível) + botão de filtros (só no mobile) */}
+      <div className="lista-busca-row">
+        <input className="input lista-busca-input" value={busca} onChange={(e) => setBusca(e.target.value)} placeholder="🔎  Buscar por título…" />
+        <button
+          className="lista-filtros-toggle btn btn-ghost"
+          onClick={() => setMFiltros((v) => !v)}
+          aria-expanded={mFiltros}
+        >
+          ⚙ Filtros
+          {nFiltrosAtivos > 0 && <span className="lista-filtros-badge">{nFiltrosAtivos}</span>}
+        </button>
+      </div>
+
+      {/* filtros (desktop: sempre; mobile: abrem pelo botão) */}
+      <div className={"card lista-filtros" + (mFiltros ? " aberto" : "")} style={{ padding: "14px 16px", marginBottom: 14 }}>
         <Select label="Disciplina" value={fDisciplina} onChange={(e) => { setFDisciplina(e.target.value); setFConteudo(""); }} options={[{ val: "", label: "Todas" }, ...disciplinas.map((d) => ({ val: d, label: d }))]} />
         <Select label="Período" value={fPeriodo} onChange={(e) => { setFPeriodo(e.target.value); setFConteudo(""); }} options={[{ val: "", label: "Todos" }, ...periodos.map((p) => ({ val: String(p), label: p + "° período" }))]} />
         <Select label="Conteúdo" value={fConteudo} onChange={(e) => setFConteudo(e.target.value)} options={[{ val: "", label: "Todos" }, ...conteudoOpts]} />
@@ -204,13 +215,15 @@ export default function Lista({ casos, taxonomia, filtroConteudoId, buscaInicial
               <div className="lt-status">
                 <span style={{ background: sm.bg, color: sm.fg, borderRadius: 20, padding: "3px 11px", fontSize: "0.74rem", fontWeight: 700, whiteSpace: "nowrap" }}>{sm.label}</span>
               </div>
-              <div className="lt-autor" style={{ display: "flex", alignItems: "center", gap: 7, minWidth: 0 }}>
-                <span style={{ width: 22, height: 22, flexShrink: 0, borderRadius: "50%", background: avatarCor(row.autor), color: "#fff", display: "grid", placeItems: "center", fontSize: "0.68rem", fontWeight: 700 }}>
-                  {(row.autor || "?").charAt(0).toUpperCase()}
-                </span>
-                <span style={{ fontSize: "0.83rem", whiteSpace: "nowrap", overflow: "hidden", textOverflow: "ellipsis" }}>{row.autor}</span>
+              <div className="lt-meta">
+                <div className="lt-autor" style={{ display: "flex", alignItems: "center", gap: 7, minWidth: 0 }}>
+                  <span className="lt-avatar" style={{ width: 22, height: 22, flexShrink: 0, borderRadius: "50%", background: avatarCor(row.autor), color: "#fff", display: "grid", placeItems: "center", fontSize: "0.68rem", fontWeight: 700 }}>
+                    {(row.autor || "?").charAt(0).toUpperCase()}
+                  </span>
+                  <span style={{ fontSize: "0.83rem", whiteSpace: "nowrap", overflow: "hidden", textOverflow: "ellipsis" }}>{row.autor}</span>
+                </div>
+                <div className="lt-date" style={{ fontSize: "0.8rem", color: "var(--c-muted)", whiteSpace: "nowrap" }}>{fmtData(row.atualizadoEm)}</div>
               </div>
-              <div className="lt-date" style={{ fontSize: "0.8rem", color: "var(--c-muted)", whiteSpace: "nowrap" }}>{fmtData(row.atualizadoEm)}</div>
               <div className="lt-actions" style={{ display: "flex", gap: 4, justifyContent: "flex-end" }}>
                 <IconBtn title="Preview" onClick={(e) => { e.stopPropagation(); onPreview(row.id); }}>▶</IconBtn>
                 <IconBtn title="Histórico" onClick={(e) => { e.stopPropagation(); onHist(row.id); }}>🕘</IconBtn>

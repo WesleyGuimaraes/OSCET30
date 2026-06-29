@@ -282,16 +282,20 @@ export default function CaseEditor({ casoId, admin, taxonomia, onBack, onSalvo, 
   const secDone = secList.filter((s) => s.ok).length;
   const irPara = (id) => document.getElementById(id)?.scrollIntoView({ behavior: "smooth", block: "start" });
 
+  const titulo = d.titulo?.trim() || (d.id ? "(sem título)" : "Novo caso");
+  const pctPreenchido = Math.round((secDone / secList.length) * 100);
+
   return (
-    <main style={{ maxWidth: 1180, margin: "0 auto", padding: "22px 28px 100px" }}>
-      <div style={{ display: "flex", alignItems: "center", gap: 12, marginBottom: 20, flexWrap: "wrap" }}>
+    <main className="editor-main" style={{ maxWidth: 1180, margin: "0 auto", padding: "22px 28px 100px" }}>
+      {/* header desktop */}
+      <div className="editor-head-desktop" style={{ display: "flex", alignItems: "center", gap: 12, marginBottom: 20, flexWrap: "wrap" }}>
         <button className="btn btn-ghost" onClick={sair}>
           ← Casos
         </button>
         <div style={{ flex: 1, minWidth: 0 }}>
           <div style={{ display: "flex", alignItems: "center", gap: 10 }}>
             <h1 style={{ margin: 0, fontSize: "1.4rem", fontWeight: 800, whiteSpace: "nowrap", overflow: "hidden", textOverflow: "ellipsis" }}>
-              {d.titulo?.trim() || (d.id ? "(sem título)" : "Novo caso")}
+              {titulo}
             </h1>
             <span style={{ background: sm.bg, color: sm.fg, borderRadius: 20, padding: "3px 11px", fontSize: "0.74rem", fontWeight: 700 }}>
               {sm.label}
@@ -309,6 +313,30 @@ export default function CaseEditor({ casoId, admin, taxonomia, onBack, onSalvo, 
             <button className="btn btn-ghost" onClick={() => onPreview(d.id)}>▶ Preview</button>
           </div>
         )}
+      </div>
+
+      {/* header mobile — modo foco (img 4): voltar + título/estado + status */}
+      <div className="editor-head-mobile">
+        <button className="editor-back-m" onClick={sair} aria-label="Voltar">←</button>
+        <div className="editor-titles-m">
+          <div className="editor-title-m">{titulo}</div>
+          <div className="editor-subtitle-m" style={{ color: dirty ? "var(--c-warn)" : "var(--c-muted)" }}>
+            {dirty ? "• Não salvo" : "Salvo"}
+          </div>
+        </div>
+        {d.id && (
+          <button className="editor-back-m" onClick={() => onPreview(d.id)} aria-label="Preview" style={{ fontSize: "1rem" }}>▶</button>
+        )}
+        <span className="editor-badge-m" style={{ background: sm.bg, color: sm.fg }}>{sm.label}</span>
+      </div>
+
+      {/* barra de progresso (img 4) — substitui a navegação por seções no mobile */}
+      <div className="editor-progress-mobile">
+        <div className="editor-progress-top">
+          <span>{secDone} de {secList.length} seções preenchidas</span>
+          <span className="editor-progress-pct">{pctPreenchido}%</span>
+        </div>
+        <div className="editor-progress-track"><div style={{ width: `${pctPreenchido}%` }} /></div>
       </div>
 
       {/* navegação de seções + preenchimento */}
@@ -758,28 +786,32 @@ export default function CaseEditor({ casoId, admin, taxonomia, onBack, onSalvo, 
         </div>
       </div>
 
-      {/* barra de salvar fixa no rodapé */}
+      {/* barra de salvar fixa no rodapé (img 5: Salvar rascunho | Enviar; mantém Apagar) */}
       <div className="editor-savebar">
-        <span style={{ fontSize: "0.85rem", color: dirty ? "var(--c-warn)" : "var(--c-muted)", whiteSpace: "nowrap" }}>
+        <span className="editor-savebar-status" style={{ fontSize: "0.85rem", color: dirty ? "var(--c-warn)" : "var(--c-muted)", whiteSpace: "nowrap" }}>
           {dirty ? "• Alterações não salvas" : "Tudo salvo"}
         </span>
         <div className="editor-savebar-spacer" style={{ flex: 1 }} />
-        {d.status === "publicado" && isPriv && (
-          <button className="btn btn-danger" onClick={() => transicionar("arquivado", "Caso arquivado.")} disabled={salvando}>🗄️ Arquivar</button>
-        )}
-        {d.status === "arquivado" && isPriv && (
-          <button className="btn btn-ghost" onClick={() => transicionar("rascunho", "Caso restaurado para rascunho.")} disabled={salvando}>↩ Restaurar</button>
-        )}
-        {d.id && admin.role === "owner" && (
-          <button className="btn btn-danger" onClick={apagar} disabled={salvando}>🗑️ Apagar</button>
-        )}
-        <button className="btn btn-ghost" style={{ borderColor: "var(--c-teal)", color: "var(--c-teal)" }} onClick={salvar} disabled={salvando}>Salvar rascunho</button>
-        {d.status === "rascunho" && (
-          <button className="btn btn-primary" onClick={enviarRevisao} disabled={salvando}>📤 Enviar para revisão</button>
-        )}
-        {d.status === "em_revisao" && isPriv && (
-          <button className="btn btn-primary" onClick={() => transicionar("publicado", "Caso publicado.")} disabled={salvando}>✅ Publicar</button>
-        )}
+        <div className="savebar-secondary">
+          {d.status === "publicado" && isPriv && (
+            <button className="btn btn-danger" onClick={() => transicionar("arquivado", "Caso arquivado.")} disabled={salvando}>🗄️ Arquivar</button>
+          )}
+          {d.status === "arquivado" && isPriv && (
+            <button className="btn btn-ghost" onClick={() => transicionar("rascunho", "Caso restaurado para rascunho.")} disabled={salvando}>↩ Restaurar</button>
+          )}
+          {d.id && admin.role === "owner" && (
+            <button className="btn btn-danger" onClick={apagar} disabled={salvando}>🗑️ Apagar</button>
+          )}
+        </div>
+        <div className="savebar-primary">
+          <button className="btn btn-ghost" style={{ borderColor: "var(--c-teal)", color: "var(--c-teal)" }} onClick={salvar} disabled={salvando}>Salvar rascunho</button>
+          {d.status === "rascunho" && (
+            <button className="btn btn-primary" onClick={enviarRevisao} disabled={salvando}>📤 Enviar</button>
+          )}
+          {d.status === "em_revisao" && isPriv && (
+            <button className="btn btn-primary" onClick={() => transicionar("publicado", "Caso publicado.")} disabled={salvando}>✅ Publicar</button>
+          )}
+        </div>
       </div>
     </main>
   );

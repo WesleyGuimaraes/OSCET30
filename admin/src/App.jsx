@@ -139,7 +139,7 @@ export default function App() {
   const irFila = () => setScreen("fila");
 
   return (
-    <div style={{ minHeight: "100vh" }}>
+    <div className={"app" + (screen === "editor" ? " app-editor" : "")} style={{ minHeight: "100vh" }}>
       <Topbar
         screen={screen}
         onGoDashboard={irDashboard}

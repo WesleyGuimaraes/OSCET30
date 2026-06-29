@@ -135,24 +135,38 @@ a:focus-visible { outline: 2px solid var(--c-teal); outline-offset: 2px; }
 }
 
 /* ---- Lista de casos ---- */
-.lista-filtros { display: grid; grid-template-columns: 1.7fr repeat(5, 1fr) auto; gap: 10px; align-items: end; }
+.lista-busca-row { display: flex; gap: 10px; margin-bottom: 12px; }
+.lista-busca-input { flex: 1; padding: 10px 14px; }
+.lista-filtros-toggle { display: none; align-items: center; gap: 7px; white-space: nowrap; }
+.lista-filtros-badge {
+  display: inline-grid; place-items: center; min-width: 18px; height: 18px; padding: 0 5px;
+  background: var(--c-teal); color: var(--c-teal-ink); border-radius: 9px; font-size: 0.7rem; font-weight: 800;
+}
+.lista-filtros { display: grid; grid-template-columns: repeat(5, 1fr) auto; gap: 10px; align-items: end; }
 .linkact { background: transparent; border: none; color: #cfe0d8; font-size: 0.82rem; cursor: pointer; padding: 2px 4px; }
 .linkact:hover:not(:disabled) { color: var(--c-text); }
 .linkact:disabled { opacity: 0.5; cursor: not-allowed; }
+
+/* autor + data são um só bloco no card mobile; no desktop seguem como colunas da tabela */
+.lt-meta { display: contents; }
+
 @media (max-width: 1000px) {
   .lista-filtros { grid-template-columns: 1fr 1fr; }
 }
 @media (max-width: 760px) {
-  .lista-filtros { grid-template-columns: 1fr; }
+  /* filtros viram um painel que abre pelo botão "Filtros" */
+  .lista-filtros-toggle { display: inline-flex; }
+  .lista-filtros { grid-template-columns: 1fr; display: none; }
+  .lista-filtros.aberto { display: grid; }
+
   .lt-head { display: none; }
   .lt-row {
     grid-template-columns: auto 1fr auto !important;
     grid-template-areas:
-      "cb title status"
+      "cb title  status"
       ".  chips  chips"
-      ".  autor  date"
-      ".  actions actions";
-    row-gap: 7px; padding: 14px 16px !important;
+      ".  meta   actions";
+    row-gap: 8px; padding: 14px 16px !important;
   }
   .lt-cb { grid-area: cb; align-self: start; }
   .lt-title { grid-area: title; }
@@ -167,9 +181,13 @@ a:focus-visible { outline: 2px solid var(--c-teal); outline-offset: 2px; }
   }
   .lt-status { grid-area: status; justify-self: end; align-self: start; }
   .lt-chips { grid-area: chips; }
-  .lt-autor { grid-area: autor; }
-  .lt-date { grid-area: date; justify-self: end; }
-  .lt-actions { grid-area: actions; justify-content: flex-start !important; margin-top: 4px; }
+  /* "Autor · data" numa linha só (sem avatar) à esquerda; ações à direita */
+  .lt-meta { grid-area: meta; display: flex; align-items: center; min-width: 0; }
+  .lt-avatar { display: none; }
+  .lt-meta .lt-autor > span { font-size: 0.78rem !important; color: var(--c-muted) !important; }
+  .lt-date { font-size: 0.78rem !important; }
+  .lt-date::before { content: "·"; margin: 0 6px; color: var(--c-muted); }
+  .lt-actions { grid-area: actions; justify-self: end; align-self: center; }
 }
 
 /* ---- Navegação mobile ---- */
@@ -179,9 +197,13 @@ a:focus-visible { outline: 2px solid var(--c-teal); outline-offset: 2px; }
 /* botão flutuante "Novo caso" (FAB) — escondido no desktop, onde existe o botão do topo */
 .lista-fab { display: none; }
 @media (max-width: 760px) {
-  /* ---- Header enxuto: só logo + avatar ---- */
-  .topbar-nav, .topbar-busca, .topbar-quem-full { display: none; }
-  .topbar-header { padding: 8px 14px !important; gap: 10px !important; }
+  /* ---- Header enxuto: só logo + avatar (img 1) ----
+     !important porque esses elementos têm display:flex inline (inline vence classe) */
+  .topbar-nav, .topbar-busca, .topbar-quem-full { display: none !important; }
+  .topbar-header {
+    padding: 9px 16px !important; gap: 10px !important;
+    background: var(--c-panel) !important; backdrop-filter: none !important;
+  }
   /* o logo encolhe e nunca empurra a largura da tela */
   .topbar-logo { font-size: 1rem !important; min-width: 0; overflow: hidden; }
   .topbar-logo > span { white-space: nowrap; }
@@ -211,7 +233,7 @@ a:focus-visible { outline: 2px solid var(--c-teal); outline-offset: 2px; }
   .bn-lbl { font-size: 0.68rem; }
   .bn-count { color: var(--c-warn); }
   /* espaço para a barra inferior não cobrir o conteúdo */
-  body { padding-bottom: calc(var(--bottomnav-h) + env(safe-area-inset-bottom, 0px)); }
+  .app { padding-bottom: calc(var(--bottomnav-h) + env(safe-area-inset-bottom, 0px)); }
 
   /* no celular o "+ Novo caso" vira botão flutuante (FAB) acima da nav inferior */
   .lista-new-top { display: none; }
@@ -234,6 +256,11 @@ a:focus-visible { outline: 2px solid var(--c-teal); outline-offset: 2px; }
   background: rgba(15, 23, 32, 0.95); backdrop-filter: blur(8px);
   border-top: 1px solid var(--c-line);
 }
+/* grupos de botões: no desktop fluem inline; no mobile viram 2 linhas */
+.savebar-secondary, .savebar-primary { display: contents; }
+/* header/progresso mobile do editor só aparecem no celular */
+.editor-head-mobile, .editor-progress-mobile { display: none; }
+
 @media (max-width: 900px) {
   .editor-grid { grid-template-columns: 1fr !important; }
 }
@@ -241,13 +268,54 @@ a:focus-visible { outline: 2px solid var(--c-teal); outline-offset: 2px; }
   .form-grid-2 { grid-template-columns: 1fr !important; }
 }
 @media (max-width: 760px) {
-  /* a margem negativa segue cancelando o padding fixo (28px) do <main> do editor */
-  .editor-savebar {
-    bottom: calc(var(--bottomnav-h) + env(safe-area-inset-bottom, 0px));
-    padding: 10px 28px; flex-direction: column; align-items: stretch;
+  /* modo foco: sem topbar global nem nav inferior durante a edição
+     (!important porque header e secnav têm display:flex inline) */
+  .app-editor .topbar-header { display: none !important; }
+  .app-editor .bottom-nav { display: none !important; }
+  .app-editor { padding-bottom: 0; }
+
+  .editor-head-desktop { display: none !important; }
+  .editor-secnav { display: none !important; }
+
+  /* header do editor (img 4): voltar + título/estado + status, colado no topo */
+  .editor-head-mobile {
+    display: flex; align-items: center; gap: 10px;
+    position: sticky; top: 0; z-index: 30;
+    margin: -22px -28px 0;
+    padding: calc(10px + env(safe-area-inset-top, 0px)) 16px 12px;
+    background: var(--c-panel); border-bottom: 1px solid var(--c-line);
   }
-  .editor-savebar-spacer { flex: none !important; height: 0; }
-  .editor-savebar button { width: 100%; }
+  .editor-back-m {
+    flex: none; background: transparent; border: none; color: var(--c-muted);
+    font-size: 1.3rem; line-height: 1; padding: 2px 4px; cursor: pointer;
+  }
+  .editor-titles-m { flex: 1; min-width: 0; }
+  .editor-title-m { font-weight: 700; font-size: 0.95rem; white-space: nowrap; overflow: hidden; text-overflow: ellipsis; }
+  .editor-subtitle-m { font-size: 0.72rem; margin-top: 1px; }
+  .editor-badge-m { flex: none; border-radius: 20px; padding: 3px 10px; font-size: 0.7rem; font-weight: 700; white-space: nowrap; }
+
+  /* barra de progresso (img 4) — substitui a navegação por seções no mobile */
+  .editor-progress-mobile { display: block; margin: 14px 0 6px; }
+  .editor-progress-top { display: flex; justify-content: space-between; font-size: 0.74rem; color: var(--c-muted); margin-bottom: 6px; }
+  .editor-progress-pct { color: var(--c-text); font-weight: 700; }
+  .editor-progress-track { height: 7px; border-radius: 5px; background: var(--c-panel-2); overflow: hidden; }
+  .editor-progress-track > div { height: 100%; background: var(--c-teal); transition: width 0.2s var(--ease); }
+
+  /* espaço para o conteúdo não ficar atrás da barra fixa */
+  .editor-main { padding-bottom: 140px !important; }
+
+  /* footer (img 5): fixo no fundo, Salvar | Enviar lado a lado, Apagar acima */
+  .editor-savebar {
+    position: fixed; left: 0; right: 0; bottom: 0; z-index: 41;
+    margin: 0; padding: 10px 14px calc(10px + env(safe-area-inset-bottom, 0px));
+    background: var(--c-panel); backdrop-filter: none;
+    flex-direction: column; align-items: stretch; gap: 8px;
+  }
+  .editor-savebar-status, .editor-savebar-spacer { display: none; }
+  .savebar-secondary { display: flex; gap: 8px; }
+  .savebar-secondary:empty { display: none; }
+  .savebar-primary { display: flex; gap: 8px; }
+  .savebar-secondary .btn, .savebar-primary .btn { flex: 1; width: auto; }
 }
 
 /* ---- Preview ---- */

@@ -194,17 +194,20 @@ input, select, textarea, .input { min-width: 0; }
   .lista-filtros { grid-template-columns: 1fr; display: none; }
   .lista-filtros.aberto { display: grid; }
 
-  .lt-head { display: none; }
+  /* !important pq .lt-head tem display:grid inline (inline vence classe) */
+  .lt-head { display: none !important; }
   .lt-row {
     grid-template-columns: auto 1fr auto !important;
     grid-template-areas:
-      "cb title  status"
-      ".  chips  chips"
-      ".  meta   actions";
+      "cb title status"
+      ".  title chips"
+      ".  meta  actions";
     row-gap: 8px; padding: 14px 16px !important;
   }
   .lt-cb { grid-area: cb; align-self: start; }
   .lt-title { grid-area: title; }
+  /* especialidade/período/tempo somem no card — o chip com ⭐ já basta */
+  .lt-title-sub { display: none; }
   /* no card mobile o título usa até 2 linhas (na tabela desktop fica em 1) */
   .lt-title-text {
     white-space: normal !important;
@@ -215,7 +218,8 @@ input, select, textarea, .input { min-width: 0; }
     line-height: 1.3;
   }
   .lt-status { grid-area: status; justify-self: end; align-self: start; }
-  .lt-chips { grid-area: chips; }
+  /* chip de matéria (⭐) fica embaixo do selo de status, alinhado à direita */
+  .lt-chips { grid-area: chips; justify-content: flex-end; justify-self: end; align-self: start; margin-top: 4px; }
   /* "Autor · data" à esquerda (sem avatar — nome completo, sem truncar); ações à direita */
   .lt-meta { grid-area: meta; display: flex; align-items: center; gap: 7px; min-width: 0; flex-wrap: wrap; }
   .lt-avatar { display: none; }

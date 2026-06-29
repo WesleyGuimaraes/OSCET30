@@ -203,7 +203,7 @@ export default function Lista({ casos, taxonomia, filtroConteudoId, buscaInicial
               </div>
               <div className="lt-title" style={{ minWidth: 0 }}>
                 <div className="lt-title-text" style={{ fontWeight: 600, fontSize: "0.93rem", whiteSpace: "nowrap", overflow: "hidden", textOverflow: "ellipsis" }}>{row.titulo || "(sem título)"}</div>
-                <div style={{ fontSize: "0.76rem", color: "var(--c-muted)", marginTop: 2 }}>{row.especialidade || "—"} · {per ? per + "° período" : "—"} · {fmtTempo(row.tempoSegundos)}</div>
+                <div className="lt-title-sub" style={{ fontSize: "0.76rem", color: "var(--c-muted)", marginTop: 2 }}>{row.especialidade || "—"} · {per ? per + "° período" : "—"} · {fmtTempo(row.tempoSegundos)}</div>
               </div>
               <div className="lt-chips" style={{ display: "flex", flexWrap: "wrap", gap: 5, minWidth: 0 }}>
                 {row.conteudos.slice(0, 3).map((c, i) => (

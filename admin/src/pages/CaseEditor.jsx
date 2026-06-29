@@ -434,7 +434,7 @@ export default function CaseEditor({ casoId, admin, taxonomia, onBack, onSalvo, 
                 <label className="label">Tempo da estação</label>
                 <div style={{ display: "flex", alignItems: "center", gap: 7 }}>
                   <input
-                    className="input"
+                    className="input ed-num"
                     style={{ width: 64, textAlign: "center", fontWeight: 700 }}
                     value={Math.floor(d.tempo_segundos / 60)}
                     onChange={setTempoMin}
@@ -442,7 +442,7 @@ export default function CaseEditor({ casoId, admin, taxonomia, onBack, onSalvo, 
                   />
                   <span style={{ color: "var(--c-muted)", fontWeight: 700 }}>min</span>
                   <input
-                    className="input"
+                    className="input ed-num"
                     style={{ width: 64, textAlign: "center", fontWeight: 700 }}
                     value={d.tempo_segundos % 60}
                     onChange={setTempoSeg}

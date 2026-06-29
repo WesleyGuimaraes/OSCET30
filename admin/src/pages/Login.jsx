@@ -2,8 +2,8 @@ import { useState } from "react";
 import { supabase } from "../supabaseClient.js";
 
 const CardShell = ({ children }) => (
-  <div style={{ minHeight: "100vh", display: "grid", placeItems: "center", padding: 20 }}>
-    <div className="card" style={{ width: 360, maxWidth: "100%" }}>
+  <div style={{ minHeight: "100vh", display: "grid", placeItems: "center", padding: 16 }}>
+    <div className="card" style={{ width: "100%", maxWidth: 360 }}>
       <div style={{ display: "flex", alignItems: "center", gap: 9, fontSize: "1.15rem", fontWeight: 800, marginBottom: 6 }}>
         <span>🩺</span>
         <span>OSCE T30</span>

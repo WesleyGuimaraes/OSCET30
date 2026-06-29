@@ -71,6 +71,14 @@ input:focus, textarea:focus, select:focus { outline: none; border-color: var(--c
 /* no celular as páginas usam menos padding lateral: conteúdo mais largo e centralizado */
 @media (max-width: 760px) {
   main { padding-left: 16px !important; padding-right: 16px !important; }
+  .input { padding: 9px 12px; }          /* inputs um pouco menores */
+  .ed-num { width: 52px !important; }    /* campos de min/seg do tempo */
+}
+/* celulares bem estreitos: encolhe mais um pouco pra tudo caber centralizado */
+@media (max-width: 380px) {
+  main { padding-left: 12px !important; padding-right: 12px !important; }
+  .editor-main .card { padding: 14px !important; }
+  .ed-num { width: 46px !important; }
 }
 
 .btn {
@@ -104,6 +112,10 @@ a:focus-visible { outline: 2px solid var(--c-teal); outline-offset: 2px; }
   color: var(--c-text);
   font-size: var(--fs-body, 1rem);
 }
+
+/* controles de formulário precisam poder encolher: o tamanho intrínseco do
+   input (~170px) estoura a tela em celulares pequenos dentro de grid/flex */
+input, select, textarea, .input { min-width: 0; }
 
 .card {
   background: var(--c-panel);
@@ -280,6 +292,8 @@ a:focus-visible { outline: 2px solid var(--c-teal); outline-offset: 2px; }
   background: rgba(15, 23, 32, 0.95); backdrop-filter: blur(8px);
   border-top: 1px solid var(--c-line);
 }
+/* colunas do editor podem encolher (senão um input interno estoura a tela) */
+.editor-grid > * { min-width: 0; }
 /* grupos de botões: no desktop fluem inline; no mobile viram 2 linhas */
 .savebar-secondary, .savebar-primary { display: contents; }
 /* header/progresso mobile do editor só aparecem no celular */

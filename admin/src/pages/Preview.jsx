@@ -224,7 +224,7 @@ export default function Preview({ casoId, admin, onBack, onRecarregar }) {
             {acaoErro && <span style={{ fontSize: "0.85rem", color: "var(--c-danger)" }}>⚠️ {acaoErro}</span>}
           </div>
           {isPriv ? (
-            <div style={{ display: "flex", gap: 9 }}>
+            <div className="preview-actions" style={{ display: "flex", gap: 9 }}>
               <button className="btn btn-ghost" disabled={enviando} onClick={() => setDevolverOpen(true)}>
                 ↩ Devolver
               </button>

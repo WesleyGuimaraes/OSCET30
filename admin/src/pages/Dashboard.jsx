@@ -142,14 +142,15 @@ export default function Dashboard({ casos, taxonomia, onIrParaConteudo, onNovoCa
                           return (
                             <div
                               key={ct.id}
+                              className="dcont-row"
                               onClick={() => onIrParaConteudo?.(ct)}
                               title="Ver casos deste conteúdo"
                               style={{ display: "flex", alignItems: "center", gap: 12, padding: "8px 0", borderBottom: idx < arr.length - 1 ? "1px solid var(--c-line)" : "none", cursor: "pointer" }}
                             >
-                              <div style={{ width: 22, fontSize: "0.72rem", color: "var(--c-muted)" }}>{ct.periodo}°</div>
+                              <div style={{ width: 22, flexShrink: 0, fontSize: "0.72rem", color: "var(--c-muted)" }}>{ct.periodo}°</div>
                               <div style={{ flex: 1, minWidth: 0, fontSize: "0.85rem", whiteSpace: "nowrap", overflow: "hidden", textOverflow: "ellipsis" }}>{ct.nome}</div>
-                              <div style={{ width: 90 }}><Barra valor={ct.n} max={META_POR_CONTEUDO} cor={cor} /></div>
-                              <div style={{ width: 48, textAlign: "right", fontSize: "0.8rem", color: cor, fontWeight: 700, fontVariantNumeric: "tabular-nums" }}>{ct.n}/{META_POR_CONTEUDO}</div>
+                              <div className="dcont-bar" style={{ width: 90, flexShrink: 0 }}><Barra valor={ct.n} max={META_POR_CONTEUDO} cor={cor} /></div>
+                              <div style={{ width: 48, flexShrink: 0, textAlign: "right", fontSize: "0.8rem", color: cor, fontWeight: 700, fontVariantNumeric: "tabular-nums" }}>{ct.n}/{META_POR_CONTEUDO}</div>
                             </div>
                           );
                         })}

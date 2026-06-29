@@ -792,7 +792,18 @@ export default function CaseEditor({ casoId, admin, taxonomia, onBack, onSalvo, 
           {dirty ? "• Alterações não salvas" : "Tudo salvo"}
         </span>
         <div className="editor-savebar-spacer" style={{ flex: 1 }} />
+        {/* ação principal (Enviar/Publicar) — no mobile fica em cima, largura total */}
+        <div className="savebar-primary">
+          {d.status === "rascunho" && (
+            <button className="btn btn-primary" onClick={enviarRevisao} disabled={salvando}>📤 Enviar</button>
+          )}
+          {d.status === "em_revisao" && isPriv && (
+            <button className="btn btn-primary" onClick={() => transicionar("publicado", "Caso publicado.")} disabled={salvando}>✅ Publicar</button>
+          )}
+        </div>
+        {/* salvar + ações destrutivas — no mobile ficam embaixo, lado a lado */}
         <div className="savebar-secondary">
+          <button className="btn btn-ghost" style={{ borderColor: "var(--c-teal)", color: "var(--c-teal)" }} onClick={salvar} disabled={salvando}>Salvar rascunho</button>
           {d.status === "publicado" && isPriv && (
             <button className="btn btn-danger" onClick={() => transicionar("arquivado", "Caso arquivado.")} disabled={salvando}>🗄️ Arquivar</button>
           )}
@@ -801,15 +812,6 @@ export default function CaseEditor({ casoId, admin, taxonomia, onBack, onSalvo, 
           )}
           {d.id && admin.role === "owner" && (
             <button className="btn btn-danger" onClick={apagar} disabled={salvando}>🗑️ Apagar</button>
-          )}
-        </div>
-        <div className="savebar-primary">
-          <button className="btn btn-ghost" style={{ borderColor: "var(--c-teal)", color: "var(--c-teal)" }} onClick={salvar} disabled={salvando}>Salvar rascunho</button>
-          {d.status === "rascunho" && (
-            <button className="btn btn-primary" onClick={enviarRevisao} disabled={salvando}>📤 Enviar</button>
-          )}
-          {d.status === "em_revisao" && isPriv && (
-            <button className="btn btn-primary" onClick={() => transicionar("publicado", "Caso publicado.")} disabled={salvando}>✅ Publicar</button>
           )}
         </div>
       </div>

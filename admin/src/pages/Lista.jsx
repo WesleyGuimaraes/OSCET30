@@ -220,7 +220,7 @@ export default function Lista({ casos, taxonomia, filtroConteudoId, buscaInicial
                   <span className="lt-avatar" style={{ width: 22, height: 22, flexShrink: 0, borderRadius: "50%", background: avatarCor(row.autor), color: "#fff", display: "grid", placeItems: "center", fontSize: "0.68rem", fontWeight: 700 }}>
                     {(row.autor || "?").charAt(0).toUpperCase()}
                   </span>
-                  <span style={{ fontSize: "0.83rem", whiteSpace: "nowrap", overflow: "hidden", textOverflow: "ellipsis" }}>{row.autor}</span>
+                  <span className="lt-autor-nome" style={{ fontSize: "0.83rem", whiteSpace: "nowrap", overflow: "hidden", textOverflow: "ellipsis" }}>{row.autor}</span>
                 </div>
                 <div className="lt-date" style={{ fontSize: "0.8rem", color: "var(--c-muted)", whiteSpace: "nowrap" }}>{fmtData(row.atualizadoEm)}</div>
               </div>

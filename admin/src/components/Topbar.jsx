@@ -57,7 +57,7 @@ export default function Topbar({ screen, onGoDashboard, onGoCasos, onGoFila, onB
         borderBottom: "1px solid var(--c-line)",
       }}
     >
-      <div style={{ display: "flex", alignItems: "center", gap: 9, fontSize: "1.15rem", fontWeight: 800 }}>
+      <div className="topbar-logo" style={{ display: "flex", alignItems: "center", gap: 9, fontSize: "1.15rem", fontWeight: 800 }}>
         <span>🩺</span>
         <span>OSCE T30</span>
         <span style={{ color: "var(--c-teal)", fontWeight: 500 }}>Painel</span>

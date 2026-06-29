@@ -237,7 +237,7 @@ input, select, textarea, .input { min-width: 0; }
 /* botão flutuante "Novo caso" (FAB) — escondido no desktop, onde existe o botão do topo */
 .lista-fab { display: none; }
 @media (max-width: 760px) {
-  /* ---- Header enxuto: só logo + avatar (img 1) ----
+  /* ---- Header enxuto no mobile: só logo + avatar ----
      !important porque esses elementos têm display:flex inline (inline vence classe) */
   .topbar-nav, .topbar-busca, .topbar-quem-full { display: none !important; }
   .topbar-header {
@@ -322,7 +322,7 @@ input, select, textarea, .input { min-width: 0; }
   /* cards do editor com um pouco menos de padding interno (mais ar pro conteúdo) */
   .editor-main .card { padding: 16px !important; }
 
-  /* header do editor (img 4): voltar + título/estado + status, colado no topo */
+  /* header do editor no mobile: voltar + título/estado + status, colado no topo */
   .editor-head-mobile {
     display: flex; align-items: center; gap: 10px;
     position: sticky; top: 0; z-index: 30;
@@ -339,7 +339,7 @@ input, select, textarea, .input { min-width: 0; }
   .editor-subtitle-m { font-size: 0.72rem; margin-top: 1px; }
   .editor-badge-m { flex: none; }
 
-  /* barra de progresso (img 4) — substitui a navegação por seções no mobile */
+  /* barra de progresso — substitui a navegação por seções no mobile */
   .editor-progress-mobile { display: block; margin: 14px 0 6px; }
   .editor-progress-top { display: flex; justify-content: space-between; font-size: 0.74rem; color: var(--c-muted); margin-bottom: 6px; }
   .editor-progress-pct { color: var(--c-text); font-weight: 700; }
@@ -349,8 +349,8 @@ input, select, textarea, .input { min-width: 0; }
   /* espaço para o conteúdo não ficar atrás da barra fixa */
   .editor-main { padding-bottom: 140px !important; }
 
-  /* footer (img 5): fixo no fundo. Ação principal (Publicar/Enviar) em cima,
-     largura total; Salvar + Apagar embaixo lado a lado; os 3 com a mesma altura */
+  /* footer fixo no fundo: ação principal (Publicar/Enviar) em cima, largura
+     total; Salvar + Apagar embaixo lado a lado; os 3 com a mesma altura */
   .editor-savebar {
     position: fixed; left: 0; right: 0; bottom: 0; z-index: 41;
     margin: 0; padding: 10px 14px calc(10px + env(safe-area-inset-bottom, 0px));

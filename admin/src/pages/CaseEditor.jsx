@@ -315,7 +315,7 @@ export default function CaseEditor({ casoId, admin, taxonomia, onBack, onSalvo, 
         )}
       </div>
 
-      {/* header mobile — modo foco (img 4): voltar + título/estado + status */}
+      {/* header mobile — modo foco: voltar + título/estado + status */}
       <div className="editor-head-mobile">
         <button className="editor-back-m" onClick={sair} aria-label="Voltar">←</button>
         <div className="editor-titles-m">
@@ -330,7 +330,7 @@ export default function CaseEditor({ casoId, admin, taxonomia, onBack, onSalvo, 
         <span className="editor-badge-m status-badge" style={{ background: sm.bg, color: sm.fg }}>{sm.label}</span>
       </div>
 
-      {/* barra de progresso (img 4) — substitui a navegação por seções no mobile */}
+      {/* barra de progresso — substitui a navegação por seções no mobile */}
       <div className="editor-progress-mobile">
         <div className="editor-progress-top">
           <span>{secDone} de {secList.length} seções preenchidas</span>
@@ -786,7 +786,7 @@ export default function CaseEditor({ casoId, admin, taxonomia, onBack, onSalvo, 
         </div>
       </div>
 
-      {/* barra de salvar fixa no rodapé (img 5: Salvar rascunho | Enviar; mantém Apagar) */}
+      {/* barra de salvar fixa no rodapé: ação principal em cima, Salvar/Apagar embaixo */}
       <div className="editor-savebar">
         <span className="editor-savebar-status" style={{ fontSize: "0.85rem", color: dirty ? "var(--c-warn)" : "var(--c-muted)", whiteSpace: "nowrap" }}>
           {dirty ? "• Alterações não salvas" : "Tudo salvo"}

@@ -2,9 +2,7 @@
 
 export const MODE_LABEL = {
   conteudos: "Conteúdos selecionados",
-  aleatoria: "Aleatória",
   infinito: "Infinito",
-  osce: "Modo OSCE",
 };
 
 // prefixo do nome do canal de Realtime; host e guest usam a mesma sala

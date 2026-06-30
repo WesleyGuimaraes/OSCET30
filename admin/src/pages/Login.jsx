@@ -6,7 +6,7 @@ const CardShell = ({ children }) => (
     <div className="card" style={{ width: "100%", maxWidth: 360 }}>
       <div style={{ display: "flex", alignItems: "center", gap: 9, fontSize: "1.15rem", fontWeight: 800, marginBottom: 6 }}>
         <span>🩺</span>
-        <span>OSCE T30</span>
+        <span>Próxima Estação</span>
         <span style={{ color: "var(--c-teal)", fontWeight: 500 }}>Painel</span>
       </div>
       {children}

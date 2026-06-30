@@ -1,6 +1,5 @@
-/* OSCE Online — fonte de dados: casos PUBLICADOS do Supabase.
-   Expõe window.loadOsceCases() -> Promise<Array> no formato que o app.js usa
-   (mesmo shape do antigo cases.js / window.OSCE_CASES).
+/* Próxima Estação — fonte de dados: casos PUBLICADOS do Supabase.
+   Expõe window.loadOsceCases() -> Promise<Array> no formato que o app usa.
 
    A chave publishable/anon é pública por design — quem protege os dados é a
    RLS no Supabase (o público só lê casos com status = 'publicado'). */

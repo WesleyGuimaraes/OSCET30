@@ -59,7 +59,7 @@ export default function Topbar({ screen, onGoDashboard, onGoCasos, onGoFila, onB
     >
       <div className="topbar-logo" style={{ display: "flex", alignItems: "center", gap: 9, fontSize: "1.15rem", fontWeight: 800 }}>
         <span>🩺</span>
-        <span>OSCE T30</span>
+        <span>Próxima Estação</span>
         <span style={{ color: "var(--c-teal)", fontWeight: 500 }}>Painel</span>
       </div>
       <nav className="topbar-nav" style={{ display: "flex", gap: 4, marginLeft: 14 }}>

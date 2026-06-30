@@ -29,7 +29,6 @@ function buildQueue(mode, tags) {
     return shuffle(getCases().filter((c) => c.conteudos.some((t) => tags.includes(t))).map((c) => c.id));
   }
   if (mode === "infinito") return shuffle(all);
-  if (mode === "osce") return shuffle(all).slice(0, 4);
   return []; // aleatoria: sorteio a cada estação
 }
 

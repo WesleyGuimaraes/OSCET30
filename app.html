@@ -3,7 +3,7 @@
 <head>
 <meta charset="UTF-8" />
 <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-<title>OSCE Online</title>
+<title>Próxima Estação</title>
 <link rel="stylesheet" href="styles.css" />
 <style>
   /* ===== Tela "Configurar treino" (escopada em .cfg) ===== */
@@ -85,22 +85,25 @@
 
   @media (max-width:720px){
     .cfg-head h1 { font-size:1.7rem; }
-    .cfg-modes { grid-template-columns:1fr; }
+    .cfg-modes { grid-template-columns:repeat(2,1fr); }
+    .cfg .mode:last-child:nth-child(odd) { grid-column: span 2; }
     .cfg-times { grid-template-columns:repeat(2,1fr); }
   }
   @media (max-width:480px){
     .cfg-head { gap:14px; }
     .cfg-head h1 { font-size:1.5rem; }
-    .cfg-card { padding:16px; }
-    .cfg-times { grid-template-columns:1fr; }
-    .cfg-footer { gap:14px; }
+    .cfg-card { padding:14px; }
+    .cfg-modes { grid-template-columns:repeat(2,1fr); }
+    .cfg .mode:last-child:nth-child(odd) { grid-column: span 2; }
+    .cfg-times { grid-template-columns:repeat(2,1fr); }
+    .cfg-footer { gap:12px; }
     .cfg-start { width:100%; justify-content:center; }
   }
 </style>
 </head>
 <body>
 <header class="topbar">
-  <div class="brand">🩺 OSCE Online</div>
+  <div class="brand">Próxima Estação</div>
   <div class="topbar-right">
     <div id="status" class="status off">desconectado</div>
     <a href="/admin/" target="_blank" rel="noopener" class="admin-link" title="Área do administrador">⚙️</a>
@@ -272,7 +275,6 @@
 
 </main>
 
-<footer class="foot">Sessão em tempo real via Supabase Realtime. Casos servidos do Supabase; a sessão em si não é gravada.</footer>
 
 <script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
 <script src="db.js"></script>

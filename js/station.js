@@ -125,7 +125,7 @@ export function pauseTimer() {
 
 export function resetTimer() {
   pauseTimer();
-  state.timer.remaining = state.caseObj.tempo;
+  state.timer.remaining = (state.session && state.session.tempo) || state.caseObj.tempo;
   renderTimer();
   broadcastTimer();
 }

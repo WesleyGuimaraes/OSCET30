@@ -5,6 +5,103 @@
 <meta name="viewport" content="width=device-width, initial-scale=1.0" />
 <title>OSCE Online</title>
 <link rel="stylesheet" href="styles.css" />
+<style>
+  /* ===== Tela "Configurar treino" (escopada em .cfg) ===== */
+  .cfg { --ease: cubic-bezier(0.4,0,0.2,1); --teal-ink:#06231f; max-width:860px; margin:0 auto; }
+
+  .cfg-head { display:flex; align-items:flex-end; justify-content:space-between; gap:24px; flex-wrap:wrap; margin-bottom:24px; }
+  .cfg-head h1 { margin:0; font-size:1.95rem; font-weight:800; letter-spacing:-.02em; line-height:1.1; }
+  .cfg-sub { margin:8px 0 0; color:var(--muted); font-size:1.02rem; line-height:1.5; }
+  .cfg-estimate { display:inline-flex; align-items:center; gap:9px; background:var(--panel); border:1px solid var(--line);
+    border-radius:20px; padding:9px 15px; color:var(--muted); font-size:.8rem; white-space:nowrap; }
+  .cfg-estimate .dot { width:7px; height:7px; border-radius:50%; background:var(--good); box-shadow:0 0 0 3px rgba(72,199,142,.16); flex:none; }
+  .cfg-estimate b { color:var(--txt); font-weight:600; }
+
+  .cfg-stack { display:flex; flex-direction:column; gap:16px; }
+  .cfg-card { background:var(--panel); border:1px solid var(--line); border-radius:14px; padding:20px 22px; }
+  .cfg-label { font-size:.72rem; text-transform:uppercase; letter-spacing:.06em; color:var(--muted); font-weight:600; }
+  .cfg-label-row { display:flex; align-items:center; justify-content:space-between; margin-bottom:14px; }
+  .cfg-count { font-size:.78rem; color:var(--muted); }
+
+  /* modos */
+  .cfg-modes { display:grid; grid-template-columns:repeat(3,1fr); gap:12px; }
+  .cfg .mode { position:relative; background:var(--panel2); border:1px solid var(--line); border-radius:13px;
+    padding:16px 16px 15px; cursor:pointer; transition:border-color .15s var(--ease), transform .12s var(--ease); }
+  .cfg .mode:hover { transform:translateY(-2px); border-color:var(--accent); }
+  .cfg .mode .ico { font-size:1.55rem; line-height:1; }
+  .cfg .mode .title { margin-top:11px; font-size:.98rem; font-weight:700; letter-spacing:-.01em; }
+  .cfg .mode .desc { margin-top:5px; color:var(--muted); font-size:.82rem; line-height:1.45; }
+  .cfg .mode .ring { position:absolute; inset:0; border:2px solid var(--accent); border-radius:13px;
+    box-shadow:0 0 0 1px var(--accent) inset; pointer-events:none; display:none; }
+  .cfg .mode .tick { position:absolute; top:13px; right:13px; width:20px; height:20px; border-radius:50%;
+    background:var(--accent); color:var(--teal-ink); display:none; place-items:center; font-size:.7rem; font-weight:800; }
+  .cfg .mode.sel .ring { display:block; }
+  .cfg .mode.sel .tick { display:grid; }
+
+  /* chips */
+  .cfg-chips { display:flex; flex-wrap:wrap; gap:10px; }
+  .cfg .chip { display:inline-flex; align-items:center; gap:7px; border-radius:20px; padding:8px 15px; font-size:.86rem;
+    cursor:pointer; user-select:none; white-space:nowrap; background:var(--panel2); border:1px solid var(--line);
+    color:var(--txt); font-weight:500; transition:background .15s var(--ease), border-color .15s var(--ease), color .15s var(--ease); }
+  .cfg .chip .ck { font-size:.72rem; font-weight:800; display:none; }
+  .cfg .chip.sel { background:var(--accent2); border-color:var(--accent); color:#fff; font-weight:600; }
+  .cfg .chip.sel .ck { display:inline; }
+
+  .cfg-auto { display:flex; align-items:center; gap:10px; color:var(--muted); font-size:.88rem; background:var(--panel2);
+    border:1px dashed var(--line); border-radius:10px; padding:14px 16px; }
+  .cfg-auto.hidden { display:none; }
+  .cfg-auto .emoji { font-size:1.05rem; }
+
+  /* tempo */
+  .cfg-times { display:grid; grid-template-columns:repeat(4,1fr); gap:10px; }
+  .cfg .time { position:relative; display:flex; align-items:center; gap:10px; padding:10px 13px; border:1px solid var(--line);
+    border-radius:10px; background:var(--panel2); cursor:pointer; transition:border-color .15s var(--ease); }
+  .cfg .time:hover { border-color:var(--accent); }
+  .cfg .time .radio { position:relative; width:15px; height:15px; flex:none; }
+  .cfg .time .radio .out { position:absolute; inset:0; border-radius:50%; border:2px solid #5d6e7d; box-sizing:border-box; }
+  .cfg .time .radio .in { position:absolute; inset:0; border-radius:50%; background:var(--accent); border:2px solid var(--accent);
+    box-shadow:0 0 0 3px rgba(63,182,168,.18); display:none; }
+  .cfg .time .txt { font-size:.88rem; color:var(--txt); white-space:nowrap; }
+  .cfg .time .frame { position:absolute; inset:0; border:1.5px solid var(--accent); border-radius:10px; pointer-events:none; display:none; }
+  .cfg .time.sel .radio .in { display:block; }
+  .cfg .time.sel .frame { display:block; }
+  .cfg-custom { margin-top:12px; }
+  .cfg-custom.hidden { display:none; }
+  .cfg-custom input { max-width:160px; margin:0; }
+
+  /* footer + ações */
+  .cfg-footer { display:flex; align-items:center; justify-content:space-between; gap:20px; flex-wrap:wrap;
+    margin-top:6px; padding-top:18px; border-top:1px solid rgba(42,58,73,.55); }
+  .cfg-footer p { margin:0; font-size:.8rem; color:var(--muted); line-height:1.5; max-width:380px; }
+  .cfg-start { background:var(--good); color:var(--teal-ink); border:none; border-radius:10px; padding:14px 28px;
+    font-size:1rem; font-weight:700; cursor:pointer; transition:background .15s var(--ease), transform .1s var(--ease);
+    display:inline-flex; align-items:center; gap:9px; white-space:nowrap; }
+  .cfg-start:hover { background:#3fb37e; }
+  .cfg-start:active { transform:scale(.99); }
+
+  /* acesso do estudante */
+  .cfg-student { display:flex; align-items:center; gap:8px; flex-wrap:wrap; margin-top:6px;
+    color:var(--muted); font-size:.9rem; }
+  .cfg-link { background:transparent; border:none; color:var(--accent); font-weight:600; cursor:pointer;
+    font-size:.9rem; padding:4px 2px; }
+  .cfg-link:hover { color:var(--accent2); text-decoration:underline; }
+  .cfg-join { margin-top:12px; max-width:360px; }
+  .cfg-join.hidden { display:none; }
+
+  @media (max-width:720px){
+    .cfg-head h1 { font-size:1.7rem; }
+    .cfg-modes { grid-template-columns:1fr; }
+    .cfg-times { grid-template-columns:repeat(2,1fr); }
+  }
+  @media (max-width:480px){
+    .cfg-head { gap:14px; }
+    .cfg-head h1 { font-size:1.5rem; }
+    .cfg-card { padding:16px; }
+    .cfg-times { grid-template-columns:1fr; }
+    .cfg-footer { gap:14px; }
+    .cfg-start { width:100%; justify-content:center; }
+  }
+</style>
 </head>
 <body>
 <header class="topbar">
@@ -17,80 +114,104 @@
 
 <main id="app">
 
-  <!-- ETAPA 1: LOBBY -->
+  <!-- ETAPA 1: CONFIGURAR TREINO (host) + entrada do estudante -->
   <section id="lobby" class="screen active">
-    <h1>Treine OSCE em dupla</h1>
-    <p class="lead">Uma pessoa é o <b>paciente/avaliador</b> e a outra é o <b>estudante</b>.
-       Conectam-se por um código de sala — sem cadastro.</p>
+   <div class="cfg">
 
-    <div class="cards">
-      <div class="card">
-        <h2>👤 Sou paciente / avaliador</h2>
-        <p>Crie a sala, escolha o caso e gere um código para o estudante.</p>
-        <button id="btnHost" class="primary">Criar sala</button>
+    <!-- Header -->
+    <div class="cfg-head">
+      <div>
+        <h1>Configurar treino</h1>
+        <p class="cfg-sub">Escolha como deseja realizar esta sessão.</p>
       </div>
-      <div class="card">
-        <h2>🎓 Sou estudante</h2>
-        <p>Digite o código que o avaliador te passou para entrar na mesma sala.</p>
-        <input id="joinCode" type="text" placeholder="CÓDIGO DA SALA" maxlength="8" autocomplete="off" />
-        <button id="btnJoin" class="primary">Entrar</button>
+      <div class="cfg-estimate">
+        <span class="dot"></span>
+        Tempo estimado para iniciar: <b>&lt; 20 segundos</b>
       </div>
     </div>
-    <p id="lobbyMsg" class="msg"></p>
-
-    <div class="conn-test">
-      <button id="btnTestConn" class="ghost">📶 Testar conexão nesta rede</button>
-      <div id="connResult" class="conn-result"></div>
-    </div>
-  </section>
-
-  <!-- ETAPA 2: HOST escolhe o modo e aguarda -->
-  <section id="hostSetup" class="screen">
-    <h1>Como você quer treinar?</h1>
-    <p class="lead">Escolha um modo. Você não vê o conteúdo das estações — só seleciona por área.
-       A conversa do atendimento é pessoalmente ou por chamada de voz à parte.</p>
 
     <div id="setupNotice" class="setup-notice hidden"></div>
 
-    <div class="prox-block">
-      <label class="switch-row">
-        <input type="checkbox" id="altRoles" />
-        <span><b>Alternar papéis a cada estação</b> (avaliador ⇄ estudante)</span>
-      </label>
-      <div class="prox-sub">Ótimo no modo infinito: a cada estação vocês trocam de lado.</div>
+    <!-- Formulário de configuração (some quando a sala é criada) -->
+    <div id="cfgForm" class="cfg-stack">
+
+      <!-- Modo de jogo -->
+      <div class="cfg-card">
+        <div class="cfg-label" style="margin-bottom:14px">Modo de jogo</div>
+        <div class="cfg-modes" id="modes">
+          <div class="mode sel" data-mode="conteudos">
+            <div class="ico">🎯</div>
+            <div class="title">Escolha os conteúdos</div>
+            <div class="desc">Selecione os temas que deseja treinar.</div>
+            <div class="ring"></div><div class="tick">✓</div>
+          </div>
+          <div class="mode" data-mode="aleatoria">
+            <div class="ico">🎲</div>
+            <div class="title">Aleatória</div>
+            <div class="desc">Uma estação sorteada por vez, sem fim.</div>
+            <div class="ring"></div><div class="tick">✓</div>
+          </div>
+          <div class="mode" data-mode="infinito">
+            <div class="ico">♾️</div>
+            <div class="title">Modo infinito</div>
+            <div class="desc">Todas as estações, sem repetir, até acabarem.</div>
+            <div class="ring"></div><div class="tick">✓</div>
+          </div>
+        </div>
+      </div>
+
+      <!-- Conteúdos -->
+      <div class="cfg-card">
+        <div class="cfg-label-row">
+          <div class="cfg-label">Conteúdos</div>
+          <span class="cfg-count" id="topicsCount">Nenhum selecionado</span>
+        </div>
+        <div class="cfg-chips" id="chips"></div>
+        <div class="cfg-auto hidden" id="autoNote">
+          <span class="emoji">🎲</span><span id="autoNoteText"></span>
+        </div>
+      </div>
+
+      <!-- Tempo da estação -->
+      <div class="cfg-card">
+        <div class="cfg-label" style="margin-bottom:14px">Tempo da estação</div>
+        <div class="cfg-times" id="times">
+          <div class="time" data-time="5"><span class="radio"><span class="out"></span><span class="in"></span></span><span class="txt">5 min</span><span class="frame"></span></div>
+          <div class="time sel" data-time="8"><span class="radio"><span class="out"></span><span class="in"></span></span><span class="txt">8 min</span><span class="frame"></span></div>
+          <div class="time" data-time="10"><span class="radio"><span class="out"></span><span class="in"></span></span><span class="txt">10 min</span><span class="frame"></span></div>
+          <div class="time" data-time="custom"><span class="radio"><span class="out"></span><span class="in"></span></span><span class="txt">Personalizado</span><span class="frame"></span></div>
+        </div>
+        <div id="customTimeWrap" class="cfg-custom hidden">
+          <input id="customTime" type="number" min="1" max="60" placeholder="minutos" />
+        </div>
+      </div>
+
+      <!-- Footer -->
+      <div class="cfg-footer">
+        <p>Você poderá alterar essas configurações antes do início da próxima sessão.</p>
+        <button class="cfg-start" id="btnIniciar">Iniciar treino →</button>
+      </div>
+      <p id="cfgMsg" class="msg" style="text-align:right"></p>
+
+      <!-- Acesso do estudante -->
+      <div class="cfg-student">
+        <span>É estudante e recebeu um código?</span>
+        <button id="linkStudent" class="cfg-link">Entrar com um código →</button>
+      </div>
+      <div id="joinBox" class="cfg-join hidden">
+        <input id="joinCode" type="text" placeholder="CÓDIGO DA SALA" maxlength="8" autocomplete="off" />
+        <button id="btnJoin" class="primary">Entrar</button>
+        <p id="lobbyMsg" class="msg"></p>
+      </div>
+
+      <!-- Teste de conexão (importante em redes restritas) -->
+      <div class="conn-test">
+        <button id="btnTestConn" class="ghost">📶 Testar conexão nesta rede</button>
+        <div id="connResult" class="conn-result"></div>
+      </div>
     </div>
 
-    <div class="mode-grid">
-      <div class="mode-card" data-mode="conteudos">
-        <div class="mode-ico">🎯</div>
-        <h2>Selecionar conteúdos</h2>
-        <p>Treine só estações das áreas que escolher.</p>
-      </div>
-      <div class="mode-card" data-mode="aleatoria">
-        <div class="mode-ico">🎲</div>
-        <h2>Aleatória</h2>
-        <p>Uma estação sorteada por vez, sem fim.</p>
-      </div>
-      <div class="mode-card" data-mode="infinito">
-        <div class="mode-ico">♾️</div>
-        <h2>Modo infinito</h2>
-        <p>Todas as estações, sem repetir, até acabarem.</p>
-      </div>
-      <div class="mode-card" data-mode="osce">
-        <div class="mode-ico">🏥</div>
-        <h2>Modo OSCE</h2>
-        <p>4 estações aleatórias, uma após a outra.</p>
-      </div>
-    </div>
-
-    <!-- sub-painel: seleção de conteúdos -->
-    <div id="tagPanel" class="tag-panel hidden">
-      <div class="label">Conteúdos disponíveis</div>
-      <div id="tagList" class="tag-list"></div>
-      <button id="btnTagStart" class="primary">Criar sala com esses conteúdos</button>
-      <p id="tagMsg" class="msg"></p>
-    </div>
-
+    <!-- Sala criada: código/link para o estudante -->
     <div class="room-share hidden" id="roomShare">
       <p>Modo: <b id="modeLabel"></b> · <span id="queueInfo"></span></p>
       <p>Compartilhe este código com o estudante:</p>
@@ -99,6 +220,8 @@
       <div class="code-box"><a id="inviteLink" href="#" target="_blank" rel="noopener">—</a><button id="btnCopyLink" class="ghost">copiar link</button></div>
       <p id="waitMsg" class="msg">Aguardando o estudante entrar…</p>
     </div>
+
+   </div>
   </section>
 
   <!-- ETAPA 3: ESTAÇÃO EM ANDAMENTO -->
@@ -163,7 +286,7 @@
 
 <script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
 <script src="db.js"></script>
-<script type="module" src="js/main.js"></script>
+<script type="module" src="js/main.js?v=2"></script>
 <!-- Vercel Web Analytics: conta visitantes/page views do site publicado na Vercel -->
 <script defer src="/_vercel/insights/script.js"></script>
 </body>

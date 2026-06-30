@@ -173,7 +173,7 @@
     margin-top: 11px; font-size: 0.76rem; color: var(--c-muted); line-height: 1.4;
   }
 
-  .times { display: grid; grid-template-columns: 1fr 1fr; gap: 10px; }
+  .times { display: grid; grid-template-columns: repeat(4, 1fr); gap: 10px; }
   .time {
     position: relative; display: flex; align-items: center; gap: 10px;
     padding: 10px 13px; border: 1px solid var(--c-line); border-radius: 10px;
@@ -234,7 +234,7 @@
     .screen { padding: 22px 18px 40px; }
     .head h1 { font-size: 1.7rem; }
     .modes { grid-template-columns: 1fr; }
-    .row2 { grid-template-columns: 1fr; }
+    .times { grid-template-columns: repeat(2, 1fr); }
   }
 
   /* ─── CELULAR ≤ 480px ─── */
@@ -281,16 +281,16 @@
             <div class="desc">Selecione os temas que deseja treinar.</div>
             <div class="ring"></div><div class="tick">✓</div>
           </div>
+          <div class="mode" data-mode="aleatoria">
+            <div class="ico">🎲</div>
+            <div class="title">Aleatória</div>
+            <div class="desc">Uma estação sorteada por vez, sem fim.</div>
+            <div class="ring"></div><div class="tick">✓</div>
+          </div>
           <div class="mode" data-mode="infinito">
             <div class="ico">♾️</div>
             <div class="title">Modo infinito</div>
-            <div class="desc">Estações contínuas, sem parar.</div>
-            <div class="ring"></div><div class="tick">✓</div>
-          </div>
-          <div class="mode" data-mode="osce">
-            <div class="ico">🏥</div>
-            <div class="title">Modo OSCE</div>
-            <div class="desc">4 estações aleatórias, como na prova.</div>
+            <div class="desc">Todas as estações, sem repetir, até acabarem.</div>
             <div class="ring"></div><div class="tick">✓</div>
           </div>
         </div>
@@ -315,28 +315,14 @@
         </div>
       </div>
 
-      <!-- Row: Função | Tempo -->
-      <div class="row2">
-        <!-- Função -->
-        <div class="card">
-          <div class="card-label" style="margin-bottom:14px">Função</div>
-          <div class="segment" id="roles">
-            <button data-role="avaliador" class="sel"><span class="fill"></span><span class="lbl">Avaliador</span></button>
-            <button data-role="estudante"><span class="fill"></span><span class="lbl">Estudante</span></button>
-            <button data-role="paciente"><span class="fill"></span><span class="lbl">Paciente</span></button>
-          </div>
-          <div class="role-note">Você poderá alternar de papel a cada estação.</div>
-        </div>
-
-        <!-- Tempo -->
-        <div class="card">
-          <div class="card-label" style="margin-bottom:14px">Tempo da estação</div>
-          <div class="times" id="times">
-            <div class="time" data-time="5"><span class="radio"><span class="out"></span><span class="in"></span></span><span class="txt">5 min</span><span class="frame"></span></div>
-            <div class="time sel" data-time="8"><span class="radio"><span class="out"></span><span class="in"></span></span><span class="txt">8 min</span><span class="frame"></span></div>
-            <div class="time" data-time="10"><span class="radio"><span class="out"></span><span class="in"></span></span><span class="txt">10 min</span><span class="frame"></span></div>
-            <div class="time" data-time="custom"><span class="radio"><span class="out"></span><span class="in"></span></span><span class="txt">Personalizado</span><span class="frame"></span></div>
-          </div>
+      <!-- Tempo da estação -->
+      <div class="card">
+        <div class="card-label" style="margin-bottom:14px">Tempo da estação</div>
+        <div class="times" id="times">
+          <div class="time" data-time="5"><span class="radio"><span class="out"></span><span class="in"></span></span><span class="txt">5 min</span><span class="frame"></span></div>
+          <div class="time sel" data-time="8"><span class="radio"><span class="out"></span><span class="in"></span></span><span class="txt">8 min</span><span class="frame"></span></div>
+          <div class="time" data-time="10"><span class="radio"><span class="out"></span><span class="in"></span></span><span class="txt">10 min</span><span class="frame"></span></div>
+          <div class="time" data-time="custom"><span class="radio"><span class="out"></span><span class="in"></span></span><span class="txt">Personalizado</span><span class="frame"></span></div>
         </div>
       </div>
 
@@ -359,7 +345,7 @@
   const $ = (s, r = document) => r.querySelector(s);
   const $$ = (s, r = document) => [...r.querySelectorAll(s)];
 
-  const state = { game: 'conteudos', topics: ['tor', 'cef'], role: 'avaliador', time: 8 };
+  const state = { game: 'conteudos', topics: ['tor', 'cef'], time: 8 };
 
   // Modo de jogo
   $$('#modes .mode').forEach(el => {
@@ -381,14 +367,6 @@
     };
   });
 
-  // Função
-  $$('#roles button').forEach(el => {
-    el.onclick = () => {
-      state.role = el.dataset.role;
-      $$('#roles button').forEach(b => b.classList.toggle('sel', b === el));
-    };
-  });
-
   // Tempo
   $$('#times .time').forEach(el => {
     el.onclick = () => {
@@ -402,9 +380,9 @@
     $('#chips').style.display = enabled ? 'flex' : 'none';
     $('#autoNote').style.display = enabled ? 'none' : 'flex';
     if (!enabled) {
-      $('#autoNoteText').textContent = state.game === 'osce'
-        ? '4 estações sorteadas automaticamente, como na prova.'
-        : 'As estações seguem sem parar, com conteúdos sorteados.';
+      $('#autoNoteText').textContent = state.game === 'aleatoria'
+        ? 'Uma estação sorteada por vez, com conteúdos aleatórios, sem fim.'
+        : 'Todas as estações, sem repetir, com conteúdos sorteados, até acabarem.';
     }
     updateCount();
   }

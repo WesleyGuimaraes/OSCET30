@@ -9,28 +9,24 @@
   /* ===== Tela "Configurar treino" (escopada em .cfg) ===== */
   .cfg { --ease: cubic-bezier(0.4,0,0.2,1); --teal-ink:#06231f; max-width:860px; margin:0 auto; }
 
-  .cfg-head { display:flex; align-items:flex-end; justify-content:space-between; gap:24px; flex-wrap:wrap; margin-bottom:24px; }
+  .cfg-head { display:flex; align-items:flex-end; justify-content:space-between; gap:16px; flex-wrap:wrap; margin-bottom:14px; }
   .cfg-head h1 { margin:0; font-size:1.95rem; font-weight:800; letter-spacing:-.02em; line-height:1.1; }
-  .cfg-sub { margin:8px 0 0; color:var(--muted); font-size:1.02rem; line-height:1.5; }
-  .cfg-estimate { display:inline-flex; align-items:center; gap:9px; background:var(--panel); border:1px solid var(--line);
-    border-radius:20px; padding:9px 15px; color:var(--muted); font-size:.8rem; white-space:nowrap; }
-  .cfg-estimate .dot { width:7px; height:7px; border-radius:50%; background:var(--good); box-shadow:0 0 0 3px rgba(72,199,142,.16); flex:none; }
-  .cfg-estimate b { color:var(--txt); font-weight:600; }
+  .cfg-sub { margin:5px 0 0; color:var(--muted); font-size:.97rem; line-height:1.4; }
 
-  .cfg-stack { display:flex; flex-direction:column; gap:16px; }
-  .cfg-card { background:var(--panel); border:1px solid var(--line); border-radius:14px; padding:20px 22px; }
+  .cfg-stack { display:flex; flex-direction:column; gap:10px; }
+  .cfg-card { background:var(--panel); border:1px solid var(--line); border-radius:14px; padding:14px 18px; }
   .cfg-label { font-size:.72rem; text-transform:uppercase; letter-spacing:.06em; color:var(--muted); font-weight:600; }
-  .cfg-label-row { display:flex; align-items:center; justify-content:space-between; margin-bottom:14px; }
+  .cfg-label-row { display:flex; align-items:center; justify-content:space-between; margin-bottom:10px; }
   .cfg-count { font-size:.78rem; color:var(--muted); }
 
   /* modos */
-  .cfg-modes { display:grid; grid-template-columns:repeat(3,1fr); gap:12px; }
+  .cfg-modes { display:grid; grid-template-columns:repeat(3,1fr); gap:10px; }
   .cfg .mode { position:relative; background:var(--panel2); border:1px solid var(--line); border-radius:13px;
-    padding:16px 16px 15px; cursor:pointer; transition:border-color .15s var(--ease), transform .12s var(--ease); }
+    padding:12px 14px 11px; cursor:pointer; transition:border-color .15s var(--ease), transform .12s var(--ease); }
   .cfg .mode:hover { transform:translateY(-2px); border-color:var(--accent); }
-  .cfg .mode .ico { font-size:1.55rem; line-height:1; }
-  .cfg .mode .title { margin-top:11px; font-size:.98rem; font-weight:700; letter-spacing:-.01em; }
-  .cfg .mode .desc { margin-top:5px; color:var(--muted); font-size:.82rem; line-height:1.45; }
+  .cfg .mode .ico { font-size:1.3rem; line-height:1; }
+  .cfg .mode .title { margin-top:8px; font-size:.95rem; font-weight:700; letter-spacing:-.01em; }
+  .cfg .mode .desc { margin-top:3px; color:var(--muted); font-size:.8rem; line-height:1.4; }
   .cfg .mode .ring { position:absolute; inset:0; border:2px solid var(--accent); border-radius:13px;
     box-shadow:0 0 0 1px var(--accent) inset; pointer-events:none; display:none; }
   .cfg .mode .tick { position:absolute; top:13px; right:13px; width:20px; height:20px; border-radius:50%;
@@ -70,17 +66,16 @@
   .cfg-custom input { max-width:160px; margin:0; }
 
   /* footer + ações */
-  .cfg-footer { display:flex; align-items:center; justify-content:space-between; gap:20px; flex-wrap:wrap;
-    margin-top:6px; padding-top:18px; border-top:1px solid rgba(42,58,73,.55); }
-  .cfg-footer p { margin:0; font-size:.8rem; color:var(--muted); line-height:1.5; max-width:380px; }
-  .cfg-start { background:var(--good); color:var(--teal-ink); border:none; border-radius:10px; padding:14px 28px;
+  .cfg-footer { display:flex; align-items:center; justify-content:flex-end; gap:16px; flex-wrap:wrap;
+    margin-top:4px; padding-top:14px; border-top:1px solid rgba(42,58,73,.55); }
+  .cfg-start { background:var(--good); color:var(--teal-ink); border:none; border-radius:10px; padding:12px 26px;
     font-size:1rem; font-weight:700; cursor:pointer; transition:background .15s var(--ease), transform .1s var(--ease);
     display:inline-flex; align-items:center; gap:9px; white-space:nowrap; }
   .cfg-start:hover { background:#3fb37e; }
   .cfg-start:active { transform:scale(.99); }
 
   /* acesso do estudante */
-  .cfg-student { display:flex; align-items:center; gap:8px; flex-wrap:wrap; margin-top:6px;
+  .cfg-student { display:flex; align-items:center; gap:8px; flex-wrap:wrap; margin-top:4px;
     color:var(--muted); font-size:.9rem; }
   .cfg-link { background:transparent; border:none; color:var(--accent); font-weight:600; cursor:pointer;
     font-size:.9rem; padding:4px 2px; }
@@ -124,10 +119,6 @@
         <h1>Configurar treino</h1>
         <p class="cfg-sub">Escolha como deseja realizar esta sessão.</p>
       </div>
-      <div class="cfg-estimate">
-        <span class="dot"></span>
-        Tempo estimado para iniciar: <b>&lt; 20 segundos</b>
-      </div>
     </div>
 
     <div id="setupNotice" class="setup-notice hidden"></div>
@@ -137,7 +128,7 @@
 
       <!-- Modo de jogo -->
       <div class="cfg-card">
-        <div class="cfg-label" style="margin-bottom:14px">Modo de jogo</div>
+        <div class="cfg-label" style="margin-bottom:10px">Modo de jogo</div>
         <div class="cfg-modes" id="modes">
           <div class="mode sel" data-mode="conteudos">
             <div class="ico">🎯</div>
@@ -174,7 +165,7 @@
 
       <!-- Tempo da estação -->
       <div class="cfg-card">
-        <div class="cfg-label" style="margin-bottom:14px">Tempo da estação</div>
+        <div class="cfg-label" style="margin-bottom:10px">Tempo da estação</div>
         <div class="cfg-times" id="times">
           <div class="time" data-time="5"><span class="radio"><span class="out"></span><span class="in"></span></span><span class="txt">5 min</span><span class="frame"></span></div>
           <div class="time sel" data-time="8"><span class="radio"><span class="out"></span><span class="in"></span></span><span class="txt">8 min</span><span class="frame"></span></div>
@@ -188,7 +179,6 @@
 
       <!-- Footer -->
       <div class="cfg-footer">
-        <p>Você poderá alterar essas configurações antes do início da próxima sessão.</p>
         <button class="cfg-start" id="btnIniciar">Iniciar treino →</button>
       </div>
       <p id="cfgMsg" class="msg" style="text-align:right"></p>

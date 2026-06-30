@@ -277,7 +277,13 @@
 </main>
 
 
-<script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
+<!-- versão fixa + SRI: evita quebra silenciosa e protege contra adulteração na CDN.
+     Mantenha alinhada com admin/package.json (@supabase/supabase-js). Ao trocar a
+     versão, recalcule o integrity:  openssl dgst -sha384 -binary supabase.js | openssl base64 -A -->
+<script
+  src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2.45.4/dist/umd/supabase.js"
+  integrity="sha384-0w2KAL2YHP6wKOkUDzkCDGgVvfmHnj02DHeQ6XcHOgTfFsGyonKOpShMH1x6nk9o"
+  crossorigin="anonymous"></script>
 <script src="db.js"></script>
 <script type="module" src="js/main.js?v=2"></script>
 <!-- Vercel Web Analytics: conta visitantes/page views do site publicado na Vercel -->

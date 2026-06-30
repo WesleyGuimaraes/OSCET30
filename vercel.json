@@ -1,7 +1,7 @@
 {
   "framework": null,
   "installCommand": "cd admin && npm install",
-  "buildCommand": "mkdir -p public_combined && cp index.html app.html db.js styles.css public_combined/ && cp -r js public_combined/js && cd admin && npm run build && cd .. && cp -r admin/dist public_combined/admin",
+  "buildCommand": "mkdir -p public_combined && cp *.html *.css *.js public_combined/ && cp -r js public_combined/js && cd admin && npm run build && cd .. && cp -r admin/dist public_combined/admin",
   "outputDirectory": "public_combined",
   "routes": [
     { "src": "/app", "dest": "/app.html" }
@@ -14,7 +14,8 @@
         { "key": "X-Frame-Options", "value": "DENY" },
         { "key": "Referrer-Policy", "value": "strict-origin-when-cross-origin" },
         { "key": "Strict-Transport-Security", "value": "max-age=63072000; includeSubDomains; preload" },
-        { "key": "Permissions-Policy", "value": "geolocation=(), microphone=(), camera=()" }
+        { "key": "Permissions-Policy", "value": "geolocation=(), microphone=(), camera=()" },
+        { "key": "Content-Security-Policy", "value": "default-src 'self'; script-src 'self' https://cdn.jsdelivr.net; style-src 'self' 'unsafe-inline'; img-src 'self' data:; font-src 'self'; connect-src 'self' https://*.supabase.co wss://*.supabase.co; base-uri 'self'; form-action 'self'; frame-ancestors 'none'; object-src 'none'" }
       ]
     },
     {

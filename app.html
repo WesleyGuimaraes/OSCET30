@@ -65,39 +65,50 @@
   .cfg-custom.hidden { display:none; }
   .cfg-custom input { max-width:160px; margin:0; }
 
-  /* footer + ações */
-  .cfg-footer { display:flex; align-items:center; justify-content:flex-end; gap:16px; flex-wrap:wrap;
+  /* footer + ações — linha única com estudante à esquerda, botão à direita */
+  .cfg-footer { display:flex; align-items:center; justify-content:space-between; gap:14px; flex-wrap:wrap;
     margin-top:4px; padding-top:14px; border-top:1px solid rgba(42,58,73,.55); }
   .cfg-start { background:var(--good); color:var(--teal-ink); border:none; border-radius:10px; padding:12px 26px;
     font-size:1rem; font-weight:700; cursor:pointer; transition:background .15s var(--ease), transform .1s var(--ease);
-    display:inline-flex; align-items:center; gap:9px; white-space:nowrap; }
+    display:inline-flex; align-items:center; gap:9px; white-space:nowrap; flex-shrink:0; }
   .cfg-start:hover { background:#3fb37e; }
   .cfg-start:active { transform:scale(.99); }
 
-  /* acesso do estudante */
-  .cfg-student { display:flex; align-items:center; gap:8px; flex-wrap:wrap; margin-top:4px;
-    color:var(--muted); font-size:.9rem; }
+  /* acesso do estudante — agora fica dentro do .cfg-footer */
+  .cfg-student { display:flex; align-items:center; gap:6px; flex-wrap:wrap; color:var(--muted); font-size:.88rem; }
   .cfg-link { background:transparent; border:none; color:var(--accent); font-weight:600; cursor:pointer;
-    font-size:.9rem; padding:4px 2px; }
+    font-size:.88rem; padding:4px 2px; }
   .cfg-link:hover { color:var(--accent2); text-decoration:underline; }
-  .cfg-join { margin-top:12px; max-width:360px; }
+  .cfg-join { margin-top:10px; max-width:360px; }
   .cfg-join.hidden { display:none; }
 
   @media (max-width:720px){
-    .cfg-head h1 { font-size:1.7rem; }
+    .cfg-head h1 { font-size:1.55rem; }
     .cfg-modes { grid-template-columns:repeat(2,1fr); }
     .cfg .mode:last-child:nth-child(odd) { grid-column: span 2; }
     .cfg-times { grid-template-columns:repeat(2,1fr); }
   }
   @media (max-width:480px){
-    .cfg-head { gap:14px; }
-    .cfg-head h1 { font-size:1.5rem; }
-    .cfg-card { padding:14px; }
-    .cfg-modes { grid-template-columns:repeat(2,1fr); }
+    .cfg { padding:0 2px; }
+    .cfg-head { margin-bottom:10px; }
+    .cfg-head h1 { font-size:1.3rem; }
+    .cfg-sub { font-size:.85rem; }
+    .cfg-stack { gap:7px; }
+    .cfg-card { padding:10px 12px; }
+    .cfg-modes { grid-template-columns:repeat(2,1fr); gap:7px; }
+    .cfg .mode { padding:9px 10px 8px; }
+    .cfg .mode .ico { font-size:1.1rem; }
+    .cfg .mode .title { font-size:.84rem; margin-top:5px; }
+    .cfg .mode .desc { font-size:.74rem; margin-top:2px; }
     .cfg .mode:last-child:nth-child(odd) { grid-column: span 2; }
-    .cfg-times { grid-template-columns:repeat(2,1fr); }
-    .cfg-footer { gap:12px; }
+    .cfg-chips { gap:7px; }
+    .cfg .chip { padding:6px 11px; font-size:.8rem; }
+    .cfg-times { grid-template-columns:repeat(2,1fr); gap:7px; }
+    .cfg .time { padding:8px 10px; }
+    .cfg .time .txt { font-size:.82rem; }
+    .cfg-footer { flex-direction:column; align-items:stretch; gap:10px; }
     .cfg-start { width:100%; justify-content:center; }
+    .cfg-student { justify-content:center; }
   }
 </style>
 </head>
@@ -136,19 +147,19 @@
           <div class="mode sel" data-mode="conteudos">
             <div class="ico">🎯</div>
             <div class="title">Escolha os conteúdos</div>
-            <div class="desc">Selecione os temas que deseja treinar.</div>
+            <div class="desc">Selecione os temas.</div>
             <div class="ring"></div><div class="tick">✓</div>
           </div>
           <div class="mode" data-mode="aleatoria">
             <div class="ico">🎲</div>
             <div class="title">Aleatória</div>
-            <div class="desc">Uma estação sorteada por vez, sem fim.</div>
+            <div class="desc">Sorteio contínuo, sem fim.</div>
             <div class="ring"></div><div class="tick">✓</div>
           </div>
           <div class="mode" data-mode="infinito">
             <div class="ico">♾️</div>
             <div class="title">Modo infinito</div>
-            <div class="desc">Todas as estações, sem repetir, até acabarem.</div>
+            <div class="desc">Sem repetição, até acabar.</div>
             <div class="ring"></div><div class="tick">✓</div>
           </div>
         </div>
@@ -180,17 +191,15 @@
         </div>
       </div>
 
-      <!-- Footer -->
+      <!-- Footer: estudante à esquerda, botão à direita -->
       <div class="cfg-footer">
+        <div class="cfg-student">
+          <span>É estudante?</span>
+          <button id="linkStudent" class="cfg-link">Entrar com um código →</button>
+        </div>
         <button class="cfg-start" id="btnIniciar">Iniciar treino →</button>
       </div>
       <p id="cfgMsg" class="msg" style="text-align:right"></p>
-
-      <!-- Acesso do estudante -->
-      <div class="cfg-student">
-        <span>É estudante e recebeu um código?</span>
-        <button id="linkStudent" class="cfg-link">Entrar com um código →</button>
-      </div>
       <div id="joinBox" class="cfg-join hidden">
         <input id="joinCode" type="text" placeholder="CÓDIGO DA SALA" maxlength="8" autocomplete="off" />
         <button id="btnJoin" class="primary">Entrar</button>

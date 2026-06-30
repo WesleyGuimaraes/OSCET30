@@ -44,11 +44,7 @@ export function startSession(mode, tags, tempoMin) {
   // info exibida ao host
   $("#modeLabel").textContent = MODE_LABEL[mode]
     + (tempo ? ` · ${tempoMin} min` : "");
-  let info;
-  if (mode === "aleatoria") info = "estações ilimitadas";
-  else if (mode === "osce")
-    info = `${queue.length} estações` + (queue.length < 4 ? ` (só ${queue.length} disponíveis)` : "");
-  else info = `${queue.length} estaç${queue.length === 1 ? "ão" : "ões"}`;
+  const info = `${queue.length} estaç${queue.length === 1 ? "ão" : "ões"}`;
   $("#queueInfo").textContent = info;
 
   // cria a sala (assina o canal Realtime) e mostra código/link quando pronto

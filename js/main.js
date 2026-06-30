@@ -52,9 +52,7 @@ function applyModeUI() {
   $("#chips").classList.toggle("hidden", !enabled);
   $("#autoNote").classList.toggle("hidden", enabled);
   if (!enabled) {
-    $("#autoNoteText").textContent = selMode === "aleatoria"
-      ? "Uma estação sorteada por vez, com conteúdos aleatórios, sem fim."
-      : "Todas as estações, sem repetir, com conteúdos sorteados, até acabarem.";
+    $("#autoNoteText").textContent = "Todas as estações, sem repetir, com conteúdos sorteados, até acabarem.";
   }
   updateTopicsCount();
 }

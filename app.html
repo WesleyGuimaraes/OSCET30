@@ -20,7 +20,7 @@
   .cfg-count { font-size:.78rem; color:var(--muted); }
 
   /* modos */
-  .cfg-modes { display:grid; grid-template-columns:repeat(3,1fr); gap:10px; }
+  .cfg-modes { display:grid; grid-template-columns:repeat(2,1fr); gap:10px; }
   .cfg .mode { position:relative; background:var(--panel2); border:1px solid var(--line); border-radius:13px;
     padding:12px 14px 11px; cursor:pointer; transition:border-color .15s var(--ease), transform .12s var(--ease); }
   .cfg .mode:hover { transform:translateY(-2px); border-color:var(--accent); }
@@ -85,7 +85,6 @@
   @media (max-width:720px){
     .cfg-head h1 { font-size:1.55rem; }
     .cfg-modes { grid-template-columns:repeat(2,1fr); }
-    .cfg .mode:last-child:nth-child(odd) { grid-column: span 2; }
     .cfg-times { grid-template-columns:repeat(2,1fr); }
   }
   @media (max-width:480px){
@@ -100,7 +99,6 @@
     .cfg .mode .ico { font-size:1.1rem; }
     .cfg .mode .title { font-size:.84rem; margin-top:5px; }
     .cfg .mode .desc { font-size:.74rem; margin-top:2px; }
-    .cfg .mode:last-child:nth-child(odd) { grid-column: span 2; }
     .cfg-chips { gap:7px; }
     .cfg .chip { padding:6px 11px; font-size:.8rem; }
     .cfg-times { grid-template-columns:repeat(2,1fr); gap:7px; }
@@ -150,13 +148,7 @@
             <div class="desc">Selecione os temas.</div>
             <div class="ring"></div><div class="tick">✓</div>
           </div>
-          <div class="mode" data-mode="aleatoria">
-            <div class="ico">🎲</div>
-            <div class="title">Aleatória</div>
-            <div class="desc">Sorteio contínuo, sem fim.</div>
-            <div class="ring"></div><div class="tick">✓</div>
-          </div>
-          <div class="mode" data-mode="infinito">
+<div class="mode" data-mode="infinito">
             <div class="ico">♾️</div>
             <div class="title">Modo infinito</div>
             <div class="desc">Sem repetição, até acabar.</div>

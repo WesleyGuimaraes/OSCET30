@@ -1,0 +1,409 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+<meta charset="UTF-8" />
+<meta name="viewport" content="width=device-width, initial-scale=1.0" />
+<title>Configurar treino — Próxima Estação</title>
+<style>
+  *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+
+  :root {
+    --c-bg:        #0f1720;
+    --c-panel:     #17212b;
+    --c-panel-2:   #1e2b38;
+    --c-line:      #2a3a49;
+    --c-text:      #e6edf3;
+    --c-muted:     #93a4b3;
+    --c-placeholder: #5d6e7d;
+    --c-teal:      #3fb6a8;
+    --c-teal-deep: #2d8d82;
+    --c-teal-ink:  #06231f;
+    --c-good:      #48c78e;
+    --ease: cubic-bezier(0.4, 0, 0.2, 1);
+    --ring-accent: 0 0 0 1px var(--c-teal) inset;
+    --shadow-pop: 0 8px 24px rgba(0,0,0,.45);
+    --font-sans: system-ui, -apple-system, sans-serif;
+  }
+
+  html, body { margin: 0; padding: 0; }
+  body {
+    background: var(--c-bg);
+    color: var(--c-text);
+    font-family: var(--font-sans);
+    -webkit-font-smoothing: antialiased;
+  }
+  ::selection { background: rgba(63,182,168,.3); }
+  button:focus-visible, [tabindex]:focus-visible {
+    outline: 2px solid var(--c-teal);
+    outline-offset: 2px;
+  }
+
+  @keyframes pe-toast {
+    from { opacity: 0; transform: translate(-50%, 8px); }
+    to   { opacity: 1; transform: translate(-50%, 0); }
+  }
+
+  .screen { min-height: 100vh; padding: 28px 28px 48px; }
+  .wrap { max-width: 860px; margin: 0 auto; }
+
+  .back {
+    background: transparent; border: none; color: var(--c-muted);
+    font-size: 0.88rem; cursor: pointer; padding: 6px 2px;
+    font-family: var(--font-sans);
+    display: inline-flex; align-items: center; gap: 6px; margin-bottom: 16px;
+    transition: color .15s var(--ease);
+  }
+  .back:hover { color: var(--c-text); }
+
+  /* Header */
+  .head {
+    display: flex; align-items: flex-end; justify-content: space-between;
+    gap: 24px; flex-wrap: wrap; margin-bottom: 28px;
+  }
+  .head h1 {
+    margin: 0; font-size: 1.95rem; font-weight: 800;
+    letter-spacing: -0.02em; line-height: 1.1;
+  }
+  .head p {
+    margin: 8px 0 0; color: var(--c-muted);
+    font-size: 1.02rem; line-height: 1.5;
+  }
+  .estimate {
+    display: inline-flex; align-items: center; gap: 9px;
+    background: var(--c-panel); border: 1px solid var(--c-line);
+    border-radius: 20px; padding: 9px 15px; color: var(--c-muted);
+    font-size: 0.8rem; white-space: nowrap;
+  }
+  .estimate .dot {
+    width: 7px; height: 7px; border-radius: 50%; background: var(--c-good);
+    box-shadow: 0 0 0 3px rgba(72,199,142,.16); flex: none;
+  }
+  .estimate b { color: var(--c-text); font-weight: 600; }
+
+  .stack { display: flex; flex-direction: column; gap: 16px; }
+
+  .card {
+    background: var(--c-panel); border: 1px solid var(--c-line);
+    border-radius: 14px; padding: 20px 22px;
+  }
+
+  .card-label {
+    font-size: 0.72rem; text-transform: uppercase; letter-spacing: 0.06em;
+    color: var(--c-muted); font-weight: 600;
+  }
+  .card-label-row {
+    display: flex; align-items: center; justify-content: space-between;
+    margin-bottom: 14px;
+  }
+  .card-label-row .count { font-size: 0.78rem; color: var(--c-muted); }
+
+  /* Modo de jogo */
+  .modes { display: grid; grid-template-columns: repeat(3, 1fr); gap: 12px; }
+  .mode {
+    position: relative; background: var(--c-panel-2);
+    border: 1px solid var(--c-line); border-radius: 13px;
+    padding: 16px 16px 15px; cursor: pointer;
+    transition: border-color .15s var(--ease), transform .12s var(--ease);
+  }
+  .mode:hover { transform: translateY(-2px); border-color: var(--c-teal); }
+  .mode .ico { font-size: 1.55rem; line-height: 1; }
+  .mode .title { margin-top: 11px; font-size: 0.98rem; font-weight: 700; letter-spacing: -0.01em; }
+  .mode .desc { margin-top: 5px; color: var(--c-muted); font-size: 0.82rem; line-height: 1.45; }
+  .mode .ring {
+    position: absolute; inset: 0; border: 2px solid var(--c-teal);
+    border-radius: 13px; box-shadow: var(--ring-accent);
+    pointer-events: none; display: none;
+  }
+  .mode .tick {
+    position: absolute; top: 13px; right: 13px; width: 20px; height: 20px;
+    border-radius: 50%; background: var(--c-teal); color: var(--c-teal-ink);
+    display: none; place-items: center; font-size: 0.7rem; font-weight: 800;
+  }
+  .mode.sel .ring { display: block; }
+  .mode.sel .tick { display: grid; }
+
+  /* Conteúdos */
+  .chips { display: flex; flex-wrap: wrap; gap: 10px; }
+  .chip {
+    display: inline-flex; align-items: center; gap: 7px;
+    border-radius: 20px; padding: 8px 15px; font-size: 0.86rem;
+    cursor: pointer; user-select: none; white-space: nowrap;
+    background: var(--c-panel-2); border: 1px solid var(--c-line);
+    color: var(--c-text); font-weight: 500;
+    transition: background .15s var(--ease), border-color .15s var(--ease), color .15s var(--ease);
+  }
+  .chip .ck { font-size: 0.72rem; font-weight: 800; display: none; }
+  .chip.sel {
+    background: var(--c-teal-deep); border-color: var(--c-teal);
+    color: #fff; font-weight: 600;
+  }
+  .chip.sel .ck { display: inline; }
+
+  .auto-note {
+    display: none; align-items: center; gap: 10px; color: var(--c-muted);
+    font-size: 0.88rem; background: var(--c-panel-2);
+    border: 1px dashed var(--c-line); border-radius: 10px; padding: 14px 16px;
+  }
+  .auto-note .emoji { font-size: 1.05rem; }
+
+  /* Row: Função | Tempo */
+  .row2 { display: grid; grid-template-columns: 1fr 1fr; gap: 16px; }
+
+  .segment {
+    display: flex; background: var(--c-panel-2); border: 1px solid var(--c-line);
+    border-radius: 10px; padding: 4px;
+  }
+  .segment button {
+    flex: 1; position: relative; background: transparent; border: none;
+    cursor: pointer; padding: 9px 4px; font-family: var(--font-sans);
+  }
+  .segment button .fill {
+    position: absolute; inset: 0; background: var(--c-teal-deep);
+    border-radius: 7px; z-index: 0; display: none;
+    transition: background .18s var(--ease);
+  }
+  .segment button .lbl {
+    position: relative; z-index: 1; font-size: 0.88rem; font-weight: 500;
+    color: var(--c-muted); transition: color .18s var(--ease);
+  }
+  .segment button.sel .fill { display: block; }
+  .segment button.sel .lbl { color: #fff; font-weight: 600; }
+
+  .role-note {
+    margin-top: 11px; font-size: 0.76rem; color: var(--c-muted); line-height: 1.4;
+  }
+
+  .times { display: grid; grid-template-columns: repeat(4, 1fr); gap: 10px; }
+  .time {
+    position: relative; display: flex; align-items: center; gap: 10px;
+    padding: 10px 13px; border: 1px solid var(--c-line); border-radius: 10px;
+    background: var(--c-panel-2); cursor: pointer;
+    transition: border-color .15s var(--ease);
+  }
+  .time:hover { border-color: var(--c-teal); }
+  .time .radio { position: relative; width: 15px; height: 15px; flex: none; }
+  .time .radio .out {
+    position: absolute; inset: 0; border-radius: 50%;
+    border: 2px solid var(--c-placeholder); box-sizing: border-box;
+  }
+  .time .radio .in {
+    position: absolute; inset: 0; border-radius: 50%; background: var(--c-teal);
+    border: 2px solid var(--c-teal); box-shadow: 0 0 0 3px rgba(63,182,168,.18);
+    display: none;
+  }
+  .time .txt { font-size: 0.88rem; color: var(--c-text); white-space: nowrap; }
+  .time .frame {
+    position: absolute; inset: 0; border: 1.5px solid var(--c-teal);
+    border-radius: 10px; pointer-events: none; display: none;
+  }
+  .time.sel .radio .in { display: block; }
+  .time.sel .frame { display: block; }
+
+  /* Footer */
+  .footer {
+    display: flex; align-items: center; justify-content: space-between;
+    gap: 20px; flex-wrap: wrap; margin-top: 6px; padding-top: 18px;
+    border-top: 1px solid rgba(42,58,73,.55);
+  }
+  .footer p { margin: 0; font-size: 0.8rem; color: var(--c-muted); line-height: 1.5; max-width: 380px; }
+  .start {
+    background: #48c78e; color: #06231f; border: none; border-radius: 10px;
+    padding: 14px 28px; font-size: 1rem; font-weight: 700; cursor: pointer;
+    font-family: var(--font-sans);
+    transition: background .15s var(--ease), transform .1s var(--ease);
+    display: inline-flex; align-items: center; gap: 9px; white-space: nowrap;
+  }
+  .start:hover { background: #3fb37e; }
+  .start:active { transform: scale(.99); }
+
+  /* Toast */
+  .toast {
+    position: fixed; left: 50%; bottom: 32px; transform: translateX(-50%);
+    background: var(--c-panel); border: 1px solid var(--c-teal);
+    border-radius: 12px; padding: 14px 22px;
+    display: none; align-items: center; gap: 12px;
+    box-shadow: var(--shadow-pop); z-index: 50;
+    animation: pe-toast .25s var(--ease);
+  }
+  .toast.show { display: flex; }
+  .toast .emoji { font-size: 1.15rem; }
+  .toast .msg { font-size: 0.9rem; font-weight: 600; }
+
+  /* ─── TABLET ≤ 720px ─── */
+  @media (max-width: 720px) {
+    .screen { padding: 22px 18px 40px; }
+    .head h1 { font-size: 1.7rem; }
+    .modes { grid-template-columns: 1fr; }
+    .times { grid-template-columns: repeat(2, 1fr); }
+  }
+
+  /* ─── CELULAR ≤ 480px ─── */
+  @media (max-width: 480px) {
+    .screen { padding: 18px 14px 36px; }
+    .head { gap: 14px; }
+    .head h1 { font-size: 1.5rem; }
+    .head p { font-size: 0.95rem; }
+    .estimate { font-size: 0.74rem; padding: 8px 12px; }
+    .card { padding: 16px 16px; }
+    .times { grid-template-columns: 1fr; }
+    .footer { gap: 14px; }
+    .start { width: 100%; justify-content: center; }
+  }
+</style>
+</head>
+<body>
+<div class="screen">
+  <div class="wrap">
+
+    <button class="back" onclick="history.back()">← Voltar</button>
+
+    <!-- Header -->
+    <div class="head">
+      <div>
+        <h1>Configurar treino</h1>
+        <p>Escolha como deseja realizar esta sessão.</p>
+      </div>
+      <div class="estimate">
+        <span class="dot"></span>
+        Tempo estimado para iniciar: <b>&lt; 20 segundos</b>
+      </div>
+    </div>
+
+    <div class="stack">
+
+      <!-- Card 1 — Modo de jogo -->
+      <div class="card">
+        <div class="card-label" style="margin-bottom:14px">Modo de jogo</div>
+        <div class="modes" id="modes">
+          <div class="mode sel" data-mode="conteudos">
+            <div class="ico">🎯</div>
+            <div class="title">Escolha os conteúdos</div>
+            <div class="desc">Selecione os temas que deseja treinar.</div>
+            <div class="ring"></div><div class="tick">✓</div>
+          </div>
+          <div class="mode" data-mode="aleatoria">
+            <div class="ico">🎲</div>
+            <div class="title">Aleatória</div>
+            <div class="desc">Uma estação sorteada por vez, sem fim.</div>
+            <div class="ring"></div><div class="tick">✓</div>
+          </div>
+          <div class="mode" data-mode="infinito">
+            <div class="ico">♾️</div>
+            <div class="title">Modo infinito</div>
+            <div class="desc">Todas as estações, sem repetir, até acabarem.</div>
+            <div class="ring"></div><div class="tick">✓</div>
+          </div>
+        </div>
+      </div>
+
+      <!-- Card 2 — Conteúdos -->
+      <div class="card">
+        <div class="card-label-row">
+          <div class="card-label">Conteúdos</div>
+          <span class="count" id="topicsCount">2 selecionados</span>
+        </div>
+        <div class="chips" id="chips">
+          <span class="chip sel" data-topic="tor"><span class="ck">✓</span>Dor torácica</span>
+          <span class="chip sel" data-topic="cef"><span class="ck">✓</span>Cefaleia</span>
+          <span class="chip" data-topic="abd"><span class="ck">✓</span>Dor abdominal</span>
+          <span class="chip" data-topic="feb"><span class="ck">✓</span>Febre</span>
+          <span class="chip" data-topic="disp"><span class="ck">✓</span>Dispneia</span>
+          <span class="chip" data-topic="tra"><span class="ck">✓</span>Trauma</span>
+        </div>
+        <div class="auto-note" id="autoNote">
+          <span class="emoji">🎲</span><span id="autoNoteText"></span>
+        </div>
+      </div>
+
+      <!-- Tempo da estação -->
+      <div class="card">
+        <div class="card-label" style="margin-bottom:14px">Tempo da estação</div>
+        <div class="times" id="times">
+          <div class="time" data-time="5"><span class="radio"><span class="out"></span><span class="in"></span></span><span class="txt">5 min</span><span class="frame"></span></div>
+          <div class="time sel" data-time="8"><span class="radio"><span class="out"></span><span class="in"></span></span><span class="txt">8 min</span><span class="frame"></span></div>
+          <div class="time" data-time="10"><span class="radio"><span class="out"></span><span class="in"></span></span><span class="txt">10 min</span><span class="frame"></span></div>
+          <div class="time" data-time="custom"><span class="radio"><span class="out"></span><span class="in"></span></span><span class="txt">Personalizado</span><span class="frame"></span></div>
+        </div>
+      </div>
+
+      <!-- Footer -->
+      <div class="footer">
+        <p>Você poderá alterar essas configurações antes do início da próxima sessão.</p>
+        <button class="start" id="start">Iniciar treino →</button>
+      </div>
+
+    </div>
+  </div>
+
+  <div class="toast" id="toast">
+    <span class="emoji">🩺</span>
+    <span class="msg">Preparando sua estação…</span>
+  </div>
+</div>
+
+<script>
+  const $ = (s, r = document) => r.querySelector(s);
+  const $$ = (s, r = document) => [...r.querySelectorAll(s)];
+
+  const state = { game: 'conteudos', topics: ['tor', 'cef'], time: 8 };
+
+  // Modo de jogo
+  $$('#modes .mode').forEach(el => {
+    el.onclick = () => {
+      state.game = el.dataset.mode;
+      $$('#modes .mode').forEach(m => m.classList.toggle('sel', m === el));
+      renderTopics();
+    };
+  });
+
+  // Conteúdos (chips)
+  $$('#chips .chip').forEach(el => {
+    el.onclick = () => {
+      const key = el.dataset.topic;
+      const i = state.topics.indexOf(key);
+      if (i >= 0) state.topics.splice(i, 1); else state.topics.push(key);
+      el.classList.toggle('sel');
+      updateCount();
+    };
+  });
+
+  // Tempo
+  $$('#times .time').forEach(el => {
+    el.onclick = () => {
+      state.time = el.dataset.time;
+      $$('#times .time').forEach(t => t.classList.toggle('sel', t === el));
+    };
+  });
+
+  function renderTopics() {
+    const enabled = state.game === 'conteudos';
+    $('#chips').style.display = enabled ? 'flex' : 'none';
+    $('#autoNote').style.display = enabled ? 'none' : 'flex';
+    if (!enabled) {
+      $('#autoNoteText').textContent = state.game === 'aleatoria'
+        ? 'Uma estação sorteada por vez, com conteúdos aleatórios, sem fim.'
+        : 'Todas as estações, sem repetir, com conteúdos sorteados, até acabarem.';
+    }
+    updateCount();
+  }
+
+  function updateCount() {
+    const el = $('#topicsCount');
+    if (state.game !== 'conteudos') { el.textContent = 'Sorteio automático'; return; }
+    const n = state.topics.length;
+    el.textContent = n === 0 ? 'Nenhum selecionado' : n + (n === 1 ? ' selecionado' : ' selecionados');
+  }
+
+  // Iniciar treino
+  let toastTimer;
+  $('#start').onclick = () => {
+    const t = $('#toast');
+    t.classList.add('show');
+    clearTimeout(toastTimer);
+    toastTimer = setTimeout(() => t.classList.remove('show'), 2600);
+  };
+
+  renderTopics();
+</script>
+</body>
+</html>

@@ -1,0 +1,286 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+<meta charset="UTF-8" />
+<meta name="viewport" content="width=device-width, initial-scale=1.0" />
+<title>Próxima Estação</title>
+<link rel="stylesheet" href="styles.css" />
+<style>
+  /* ===== Tela "Configurar treino" (escopada em .cfg) ===== */
+  .cfg { --ease: cubic-bezier(0.4,0,0.2,1); --teal-ink:#06231f; max-width:860px; margin:0 auto; }
+
+  .cfg-head { display:flex; align-items:flex-end; justify-content:space-between; gap:16px; flex-wrap:wrap; margin-bottom:14px; }
+  .cfg-head h1 { margin:0; font-size:1.95rem; font-weight:800; letter-spacing:-.02em; line-height:1.1; }
+  .cfg-sub { margin:5px 0 0; color:var(--muted); font-size:.97rem; line-height:1.4; }
+
+  .cfg-stack { display:flex; flex-direction:column; gap:10px; }
+  .cfg-card { background:var(--panel); border:1px solid var(--line); border-radius:14px; padding:14px 18px; }
+  .cfg-label { font-size:.72rem; text-transform:uppercase; letter-spacing:.06em; color:var(--muted); font-weight:600; }
+  .cfg-label-row { display:flex; align-items:center; justify-content:space-between; margin-bottom:10px; }
+  .cfg-count { font-size:.78rem; color:var(--muted); }
+
+  /* modos */
+  .cfg-modes { display:grid; grid-template-columns:repeat(2,1fr); gap:10px; }
+  .cfg .mode { position:relative; background:var(--panel2); border:1px solid var(--line); border-radius:13px;
+    padding:12px 14px 11px; cursor:pointer; transition:border-color .15s var(--ease), transform .12s var(--ease); }
+  .cfg .mode:hover { transform:translateY(-2px); border-color:var(--accent); }
+  .cfg .mode .ico { font-size:1.3rem; line-height:1; }
+  .cfg .mode .title { margin-top:8px; font-size:.95rem; font-weight:700; letter-spacing:-.01em; }
+  .cfg .mode .desc { margin-top:3px; color:var(--muted); font-size:.8rem; line-height:1.4; }
+  .cfg .mode .ring { position:absolute; inset:0; border:2px solid var(--accent); border-radius:13px;
+    box-shadow:0 0 0 1px var(--accent) inset; pointer-events:none; display:none; }
+  .cfg .mode .tick { position:absolute; top:13px; right:13px; width:20px; height:20px; border-radius:50%;
+    background:var(--accent); color:var(--teal-ink); display:none; place-items:center; font-size:.7rem; font-weight:800; }
+  .cfg .mode.sel .ring { display:block; }
+  .cfg .mode.sel .tick { display:grid; }
+
+  /* chips */
+  .cfg-chips { display:flex; flex-wrap:wrap; gap:10px; }
+  .cfg .chip { display:inline-flex; align-items:center; gap:7px; border-radius:20px; padding:8px 15px; font-size:.86rem;
+    cursor:pointer; user-select:none; white-space:nowrap; background:var(--panel2); border:1px solid var(--line);
+    color:var(--txt); font-weight:500; transition:background .15s var(--ease), border-color .15s var(--ease), color .15s var(--ease); }
+  .cfg .chip .ck { font-size:.72rem; font-weight:800; display:none; }
+  .cfg .chip.sel { background:var(--accent2); border-color:var(--accent); color:#fff; font-weight:600; }
+  .cfg .chip.sel .ck { display:inline; }
+
+  .cfg-auto { display:flex; align-items:center; gap:10px; color:var(--muted); font-size:.88rem; background:var(--panel2);
+    border:1px dashed var(--line); border-radius:10px; padding:14px 16px; }
+  .cfg-auto.hidden { display:none; }
+  .cfg-auto .emoji { font-size:1.05rem; }
+
+  /* tempo */
+  .cfg-times { display:grid; grid-template-columns:repeat(4,1fr); gap:10px; }
+  .cfg .time { position:relative; display:flex; align-items:center; gap:10px; padding:10px 13px; border:1px solid var(--line);
+    border-radius:10px; background:var(--panel2); cursor:pointer; transition:border-color .15s var(--ease); }
+  .cfg .time:hover { border-color:var(--accent); }
+  .cfg .time .radio { position:relative; width:15px; height:15px; flex:none; }
+  .cfg .time .radio .out { position:absolute; inset:0; border-radius:50%; border:2px solid #5d6e7d; box-sizing:border-box; }
+  .cfg .time .radio .in { position:absolute; inset:0; border-radius:50%; background:var(--accent); border:2px solid var(--accent);
+    box-shadow:0 0 0 3px rgba(63,182,168,.18); display:none; }
+  .cfg .time .txt { font-size:.88rem; color:var(--txt); white-space:nowrap; }
+  .cfg .time .frame { position:absolute; inset:0; border:1.5px solid var(--accent); border-radius:10px; pointer-events:none; display:none; }
+  .cfg .time.sel .radio .in { display:block; }
+  .cfg .time.sel .frame { display:block; }
+  .cfg-custom { margin-top:12px; }
+  .cfg-custom.hidden { display:none; }
+  .cfg-custom input { max-width:160px; margin:0; }
+
+  /* footer + ações — linha única com estudante à esquerda, botão à direita */
+  .cfg-footer { display:flex; align-items:center; justify-content:space-between; gap:14px; flex-wrap:wrap;
+    margin-top:4px; padding-top:14px; border-top:1px solid rgba(42,58,73,.55); }
+  .cfg-start { background:var(--good); color:var(--teal-ink); border:none; border-radius:10px; padding:12px 26px;
+    font-size:1rem; font-weight:700; cursor:pointer; transition:background .15s var(--ease), transform .1s var(--ease);
+    display:inline-flex; align-items:center; gap:9px; white-space:nowrap; flex-shrink:0; }
+  .cfg-start:hover { background:#3fb37e; }
+  .cfg-start:active { transform:scale(.99); }
+
+  /* acesso do estudante — agora fica dentro do .cfg-footer */
+  .cfg-student { display:flex; align-items:center; gap:6px; flex-wrap:wrap; color:var(--muted); font-size:.88rem; }
+  .cfg-link { background:transparent; border:none; color:var(--accent); font-weight:600; cursor:pointer;
+    font-size:.88rem; padding:4px 2px; }
+  .cfg-link:hover { color:var(--accent2); text-decoration:underline; }
+  .cfg-join { margin-top:10px; max-width:360px; }
+  .cfg-join.hidden { display:none; }
+
+  @media (max-width:720px){
+    .cfg-head h1 { font-size:1.55rem; }
+    .cfg-modes { grid-template-columns:repeat(2,1fr); }
+    .cfg-times { grid-template-columns:repeat(2,1fr); }
+  }
+  @media (max-width:480px){
+    .cfg { padding:0 2px; }
+    .cfg-head { margin-bottom:10px; }
+    .cfg-head h1 { font-size:1.3rem; }
+    .cfg-sub { font-size:.85rem; }
+    .cfg-stack { gap:7px; }
+    .cfg-card { padding:10px 12px; }
+    .cfg-modes { grid-template-columns:repeat(2,1fr); gap:7px; }
+    .cfg .mode { padding:9px 10px 8px; }
+    .cfg .mode .ico { font-size:1.1rem; }
+    .cfg .mode .title { font-size:.84rem; margin-top:5px; }
+    .cfg .mode .desc { font-size:.74rem; margin-top:2px; }
+    .cfg-chips { gap:7px; }
+    .cfg .chip { padding:6px 11px; font-size:.8rem; }
+    .cfg-times { grid-template-columns:repeat(2,1fr); gap:7px; }
+    .cfg .time { padding:8px 10px; }
+    .cfg .time .txt { font-size:.82rem; }
+    .cfg-footer { flex-direction:column; align-items:stretch; gap:10px; }
+    .cfg-start { width:100%; justify-content:center; }
+    .cfg-student { justify-content:center; }
+  }
+</style>
+</head>
+<body>
+<header class="topbar">
+  <div class="brand">Próxima Estação</div>
+  <div class="topbar-right">
+    <div id="status" class="status off">desconectado</div>
+    <a href="/admin/" target="_blank" rel="noopener" class="admin-link" title="Área do administrador">⚙️</a>
+  </div>
+</header>
+
+<main id="app">
+
+  <!-- ETAPA 1: CONFIGURAR TREINO (host) + entrada do estudante -->
+  <section id="lobby" class="screen active">
+   <div class="cfg">
+
+    <!-- Header -->
+    <div class="cfg-head">
+      <div>
+        <h1>Configurar treino</h1>
+        <p class="cfg-sub">Escolha como deseja realizar esta sessão.</p>
+      </div>
+    </div>
+
+    <div id="setupNotice" class="setup-notice hidden"></div>
+
+    <!-- Formulário de configuração (some quando a sala é criada) -->
+    <div id="cfgForm" class="cfg-stack">
+
+      <!-- Modo de jogo -->
+      <div class="cfg-card">
+        <div class="cfg-label" style="margin-bottom:10px">Modo de jogo</div>
+        <div class="cfg-modes" id="modes">
+          <div class="mode sel" data-mode="conteudos">
+            <div class="ico">🎯</div>
+            <div class="title">Escolha os conteúdos</div>
+            <div class="desc">Selecione os temas.</div>
+            <div class="ring"></div><div class="tick">✓</div>
+          </div>
+<div class="mode" data-mode="infinito">
+            <div class="ico">♾️</div>
+            <div class="title">Modo infinito</div>
+            <div class="desc">Sem repetição, até acabar.</div>
+            <div class="ring"></div><div class="tick">✓</div>
+          </div>
+        </div>
+      </div>
+
+      <!-- Conteúdos -->
+      <div class="cfg-card">
+        <div class="cfg-label-row">
+          <div class="cfg-label">Conteúdos</div>
+          <span class="cfg-count" id="topicsCount">Nenhum selecionado</span>
+        </div>
+        <div class="cfg-chips" id="chips"></div>
+        <div class="cfg-auto hidden" id="autoNote">
+          <span class="emoji">🎲</span><span id="autoNoteText"></span>
+        </div>
+      </div>
+
+      <!-- Tempo da estação -->
+      <div class="cfg-card">
+        <div class="cfg-label" style="margin-bottom:10px">Tempo da estação</div>
+        <div class="cfg-times" id="times">
+          <div class="time" data-time="5"><span class="radio"><span class="out"></span><span class="in"></span></span><span class="txt">5 min</span><span class="frame"></span></div>
+          <div class="time sel" data-time="8"><span class="radio"><span class="out"></span><span class="in"></span></span><span class="txt">8 min</span><span class="frame"></span></div>
+          <div class="time" data-time="10"><span class="radio"><span class="out"></span><span class="in"></span></span><span class="txt">10 min</span><span class="frame"></span></div>
+          <div class="time" data-time="custom"><span class="radio"><span class="out"></span><span class="in"></span></span><span class="txt">Personalizado</span><span class="frame"></span></div>
+        </div>
+        <div id="customTimeWrap" class="cfg-custom hidden">
+          <input id="customTime" type="number" min="1" max="60" placeholder="minutos" />
+        </div>
+      </div>
+
+      <!-- Footer: estudante à esquerda, botão à direita -->
+      <div class="cfg-footer">
+        <div class="cfg-student">
+          <span>É estudante?</span>
+          <button id="linkStudent" class="cfg-link">Entrar com um código →</button>
+        </div>
+        <button class="cfg-start" id="btnIniciar">Iniciar treino →</button>
+      </div>
+      <p id="cfgMsg" class="msg" style="text-align:right"></p>
+      <div id="joinBox" class="cfg-join hidden">
+        <input id="joinCode" type="text" placeholder="CÓDIGO DA SALA" maxlength="8" autocomplete="off" />
+        <button id="btnJoin" class="primary">Entrar</button>
+        <p id="lobbyMsg" class="msg"></p>
+      </div>
+
+      <!-- Teste de conexão (importante em redes restritas) -->
+      <div class="conn-test">
+        <button id="btnTestConn" class="ghost">📶 Testar conexão nesta rede</button>
+        <div id="connResult" class="conn-result"></div>
+      </div>
+    </div>
+
+    <!-- Sala criada: código/link para o estudante -->
+    <div class="room-share hidden" id="roomShare">
+      <p>Modo: <b id="modeLabel"></b> · <span id="queueInfo"></span></p>
+      <p>Compartilhe este código com o estudante:</p>
+      <div class="code-box"><span id="roomCode">----</span><button id="btnCopy" class="ghost">copiar</button></div>
+      <p class="invite-line">ou envie o link de convite:</p>
+      <div class="code-box"><a id="inviteLink" href="#" target="_blank" rel="noopener">—</a><button id="btnCopyLink" class="ghost">copiar link</button></div>
+      <p id="waitMsg" class="msg">Aguardando o estudante entrar…</p>
+    </div>
+
+   </div>
+  </section>
+
+  <!-- ETAPA 3: ESTAÇÃO EM ANDAMENTO -->
+  <section id="station" class="screen">
+    <div class="station-head">
+      <div>
+        <div class="case-progress" id="stProgress"></div>
+        <div class="case-title" id="stCaseTitle"></div>
+        <div class="case-sub" id="stCaseSub"></div>
+      </div>
+      <div class="timer-wrap">
+        <div id="timer" class="timer">--:--</div>
+        <div class="timer-ctrls" id="timerCtrls">
+          <button id="btnStart" class="ghost">▶ iniciar</button>
+          <button id="btnPause" class="ghost">⏸</button>
+          <button id="btnReset" class="ghost">⟲</button>
+        </div>
+      </div>
+    </div>
+
+    <div class="station-grid">
+      <!-- Coluna esquerda: painel do papel (roteiro do avaliador / instruções do estudante) -->
+      <div class="panel" id="rolePanel"></div>
+
+      <!-- Coluna direita (avaliador): checklist ao lado do caso -->
+      <div class="panel hidden" id="sideChecklistPanel">
+        <h3>Checklist de avaliação</h3>
+        <div id="sideChecklist"></div>
+      </div>
+    </div>
+
+    <div class="station-foot">
+      <button id="btnFinish" class="danger hidden">Encerrar e avaliar</button>
+      <span id="skipCtrls" class="hidden">
+        <button id="btnSkipKeep" class="ghost" title="Vai para a próxima estação sem trocar quem é avaliador/estudante">⏭ Pular (manter papéis)</button>
+        <button id="btnSkipAlt" class="ghost" title="Vai para a próxima estação trocando quem é avaliador/estudante">⏭ Pular (alternar papéis)</button>
+      </span>
+    </div>
+  </section>
+
+  <!-- ETAPA 4: RESULTADO DA ESTAÇÃO -->
+  <section id="result" class="screen">
+    <h1>Desempenho da estação</h1>
+    <div id="resultBody"></div>
+    <div class="ready-box">
+      <button id="btnReady" class="primary">✓ Estou pronto para a próxima</button>
+      <span id="readyMsg" class="msg"></span>
+    </div>
+    <button id="btnRestart" class="ghost hidden">Encerrar sessão</button>
+  </section>
+
+  <!-- ETAPA 5: RESUMO DA SESSÃO -->
+  <section id="summary" class="screen">
+    <h1>Resumo da sessão</h1>
+    <div id="summaryBody"></div>
+    <button id="btnNewSession" class="primary">Nova sessão</button>
+  </section>
+
+</main>
+
+
+<script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
+<script src="db.js"></script>
+<script type="module" src="js/main.js?v=2"></script>
+<!-- Vercel Web Analytics: conta visitantes/page views do site publicado na Vercel -->
+<script defer src="/_vercel/insights/script.js"></script>
+</body>
+</html>

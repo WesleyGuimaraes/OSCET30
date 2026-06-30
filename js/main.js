@@ -1,10 +1,10 @@
 /* Ponto de entrada: carrega os casos, fia os eventos da UI e o diagnóstico
    de conexão. Importa os módulos do jogo (sessão, estação, conexão). */
 
-import { state, loadCases, casesGuard, isEvaluator } from "./store.js";
+import { state, loadCases, casesGuard, isEvaluator, getCases, casesReadyPromise } from "./store.js";
 import { $, $$, show } from "./util.js";
 import {
-  startHost, renderTagPicker, startSession, startGuest,
+  startHost, startSession, startGuest,
   hostStartNext, hostEndSession, checkAdvance,
 } from "./session.js";
 import { startTimer, pauseTimer, resetTimer, computeResult, storeAndShow } from "./station.js";
@@ -13,33 +13,93 @@ import { sendMsg, testRealtime } from "./connection.js";
 // começa a carregar os casos publicados do Supabase logo de cara
 loadCases();
 
-// ---------- HOST: escolha de modo ----------
-$("#btnHost").onclick = () => { startHost(); show("hostSetup"); };
+// ---------- CONFIGURAR TREINO (host) ----------
+// A tela de config é a entrada do app. O host escolhe modo, conteúdos e
+// tempo aqui mesmo e clica em "Iniciar treino" para criar a sala.
+let selMode = "conteudos";
+let selTime = "8";            // minutos (string; "custom" abre input)
+const selTags = new Set();
 
-$$(".mode-card").forEach((card) => {
-  card.onclick = () => {
-    if (!casesGuard()) return;
-    const mode = card.dataset.mode;
-    $$(".mode-card").forEach((c) => c.classList.remove("sel"));
-    card.classList.add("sel");
-    if (mode === "conteudos") {
-      state.pendingMode = "conteudos";
-      renderTagPicker();
-      $("#tagPanel").classList.remove("hidden");
-    } else {
-      $("#tagPanel").classList.add("hidden");
-      startSession(mode, null);
-    }
+// chips de conteúdo vêm dos casos publicados (não são fixos)
+function renderConteudosChips() {
+  const tags = [...new Set(getCases().map((c) => c.conteudos[0]).filter(Boolean))].sort();
+  const box = $("#chips");
+  box.innerHTML = "";
+  tags.forEach((t) => {
+    const el = document.createElement("span");
+    el.className = "chip";
+    el.dataset.topic = t;
+    el.innerHTML = `<span class="ck">✓</span>${t}`;
+    el.onclick = () => {
+      if (selTags.has(t)) selTags.delete(t); else selTags.add(t);
+      el.classList.toggle("sel");
+      updateTopicsCount();
+    };
+    box.appendChild(el);
+  });
+  updateTopicsCount();
+}
+
+function updateTopicsCount() {
+  const el = $("#topicsCount");
+  if (selMode !== "conteudos") { el.textContent = "Sorteio automático"; return; }
+  const n = selTags.size;
+  el.textContent = n === 0 ? "Nenhum selecionado" : n + (n === 1 ? " selecionado" : " selecionados");
+}
+
+function applyModeUI() {
+  const enabled = selMode === "conteudos";
+  $("#chips").classList.toggle("hidden", !enabled);
+  $("#autoNote").classList.toggle("hidden", enabled);
+  if (!enabled) {
+    $("#autoNoteText").textContent = "Todas as estações, sem repetir, com conteúdos sorteados, até acabarem.";
+  }
+  updateTopicsCount();
+}
+
+$$("#modes .mode").forEach((el) => {
+  el.onclick = () => {
+    selMode = el.dataset.mode;
+    $$("#modes .mode").forEach((m) => m.classList.toggle("sel", m === el));
+    applyModeUI();
   };
 });
 
-$("#btnTagStart").onclick = () => {
-  const sel = [...$$("#tagList input:checked")].map((i) => i.value);
-  if (!sel.length) { $("#tagMsg").textContent = "Selecione ao menos um conteúdo."; return; }
-  startSession("conteudos", sel);
+$$("#times .time").forEach((el) => {
+  el.onclick = () => {
+    selTime = el.dataset.time;
+    $$("#times .time").forEach((t) => t.classList.toggle("sel", t === el));
+    $("#customTimeWrap").classList.toggle("hidden", selTime !== "custom");
+  };
+});
+
+$("#btnIniciar").onclick = () => {
+  if (!casesGuard()) return;
+  if (selMode === "conteudos" && selTags.size === 0) {
+    $("#cfgMsg").textContent = "Selecione ao menos um conteúdo.";
+    return;
+  }
+  let mins = selTime;
+  if (selTime === "custom") {
+    mins = parseInt($("#customTime").value, 10);
+    if (!mins || mins < 1) { $("#cfgMsg").textContent = "Informe um tempo válido (em minutos)."; return; }
+  }
+  $("#cfgMsg").textContent = "";
+  startSession(selMode, [...selTags], Number(mins));
 };
 
-// ---------- lobby: entrar como estudante ----------
+// inicializa o setup (papel host + aviso de casos) e renderiza os chips
+// quando os casos publicados terminarem de carregar
+startHost();
+casesReadyPromise.then(() => { startHost(); renderConteudosChips(); applyModeUI(); });
+
+// ---------- estudante: revelar e entrar com código ----------
+$("#linkStudent").onclick = () => {
+  const box = $("#joinBox");
+  box.classList.toggle("hidden");
+  if (!box.classList.contains("hidden")) $("#joinCode").focus();
+};
+
 $("#btnJoin").onclick = () => {
   const code = $("#joinCode").value.trim().toUpperCase();
   if (code.length < 4) { $("#lobbyMsg").textContent = "Digite o código da sala."; return; }
@@ -63,6 +123,7 @@ $("#btnCopyLink").onclick = () => {
 (() => {
   const code = new URLSearchParams(location.search).get("sala");
   if (code) {
+    $("#joinBox").classList.remove("hidden");
     $("#joinCode").value = code.toUpperCase();
     $("#lobbyMsg").textContent = "Código preenchido — toque em \"Entrar\" para conectar.";
     $("#joinCode").scrollIntoView({ behavior: "smooth", block: "center" });

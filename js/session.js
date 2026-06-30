@@ -22,20 +22,6 @@ export function startHost() {
   else setSetupNotice("");
 }
 
-export function renderTagPicker() {
-  const tags = [...new Set(getCases().map((c) => c.conteudos[0]).filter(Boolean))].sort();
-  const box = $("#tagList");
-  box.innerHTML = "";
-  tags.forEach((t) => {
-    const el = document.createElement("label");
-    el.className = "tag";
-    el.innerHTML = `<input type="checkbox" value="${t}">${t}`;
-    el.querySelector("input").onchange = (e) =>
-      el.classList.toggle("sel", e.target.checked);
-    box.appendChild(el);
-  });
-}
-
 // ---------- HOST: montar sessão + criar sala ----------
 function buildQueue(mode, tags) {
   const all = getCases().map((c) => c.id);
@@ -47,19 +33,18 @@ function buildQueue(mode, tags) {
   return []; // aleatoria: sorteio a cada estação
 }
 
-export function startSession(mode, tags) {
+// tempoMin: tempo da estação escolhido no setup (minutos). Sobrescreve o
+// tempo próprio de cada caso; null mantém o tempo definido no caso.
+export function startSession(mode, tags, tempoMin) {
   const queue = buildQueue(mode, tags);
-  const alternate = $("#altRoles").checked;
-  state.session = { mode, queue, index: 0, lastId: null, count: 0, results: [], alternate };
+  const alternate = false; // alternância de papéis fica desligada por padrão
+  const tempo = tempoMin ? tempoMin * 60 : null;
+  state.session = { mode, queue, index: 0, lastId: null, count: 0, results: [], alternate, tempo };
 
   // info exibida ao host
   $("#modeLabel").textContent = MODE_LABEL[mode]
-    + (alternate ? " · alterna papéis" : "");
-  let info;
-  if (mode === "aleatoria") info = "estações ilimitadas";
-  else if (mode === "osce")
-    info = `${queue.length} estações` + (queue.length < 4 ? ` (só ${queue.length} disponíveis)` : "");
-  else info = `${queue.length} estaç${queue.length === 1 ? "ão" : "ões"}`;
+    + (tempo ? ` · ${tempoMin} min` : "");
+  const info = `${queue.length} estaç${queue.length === 1 ? "ão" : "ões"}`;
   $("#queueInfo").textContent = info;
 
   // cria a sala (assina o canal Realtime) e mostra código/link quando pronto
@@ -71,7 +56,7 @@ export function startSession(mode, tags) {
     const a = $("#inviteLink");
     a.textContent = link;
     a.href = link;
-    $("#tagPanel").classList.add("hidden");
+    $("#cfgForm").classList.add("hidden");
     $("#roomShare").classList.remove("hidden");
     setStatus("aguardando estudante", "wait");
   });
@@ -103,7 +88,7 @@ export function hostStartNext(roleMode) {
   state.caseObj = CASE(nx.id);
   state.session.lastId = nx.id;
   state.prog = { n: nx.n, total: nx.total };
-  state.timer.remaining = state.caseObj.tempo;
+  state.timer.remaining = state.session.tempo || state.caseObj.tempo;
   state.scores = {};
   let avaliadorIsHost;
   if (roleMode === "toggle") avaliadorIsHost = !wasAvaliadorIsHost;

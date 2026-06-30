@@ -26,33 +26,26 @@
   html { scroll-behavior: smooth; }
 
   body {
-    background: var(--c-bg);
+    background: #070b10;
     color: var(--c-text);
     font-family: system-ui, -apple-system, sans-serif;
     -webkit-font-smoothing: antialiased;
   }
 
-  .page { width: 100%; }
-
-  .container {
+  .page {
+    width: 100%;
     max-width: 1280px;
     margin: 0 auto;
-    width: 100%;
+    background: var(--c-bg);
   }
 
   /* ─── NAV ─── */
   .nav {
-    border-bottom: 1px solid var(--c-line);
-    background: var(--c-bg);
-    position: sticky;
-    top: 0;
-    z-index: 10;
-  }
-  .nav .container {
     display: flex;
     align-items: center;
     justify-content: space-between;
     padding: 22px 48px;
+    border-bottom: 1px solid var(--c-line);
   }
 
   .nav-brand {
@@ -126,19 +119,12 @@
 
   /* ─── HERO ─── */
   .hero {
-    background: var(--c-bg);
-    padding: 72px 0 80px;
-    min-height: calc(100vh - 75px);
-    display: flex;
-    align-items: center;
-  }
-  .hero .container {
     display: grid;
     grid-template-columns: 1fr 1fr;
     gap: 56px;
     align-items: center;
-    padding: 0 48px;
-    width: 100%;
+    padding: 72px 48px 80px;
+    min-height: calc(100vh - 75px);
   }
 
   .hero-badge {
@@ -189,7 +175,9 @@
   }
 
   /* ─── PRODUCT CARD ─── */
-  .card-wrap { position: relative; }
+  .card-wrap {
+    position: relative;
+  }
 
   .product-card {
     background: var(--c-panel);
@@ -315,6 +303,7 @@
     color: var(--c-teal);
   }
 
+  /* floating badge */
   .badge-float {
     position: absolute;
     bottom: -22px;
@@ -342,11 +331,9 @@
 
   /* ─── COMO FUNCIONA ─── */
   .how {
+    padding: 64px 48px 80px;
     border-top: 1px solid var(--c-line);
     background: var(--c-bg-dark);
-  }
-  .how .container {
-    padding: 64px 48px 80px;
   }
 
   .how-header {
@@ -416,66 +403,94 @@
     color: var(--c-muted);
   }
 
-  /* ─── TABLET ≤ 1024px ─── */
+  /* ═══════════════════════════════════════════════
+     TABLET  ≤ 1024px
+     Reduz gaps e fontes; hero ainda 2 colunas mas comprimido
+  ═══════════════════════════════════════════════ */
   @media (max-width: 1024px) {
-    .nav .container { padding: 18px 32px; }
-    .hero { min-height: auto; padding: 56px 0 72px; }
-    .hero .container { gap: 36px; padding: 0 32px; }
+    .nav { padding: 18px 32px; }
+
+    .hero {
+      gap: 36px;
+      padding: 56px 32px 72px;
+      min-height: auto;
+    }
+
     .hero-title { font-size: 40px; letter-spacing: -1px; }
     .hero-desc  { font-size: 16px; }
-    .how .container { padding: 56px 32px 72px; }
+
+    .how { padding: 56px 32px 72px; }
     .how-title { font-size: 30px; }
+
     .step { padding: 24px 20px; }
     .step h3 { font-size: 17px; }
   }
 
-  /* ─── CELULAR GRANDE ≤ 640px (iPhone 14 Pro Max, Pixel 7) ─── */
+  /* ═══════════════════════════════════════════════
+     CELULAR GRANDE  ≤ 640px  (ex: iPhone 14 Pro Max, Pixel 7)
+     Hero vira coluna única; card do produto abaixo do copy
+  ═══════════════════════════════════════════════ */
   @media (max-width: 640px) {
-    .nav .container { padding: 16px 20px; }
+    /* nav */
+    .nav { padding: 16px 20px; }
     .nav-link { display: none; }
     .btn-ghost.btn-sm { display: none; }
 
-    .hero { padding: 40px 0 60px; }
-    .hero .container {
+    /* hero */
+    .hero {
       grid-template-columns: 1fr;
       gap: 40px;
-      padding: 0 20px;
+      padding: 40px 20px 60px;
     }
+
     .hero-title { font-size: 36px; letter-spacing: -.8px; }
     .hero-desc  { font-size: 15.5px; max-width: 100%; }
 
+    /* product card: reserva espaço embaixo para o badge flutuante */
     .card-wrap { padding-bottom: 36px; }
-    .badge-float { bottom: 6px; left: 12px; }
 
+    .badge-float {
+      bottom: 6px;
+      left: 12px;
+    }
+
+    /* steps */
     .steps { grid-template-columns: 1fr; gap: 14px; }
-    .how .container { padding: 48px 20px 60px; }
+    .how   { padding: 48px 20px 60px; }
     .how-title { font-size: 26px; }
   }
 
-  /* ─── CELULAR PEQUENO ≤ 390px (Samsung S23, iPhone SE) ─── */
+  /* ═══════════════════════════════════════════════
+     CELULAR PEQUENO  ≤ 390px  (ex: Samsung S23, iPhone SE)
+     Comprime ainda mais — fontes, padding, card
+  ═══════════════════════════════════════════════ */
   @media (max-width: 390px) {
-    .nav .container { padding: 14px 16px; }
+    .nav { padding: 14px 16px; }
     .nav-name { font-size: 15px; }
     .btn-primary.btn-sm { font-size: 12.5px; padding: 7px 13px; height: 34px; }
 
-    .hero { padding: 32px 0 52px; }
-    .hero .container { gap: 32px; padding: 0 16px; }
+    .hero { padding: 32px 16px 52px; gap: 32px; }
     .hero-badge span { font-size: 11px; }
     .hero-title { font-size: 30px; letter-spacing: -.6px; }
     .hero-desc  { font-size: 14.5px; margin-bottom: 28px; }
+
     .btn-lg { font-size: 14.5px; padding: 13px 20px; }
     .hero-ctas { gap: 10px; }
 
+    /* product card */
     .product-card { padding: 16px; }
     .card-title   { font-size: 13px; }
     .card-timer   { font-size: 22px; }
     .checklist-item { padding: 9px 11px; }
     .checklist-item .item-label { font-size: 12.5px; }
+
+    /* badge flutuante menor */
     .badge-float { padding: 9px 13px; left: 8px; }
     .badge-float-label  { font-size: 9.5px; }
     .badge-float-content { font-size: 12px; }
 
-    .how .container { padding: 40px 16px 52px; }
+    /* como funciona */
+    .how { padding: 40px 16px 52px; }
     .how-title { font-size: 23px; }
     .step { padding: 20px 16px; }
     .step h3 { font-size: 16px; }
@@ -490,108 +505,105 @@
 
   <!-- NAV -->
   <nav class="nav">
-    <div class="container">
-      <a href="/" class="nav-brand">
-        <div class="nav-logo">
-          <svg width="17" height="17" viewBox="0 0 24 24" fill="none" stroke="#06231f" stroke-width="2.4" stroke-linecap="round" stroke-linejoin="round">
-            <path d="M5 4v6a7 7 0 0 0 14 0V4"/>
-            <line x1="5" y1="4" x2="5" y2="2"/>
-            <line x1="19" y1="4" x2="19" y2="2"/>
-          </svg>
-        </div>
-        <span class="nav-name">Próxima Estação</span>
-      </a>
-      <div class="nav-links">
-        <a href="#como-funciona" class="nav-link">Como funciona</a>
-        <a href="/admin/" class="btn btn-ghost btn-sm">Login adm</a>
-        <a href="/app" class="btn btn-primary btn-sm">Começar agora</a>
+    <a href="/" class="nav-brand">
+      <div class="nav-logo">
+        <svg width="17" height="17" viewBox="0 0 24 24" fill="none" stroke="#06231f" stroke-width="2.4" stroke-linecap="round" stroke-linejoin="round">
+          <path d="M5 4v6a7 7 0 0 0 14 0V4"/>
+          <line x1="5" y1="4" x2="5" y2="2"/>
+          <line x1="19" y1="4" x2="19" y2="2"/>
+        </svg>
       </div>
+      <span class="nav-name">Próxima Estação</span>
+    </a>
+    <div class="nav-links">
+      <a href="#como-funciona" class="nav-link">Como funciona</a>
+      <a href="/index.html" class="btn btn-ghost btn-sm">Ver demonstração</a>
+      <a href="/index.html" class="btn btn-primary btn-sm">Começar agora</a>
     </div>
   </nav>
 
   <!-- HERO -->
   <section class="hero">
-    <div class="container">
-      <div class="hero-copy">
-        <div class="hero-badge">
-          <span class="hero-badge-dot"></span>
-          <span>Treinamento prático de habilidades clínicas</span>
+    <div class="hero-copy">
+      <div class="hero-badge">
+        <span class="hero-badge-dot"></span>
+        <span>Treinamento prático de habilidades clínicas</span>
+      </div>
+      <h1 class="hero-title">
+        Treine para o OSCE<br>
+        como se estivesse na<br>
+        <span class="accent">prova real.</span>
+      </h1>
+      <p class="hero-desc">
+        Você e um colega entram na mesma sala, treinam uma estação clínica
+        estruturada em dupla e recebem uma avaliação padronizada — direto no
+        navegador, sem instalação.
+      </p>
+      <div class="hero-ctas">
+        <a href="/index.html" class="btn btn-primary btn-lg">Começar agora</a>
+        <a href="/index.html" class="btn btn-ghost btn-lg">&#9658; Ver demonstração</a>
+      </div>
+    </div>
+
+    <!-- Product visual -->
+    <div class="card-wrap">
+      <div class="product-card">
+        <div class="card-header">
+          <div class="card-header-left">
+            <span class="card-title">Asma — crise leve</span>
+            <span class="badge-live">ao vivo</span>
+          </div>
+          <span class="card-timer">04:32</span>
         </div>
-        <h1 class="hero-title">
-          Treine para o OSCE<br>
-          como se estivesse na<br>
-          <span class="accent">prova real.</span>
-        </h1>
-        <p class="hero-desc">
-          Você e um colega entram na mesma sala, treinam uma estação clínica
-          estruturada em dupla e recebem uma avaliação padronizada — direto no
-          navegador, sem instalação.
-        </p>
-        <div class="hero-ctas">
-          <a href="/app" class="btn btn-primary btn-lg">Começar agora</a>
+
+        <div class="progress-bar">
+          <div class="progress-fill"></div>
+        </div>
+
+        <div class="checklist-label">CHECKLIST DE AVALIAÇÃO</div>
+
+        <div class="checklist">
+          <div class="checklist-item">
+            <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="#48c78e" stroke-width="2.6" stroke-linecap="round" stroke-linejoin="round">
+              <polyline points="20 6 9 17 4 12"/>
+            </svg>
+            <span class="item-label">Apresentou-se e identificou o paciente</span>
+            <span class="item-pts">+2</span>
+          </div>
+          <div class="checklist-item">
+            <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="#48c78e" stroke-width="2.6" stroke-linecap="round" stroke-linejoin="round">
+              <polyline points="20 6 9 17 4 12"/>
+            </svg>
+            <span class="item-label">Investigou início e fatores de piora</span>
+            <span class="item-pts">+3</span>
+          </div>
+          <div class="checklist-item pending">
+            <span class="check-box-empty"></span>
+            <span class="item-label">Orientou plano terapêutico</span>
+            <span class="item-pts">+3</span>
+          </div>
+        </div>
+
+        <div class="card-footer">
+          <div class="card-connected">
+            <span class="dot-connected"></span>
+            2 conectados · sala T30-9F
+          </div>
+          <span class="card-score">5 / 8 pts</span>
         </div>
       </div>
 
-      <!-- Product visual -->
-      <div class="card-wrap">
-        <div class="product-card">
-          <div class="card-header">
-            <div class="card-header-left">
-              <span class="card-title">Asma — crise leve</span>
-              <span class="badge-live">ao vivo</span>
-            </div>
-            <span class="card-timer">04:32</span>
-          </div>
-
-          <div class="progress-bar">
-            <div class="progress-fill"></div>
-          </div>
-
-          <div class="checklist-label">CHECKLIST DE AVALIAÇÃO</div>
-
-          <div class="checklist">
-            <div class="checklist-item">
-              <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="#48c78e" stroke-width="2.6" stroke-linecap="round" stroke-linejoin="round">
-                <polyline points="20 6 9 17 4 12"/>
-              </svg>
-              <span class="item-label">Apresentou-se e identificou o paciente</span>
-              <span class="item-pts">+2</span>
-            </div>
-            <div class="checklist-item">
-              <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="#48c78e" stroke-width="2.6" stroke-linecap="round" stroke-linejoin="round">
-                <polyline points="20 6 9 17 4 12"/>
-              </svg>
-              <span class="item-label">Investigou início e fatores de piora</span>
-              <span class="item-pts">+3</span>
-            </div>
-            <div class="checklist-item pending">
-              <span class="check-box-empty"></span>
-              <span class="item-label">Orientou plano terapêutico</span>
-              <span class="item-pts">+3</span>
-            </div>
-          </div>
-
-          <div class="card-footer">
-            <div class="card-connected">
-              <span class="dot-connected"></span>
-              2 conectados · sala T30-9F
-            </div>
-            <span class="card-score">5 / 8 pts</span>
-          </div>
-        </div>
-
-        <!-- Floating badge -->
-        <div class="badge-float">
-          <div class="badge-float-label">TROCA DE PAPÉIS</div>
-          <div class="badge-float-content">
-            <svg width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="#3fb6a8" stroke-width="2.4" stroke-linecap="round" stroke-linejoin="round">
-              <polyline points="17 1 21 5 17 9"/>
-              <path d="M3 11V9a4 4 0 0 1 4-4h14"/>
-              <polyline points="7 23 3 19 7 15"/>
-              <path d="M21 13v2a4 4 0 0 1-4 4H3"/>
-            </svg>
-            Avaliador ⇄ Estudante
-          </div>
+      <!-- Floating badge -->
+      <div class="badge-float">
+        <div class="badge-float-label">TROCA DE PAPÉIS</div>
+        <div class="badge-float-content">
+          <svg width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="#3fb6a8" stroke-width="2.4" stroke-linecap="round" stroke-linejoin="round">
+            <polyline points="17 1 21 5 17 9"/>
+            <path d="M3 11V9a4 4 0 0 1 4-4h14"/>
+            <polyline points="7 23 3 19 7 15"/>
+            <path d="M21 13v2a4 4 0 0 1-4 4H3"/>
+          </svg>
+          Avaliador ⇄ Estudante
         </div>
       </div>
     </div>
@@ -599,59 +611,57 @@
 
   <!-- COMO FUNCIONA -->
   <section id="como-funciona" class="how">
-    <div class="container">
-      <div class="how-header">
-        <div class="how-eyebrow">COMO FUNCIONA</div>
-        <h2 class="how-title">Três passos até a sua estação</h2>
+    <div class="how-header">
+      <div class="how-eyebrow">COMO FUNCIONA</div>
+      <h2 class="how-title">Três passos até a sua estação</h2>
+    </div>
+
+    <div class="steps">
+      <div class="step">
+        <div class="step-top">
+          <div class="step-icon">
+            <svg width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="#3fb6a8" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+              <path d="M14 3h6v18H4V3h6"/>
+              <rect x="9" y="2" width="6" height="4" rx="1"/>
+              <path d="M16 11h.01"/>
+            </svg>
+          </div>
+          <span class="step-num">01</span>
+        </div>
+        <h3>Crie ou entre em uma sala</h3>
+        <p>O avaliador gera um código curto. O estudante digita o código e entra na mesma sala — sem cadastro.</p>
       </div>
 
-      <div class="steps">
-        <div class="step">
-          <div class="step-top">
-            <div class="step-icon">
-              <svg width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="#3fb6a8" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
-                <path d="M14 3h6v18H4V3h6"/>
-                <rect x="9" y="2" width="6" height="4" rx="1"/>
-                <path d="M16 11h.01"/>
-              </svg>
-            </div>
-            <span class="step-num">01</span>
+      <div class="step">
+        <div class="step-top">
+          <div class="step-icon">
+            <svg width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="#3fb6a8" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+              <path d="M17 21v-2a4 4 0 0 0-4-4H5a4 4 0 0 0-4 4v2"/>
+              <circle cx="9" cy="7" r="4"/>
+              <path d="M23 21v-2a4 4 0 0 0-3-3.87"/>
+              <path d="M16 3.13a4 4 0 0 1 0 7.75"/>
+            </svg>
           </div>
-          <h3>Crie ou entre em uma sala</h3>
-          <p>O avaliador gera um código curto. O estudante digita o código e entra na mesma sala — sem cadastro.</p>
+          <span class="step-num">02</span>
         </div>
+        <h3>Treine uma estação em dupla</h3>
+        <p>Caso clínico estruturado, timer sincronizado de 5 minutos e troca automática de papéis a cada rodada.</p>
+      </div>
 
-        <div class="step">
-          <div class="step-top">
-            <div class="step-icon">
-              <svg width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="#3fb6a8" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
-                <path d="M17 21v-2a4 4 0 0 0-4-4H5a4 4 0 0 0-4 4v2"/>
-                <circle cx="9" cy="7" r="4"/>
-                <path d="M23 21v-2a4 4 0 0 0-3-3.87"/>
-                <path d="M16 3.13a4 4 0 0 1 0 7.75"/>
-              </svg>
-            </div>
-            <span class="step-num">02</span>
+      <div class="step">
+        <div class="step-top">
+          <div class="step-icon">
+            <svg width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="#3fb6a8" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+              <path d="M3 3v18h18"/>
+              <path d="M18 17V9"/>
+              <path d="M13 17V5"/>
+              <path d="M8 17v-3"/>
+            </svg>
           </div>
-          <h3>Treine uma estação em dupla</h3>
-          <p>Caso clínico estruturado, timer sincronizado de 5 minutos e troca automática de papéis a cada rodada.</p>
+          <span class="step-num">03</span>
         </div>
-
-        <div class="step">
-          <div class="step-top">
-            <div class="step-icon">
-              <svg width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="#3fb6a8" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
-                <path d="M3 3v18h18"/>
-                <path d="M18 17V9"/>
-                <path d="M13 17V5"/>
-                <path d="M8 17v-3"/>
-              </svg>
-            </div>
-            <span class="step-num">03</span>
-          </div>
-          <h3>Receba sua avaliação</h3>
-          <p>Pontuação padronizada pelo checklist, com veredito por estação. Continue evoluindo a cada repetição.</p>
-        </div>
+        <h3>Receba sua avaliação</h3>
+        <p>Pontuação padronizada pelo checklist, com veredito por estação. Continue evoluindo a cada repetição.</p>
       </div>
     </div>
   </section>
